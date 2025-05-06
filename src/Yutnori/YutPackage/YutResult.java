@@ -17,4 +17,13 @@ public enum YutResult {
     public boolean isBouns() {
         return steps == 4 || steps == 5;
     }
+
+    public static YutResult fromSteps(int steps) {  //gpt 산 int to enum 코드
+        for (YutResult result : values()) {
+            if (result.getSteps() == steps) {
+                return result;
+            }
+        }
+        throw new IllegalArgumentException("Invalid steps: " + steps);
+    }
 }
