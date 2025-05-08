@@ -1,4 +1,4 @@
-package Yutnori;
+package Yutnori.Model;
 
 import java.util.ArrayList;
 import java.util.List;

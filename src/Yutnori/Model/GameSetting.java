@@ -1,4 +1,4 @@
-package Yutnori;
+package Yutnori.Model;
 
 public class GameSetting {
     public int playerNumber;

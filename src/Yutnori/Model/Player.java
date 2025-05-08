@@ -1,4 +1,4 @@
-package Yutnori;
+package Yutnori.Model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,10 +30,9 @@ public class Player {
     }
 
 
-    public void initNewPiece(int step) {
+    public void initNewPiece() {
         remainPieceNumber--;
         pieceList.add(new Piece(this.teamIndex));       //마지막에 추가
-        movePiece(pieceList.size() - 1, step - 1);              //추가 이후 이동, 시작 위치 없기에 -1
     }
 
     public boolean hasWon() {
@@ -46,6 +45,9 @@ public class Player {
 
     public List<Piece> getPieceList() {
         return pieceList;
+    }
+    public int getPieceListSize() {
+        return pieceList.size();
     }
 
     public int getRemainPieceNumber() {

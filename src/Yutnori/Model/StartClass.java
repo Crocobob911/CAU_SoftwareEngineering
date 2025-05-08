@@ -1,4 +1,4 @@
-package Yutnori;
+package Yutnori.Model;
 
 import java.util.Scanner;
 

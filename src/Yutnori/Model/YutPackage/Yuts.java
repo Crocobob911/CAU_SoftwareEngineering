@@ -1,4 +1,4 @@
-package Yutnori.YutPackage;
+package Yutnori.Model.YutPackage;
 
 import java.util.Random;
 
