@@ -131,7 +131,6 @@ public class GameManager {
 
 
                 //이동
-                pendingMoves.remove(moveIndex);
                 if(pieceNumber == -1) {
                     System.out.println("moveStep : " + moveStep);
                     player.initNewPiece(moveStep);
@@ -153,9 +152,10 @@ public class GameManager {
                     if(destinationPosition == -2) {
                         player.completePiece(player.getPiece(pieceNumber).getStacked());        //선택한 피스 스택 수 만큼 완주 스택 증가
                     }
-                    player.movePiece(moveIndex, destinationPosition);
-
+                    player.movePiece(pieceNumber, destinationPosition);
                 }
+                pendingMoves.remove(moveIndex);     //제거
+
 
                 //승리 조건 확인
                 if (isPlayerWinner()) {

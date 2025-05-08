@@ -6,16 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="31daac7e-5693-46a6-96b5-01c259af9992" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SE/Yutnori/Board.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SE/Yutnori/Board.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/SE/Yutnori/GameManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SE/Yutnori/GameManager.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SE/Yutnori/Piece.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SE/Yutnori/Piece.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SE/Yutnori/Player.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SE/Yutnori/Player.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SE/Yutnori/StartClass.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SE/Yutnori/StartClass.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Yutnori/Board.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Yutnori/Board.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Yutnori/GameManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Yutnori/GameManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Yutnori/Piece.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Yutnori/Piece.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Yutnori/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Yutnori/Player.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Yutnori/StartClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Yutnori/StartClass.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -110,7 +102,7 @@
       <workItem from="1746451652030" duration="18842000" />
       <workItem from="1746520101469" duration="30040000" />
       <workItem from="1746597753627" duration="15641000" />
-      <workItem from="1746673466082" duration="906000" />
+      <workItem from="1746673466082" duration="6476000" />
     </task>
     <servers />
   </component>
