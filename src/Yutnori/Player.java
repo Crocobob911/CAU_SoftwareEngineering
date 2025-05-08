@@ -7,11 +7,13 @@ public class Player {
     private final int teamIndex;
     private final List<Piece> pieceList;
     private int remainPieceNumber;
+    private int completedPieceNumber;
 
     public Player(int teamIndex, int remainPieceNumber) {
         this.teamIndex = teamIndex;
         this.pieceList = new ArrayList<Piece>();
         this.remainPieceNumber = remainPieceNumber;
+        this.completedPieceNumber = 0;
     }
 
     public int getPiecePosition(int idx) {
@@ -20,10 +22,18 @@ public class Player {
     public void movePiece(int idx, int position) {
         pieceList.get(idx).setPosition(position);
     }
+    public void completePiece(int stacked) {
+        completedPieceNumber += (stacked + 1);      //기본 값 한개는 줘야함 0 스택 말 -> 점수 1 증가
+    }
+    public Piece getPiece(int idx) {
+        return pieceList.get(idx);
+    }
+
 
     public void initNewPiece(int step) {
         remainPieceNumber--;
-        pieceList.add(new Piece(this.teamIndex, step - 1));     //시작 지점이 없어서 -1로 인덱스 처리
+        pieceList.add(new Piece(this.teamIndex));       //마지막에 추가
+        movePiece(pieceList.size() - 1, step - 1);              //추가 이후 이동, 시작 위치 없기에 -1
     }
 
     public boolean hasWon() {

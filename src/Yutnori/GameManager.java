@@ -9,8 +9,7 @@ import java.util.Scanner;
 
 public class GameManager {
     //필드
-    private static GameManager instance;
-    private GameSetting gameSetting;
+    private final GameSetting gameSetting;
     private Yuts yuts;
     private Player[] players;
     Board board;
@@ -20,29 +19,25 @@ public class GameManager {
     int remainActionNumber;
     //region 생성자 , singleton 관련
     public GameManager (GameSetting gameSetting) {
-        if (instance != null) return;       //멀티 게임매니저 차단
-        instance = this;
         this.gameSetting = gameSetting;
 
         init();
     }
-    public static GameManager getInstance() {
-        return instance;
-    }
+
     private void init() {
         yuts = new Yuts();
 
+        board = new Board(gameSetting.boardType);
+
         nowTurnPlayerID = 0;
-        pendingMoves = new ArrayList<YutResult>();
+        pendingMoves = new ArrayList<>();
         remainActionNumber = 0;
         players = new Player[gameSetting.playerNumber];
         for (int i = 0; i < gameSetting.playerNumber; i++) {
             players[i] = new Player(i, gameSetting.pieceNumber);
         }
 
-        resetTurn();        //턴 시작 0번
-        //debug
-        startTerminalGame();
+
     }
     //endregion
 
@@ -61,7 +56,6 @@ public class GameManager {
     private void startTerminalGame() {
         Scanner sc = new Scanner(System.in);
         //printGameStatus();
-        board = new Board(6);
         while (true) {
             /*
             int from = sc.nextInt();
@@ -95,10 +89,10 @@ public class GameManager {
                 int yutType = sc.nextInt();
                 pendingMoves.add(YutResult.fromSteps(yutType));
             }
-            else if (commandNumber == -1) {     //enroll
+            else if (commandNumber == -1) {     //enroll        코스트 소모 없
                 pendingMoves.add(yuts.rollYuts());
             }
-            else if (commandNumber == 1) {      //enroll
+            else if (commandNumber == 1) {      //enroll        코스트 소모
                 if(remainActionNumber > 0) {
                     remainActionNumber--;
                     pendingMoves.add(yuts.rollYuts());
@@ -121,7 +115,7 @@ public class GameManager {
                     System.out.println(i + " : " + pieceList.get(i).getPosition());
                 }
                 System.out.println("choose Piece number : -1 : new Piece, 0~ : active piece");
-                int pieceNumber = sc.nextInt();
+                int pieceNumber = sc.nextInt();                             //선택된 piece 넘버
                 if (pieceNumber >= player.getPieceList().size()) {
                     System.out.println("Invalid Piece Number");
                 }
@@ -155,11 +149,33 @@ public class GameManager {
                     int moveListIdx = sc.nextInt();
                     int destinationPosition = moveablePosition.get(moveListIdx);
 
+
+                    if(destinationPosition == -2) {
+                        player.completePiece(player.getPiece(pieceNumber).getStacked());        //선택한 피스 스택 수 만큼 완주 스택 증가
+                    }
                     player.movePiece(moveIndex, destinationPosition);
 
                 }
+
+                //승리 조건 확인
+                if (isPlayerWinner()) {
+                    System.out.println("Winner : " + player.getTeamIndex());
+                    finishScene();
+                }
+
+                //남아 있는 이동 수가 없으면 턴 종료
+                if (pendingMoves.isEmpty() && remainActionNumber == 0) {
+                    nextPlayerTurn();
+                }
             }
         }
+    }
+
+    private boolean isPlayerWinner() {
+        Player player = players[nowTurnPlayerID];
+        return player.getRemainPieceNumber() == 0
+                && player.getPieceList().isEmpty();
+        // 남아 있는 말 수 없고, 활동중인 말 수 없으면 승리
     }
 
     private void printPlayerPiece(int playerId) {
@@ -177,9 +193,26 @@ public class GameManager {
 
     //region public method
     public void startScene() {
+        resetTurn();        //턴 시작 0번
+        //debug
+        startTerminalGame();
 
+        //todo > gui 처리
     }
     public void finishScene() {
+        //todo > 게임 종료후 gui 처리
+        //todo > 게임 재시작 방법 어떤식으로?
+        //resetTurn();
+        //endScene();
+    }
+    public void restartScene() {
+        init();
+        resetTurn();
+        startTerminalGame();
+    }
+    public void endScene() {    //게임 종료
+        System.exit(0);
+        
     }
     //endregion
     //region private method

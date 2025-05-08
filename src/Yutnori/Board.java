@@ -27,7 +27,7 @@ public class Board {
             else {
                 //외부
                 if(line == 0) {             //도 백
-                    result.add(-100);       //그냥 음수값 아무거나
+                    result.add(-1);       // -1 > 도 백 특수 위치
                 }
                 else if (line < boardType) {    //도백 제외 외부
                     line--;

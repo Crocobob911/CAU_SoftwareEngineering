@@ -7,9 +7,9 @@ public class Piece {
 
 
 
-    public Piece(int ownerID, int position) {
+    public Piece(int ownerID) {
         this.ownerID = ownerID;
-        this.position = position;
+        this.position = 0;
         this.stacked = 0;
     }
 
