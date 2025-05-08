@@ -4,6 +4,7 @@ import Yutnori.Model.YutPackage.YutResult;
 import Yutnori.Model.YutPackage.Yuts;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -52,7 +53,7 @@ public class GameManager {
             System.out.println(yutResult.toString());
         }
         System.out.println("Remaining Actions: " + remainActionNumber);
-
+        System.out.println("------enter command");
     }
 
     private void startTerminalGame() {
@@ -96,13 +97,15 @@ public class GameManager {
                 //이동
                 if(pieceIndex == -1) {
                     System.out.println("moveStep : " + moveStep);
+                    if(moveStep == -1) {return;}        //!!!!! 0에서 백도시 중지 !!! gui 단에서 막는게?
                     player.initNewPiece();
-                    player.movePiece(player.getPieceListSize(), moveStep - 1);     //시작칸 인덱스가 없다, 있어도 -1
+                    moveAction(player, player.getPieceListSize() - 1, moveStep - 1);    //시작 칸 인덱스가 없어서 -1
                     //초기 시행시엔 갈림길 없다
                 }
                 else {
                     int destinationPosition = chooseDestination(player, pieceIndex, moveStep);
-                    player.movePiece(pieceIndex, destinationPosition);
+
+                    moveAction(player, pieceIndex, destinationPosition);
                 }
                 
 
@@ -145,9 +148,10 @@ public class GameManager {
         }
         System.out.println("choose move number : ");
         int moveIndex = sc.nextInt();
-        
+
+        int result = pendingMoves.get(moveIndex).getSteps();
         pendingMoves.remove(moveIndex);     //이동 소모 !! 주의 이동 소모 우선 > 가능 위치 확인 후 이동
-        return pendingMoves.get(moveIndex).getSteps();
+        return result;
     }
 
     private int chooseDestination(Player player, int pieceIndex, int moveStep) {
@@ -163,9 +167,7 @@ public class GameManager {
         int destinationPosition = moveablePosition.get(moveListIdx);
 
 
-        if(destinationPosition == -2) {
-            player.completePiece(player.getPiece(pieceIndex).getStacked());        //선택한 피스 스택 수 만큼 완주 스택 증가
-        }
+
         return destinationPosition;
     }
 
@@ -263,10 +265,41 @@ public class GameManager {
         pendingMoves.add(yuts.rollYuts());
     }
     private void getFixedYuts(int value) {
-        pendingMoves.add(YutResult.fromSteps(value));
+        YutResult yutResult = YutResult.fromSteps(value);
+        if(yutResult.isBouns()) getAction();       //추가턴
+        pendingMoves.add(yutResult);
     }
+    private void moveAction(Player player, int idx, int position) {       //이동 희망시 일반 이동, 업기, 잡기 행동
+        List<Piece> pieceList = new ArrayList<>();
 
+        for(int i = 0; i < gameSetting.playerNumber; i++) {
+            pieceList.addAll(players[i].getPieceList());
+        }
+        for(Piece piece : pieceList) {
+            if(board.isSamePosition(position, piece.getPosition())) {
+                if(piece.getStacked() == nowTurnPlayerID) {     //업기
+                    player.stackPiece(piece);
+                    player.disablePiece(idx);   //업힌말은 게임에서 제거
+                }
+                else {
+                    players[piece.getOwnerID()].removePiece(piece);
+                    player.movePiece(idx, position);    // 잡고 이동
+                    getAction();                        //추가 턴
+                }
 
+                return;
+            }
+        }
+        if (position == -2) {                                               //완주
+            player.completePiece(player.getPiece(idx));        //선택한 피스 스택 수 만큼 완주 스택 증가
+            return;                                             //말 내리고 이동 x
+
+        }
+        player.movePiece(idx, position);    //말이 없으니까 그냥 이동
+    }
+    private void getAction() {              //턴 추가, 잡기, 윷 모
+        remainActionNumber++;
+    }
 
     //endregion
 }

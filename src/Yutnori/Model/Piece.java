@@ -25,5 +25,8 @@ public class Piece {
     public int getStacked() {
         return stacked;
     }
+    public void addStack() {
+        stacked++;
+    }
 
 }

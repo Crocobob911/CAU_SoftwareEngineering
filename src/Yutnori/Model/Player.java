@@ -22,8 +22,20 @@ public class Player {
     public void movePiece(int idx, int position) {
         pieceList.get(idx).setPosition(position);
     }
-    public void completePiece(int stacked) {
-        completedPieceNumber += (stacked + 1);      //기본 값 한개는 줘야함 0 스택 말 -> 점수 1 증가
+    public void removePiece(Piece piece) {      //삭제후 리턴
+        remainPieceNumber += piece.getStacked() + 1;
+        pieceList.remove(piece);
+    }
+    public void stackPiece(Piece piece) {
+        piece.addStack();
+    }
+    public void disablePiece(int idx) {     //!!!! 말을 업을 때만 사용 !!!!, removePiece와 혼동주의
+        pieceList.remove(idx);
+    }
+
+    public void completePiece(Piece piece) {
+        completedPieceNumber += (piece.getStacked() + 1);      //기본 값 한개는 줘야함 0 스택 말 -> 점수 1 증가
+        pieceList.remove(piece);
     }
     public Piece getPiece(int idx) {
         return pieceList.get(idx);

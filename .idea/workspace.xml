@@ -6,14 +6,15 @@
   <component name="ChangeListManager">
     <list default="true" id="31daac7e-5693-46a6-96b5-01c259af9992" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Yutnori/Board.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Yutnori/Model/Board.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Yutnori/GameManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Yutnori/Model/GameManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Yutnori/GameSetting.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Yutnori/Model/GameSetting.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Yutnori/Piece.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Yutnori/Model/Piece.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Yutnori/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Yutnori/Model/Player.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Yutnori/StartClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Yutnori/Model/StartClass.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Yutnori/YutPackage/YutResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Yutnori/Model/YutPackage/YutResult.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Yutnori/YutPackage/Yuts.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Yutnori/Model/YutPackage/Yuts.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SE/Yutnori/Board.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SE/Yutnori/GameManager.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SE/Yutnori/GameSetting.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SE/Yutnori/Piece.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SE/Yutnori/Player.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/SE/Yutnori/StartClass.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Yutnori/Model/GameManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Yutnori/Model/GameManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Yutnori/Model/Piece.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Yutnori/Model/Piece.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Yutnori/Model/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Yutnori/Model/Player.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -108,7 +109,7 @@
       <workItem from="1746451652030" duration="18842000" />
       <workItem from="1746520101469" duration="30040000" />
       <workItem from="1746597753627" duration="15641000" />
-      <workItem from="1746673466082" duration="12784000" />
+      <workItem from="1746673466082" duration="19181000" />
     </task>
     <servers />
   </component>
