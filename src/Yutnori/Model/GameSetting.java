@@ -5,7 +5,7 @@ public class GameSetting {
     public int pieceNumber;
     public int boardType;
 
-    GameSetting(int playerNumber, int pieceNumber, int boardType) {
+    public GameSetting(int playerNumber, int pieceNumber, int boardType) {
         this.playerNumber = playerNumber;
         this.pieceNumber = pieceNumber;
         this.boardType = boardType;
