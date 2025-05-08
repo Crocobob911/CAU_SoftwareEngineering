@@ -4,9 +4,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class StartScreen extends JPanel {
-    private JComboBox<Integer> playerCombo;
-    private JComboBox<Integer> horseCombo;
-    private JComboBox<String> boardCombo;
+    private JComboBox<Integer> playerNum;
+    private JComboBox<Integer> horseNum;
+    private JComboBox<String> boardType;
 
     public StartScreen(MainFrame mainFrame) {
         setLayout(null);
@@ -19,19 +19,19 @@ public class StartScreen extends JPanel {
         add(backgroundLabel);
 
         // 인원수 선택
-        playerCombo = new JComboBox<>(new Integer[]{2, 3, 4});
-        playerCombo.setBounds(650, 160, 100, 30);
-        add(playerCombo);
+        playerNum = new JComboBox<>(new Integer[]{2, 3, 4});
+        playerNum.setBounds(650, 160, 100, 30);
+        add(playerNum);
 
         // 말 개수 선택
-        horseCombo = new JComboBox<>(new Integer[]{2, 3, 4, 5});
-        horseCombo.setBounds(650, 300, 100, 30);
-        add(horseCombo);
+        horseNum = new JComboBox<>(new Integer[]{2, 3, 4, 5});
+        horseNum.setBounds(650, 300, 100, 30);
+        add(horseNum);
 
         // 게임판 선택
-        boardCombo = new JComboBox<>(new String[]{"사각형", "오각형", "육각형"});
-        boardCombo.setBounds(650, 440, 100, 30);
-        add(boardCombo);
+        boardType = new JComboBox<>(new String[]{"사각형", "오각형", "육각형"});
+        boardType.setBounds(650, 440, 100, 30);
+        add(boardType);
 
         // 게임 시작 버튼
         JButton startButton = new JButton("게임 시작");
@@ -41,11 +41,11 @@ public class StartScreen extends JPanel {
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int players = (int) playerCombo.getSelectedItem();
-                int horses = (int) horseCombo.getSelectedItem();
-                String boardType = (String) boardCombo.getSelectedItem();
-                System.out.println("선택 완료 → players: " + players + ", horses: " + horses + ", board: " + boardType);
-                mainFrame.showGameScreen(players, horses, boardType);
+                int players = (int) playerNum.getSelectedItem();
+                int horses = (int) horseNum.getSelectedItem();
+                String board = (String) boardType.getSelectedItem();
+                System.out.println("선택 완료 → players: " + players + ", horses: " + horses + ", board: " + board);
+                mainFrame.showGameScreen(players, horses, board);
             }
         });
 

@@ -11,6 +11,7 @@ public class MainFrame extends JFrame {
         setLayout(new BorderLayout());
 
         showStartScreen();
+        //showGameScreen(4, 4, "사각형");
     }
 
     // 시작 화면 표시
@@ -24,7 +25,7 @@ public class MainFrame extends JFrame {
     // 게임 화면 표시 (StartScreen에서 호출됨)
     public void showGameScreen(int players, int horses, String boardType) {
         System.out.println("선택된 값 → players: " + players + ", horses: " + horses + ", boardType: " + boardType);
-        GameScreen gameScreen = new GameScreen(players);
+        GameScreen gameScreen = new GameScreen(players, horses, boardType);
         setContentPane(gameScreen);
         revalidate();
         repaint();
