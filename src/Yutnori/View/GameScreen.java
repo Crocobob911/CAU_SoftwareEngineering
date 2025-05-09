@@ -1,7 +1,11 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class GameScreen extends JPanel {
+
+    private JLabel resultLabel;
 
     public GameScreen(int playerNum, int horseNum, String boardType) {
         setLayout(null);
@@ -38,16 +42,33 @@ public class GameScreen extends JPanel {
         boardLabel.setBounds(20, 25, boardIcon.getIconWidth(), boardIcon.getIconHeight());
         layeredPane.add(boardLabel, Integer.valueOf(1));
 
-        // 우상단 mo 이미지
-        ImageIcon moIcon = new ImageIcon("CAU_SoftwareEngineering/src/Yutnori/View/picture/mo.png");
-        JLabel moLabel = new JLabel(moIcon);
-        moLabel.setBounds(690, 105, moIcon.getIconWidth(), moIcon.getIconHeight());
-        layeredPane.add(moLabel, Integer.valueOf(2));
+        // test용 버튼
+        // ImageIcon mal1Icon = new ImageIcon("CAU_SoftwareEngineering/src/Yutnori/View/picture/mal1.png");
+        // JLabel mal1Label = new JLabel(mal1Icon);
+        // mal1Label.setBounds(120, 405, mal1Icon.getIconWidth(), mal1Icon.getIconHeight());
+        // layeredPane.add(mal1Label, Integer.valueOf(2));
 
         // 던지기 버튼
         JButton throwButton = new JButton("던지기");
         throwButton.setBounds(850, 320, 100, 50);
         layeredPane.add(throwButton, Integer.valueOf(2));
+
+        // 우상단 mo 이미지
+        resultLabel = new JLabel(new ImageIcon("CAU_SoftwareEngineering/src/Yutnori/View/picture/mo.png"));
+        resultLabel.setBounds(690, 105, 425, 210);
+        layeredPane.add(resultLabel, Integer.valueOf(2));
+
+        // 던지기 버튼 이벤트 
+        // ###추가 개발 해야함###
+        throwButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String result = "do";  // 모델 연결 대신 임시 랜덤
+
+                String resultImage = "CAU_SoftwareEngineering/src/Yutnori/View/picture/" + result + ".png";
+                resultLabel.setIcon(new ImageIcon(resultImage));
+            }
+        });
 
         // 팀 위치
         int[][] teamPositions = {
