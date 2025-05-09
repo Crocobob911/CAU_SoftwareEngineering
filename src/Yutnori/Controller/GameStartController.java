@@ -22,3 +22,4 @@ public class GameStartController {
         gameManager.startScene(); // 이거 맞음 영욱? 이거 호출하면 게임 시작임?
     }
 }
+// hello
