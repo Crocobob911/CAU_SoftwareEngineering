@@ -22,6 +22,9 @@ public class Player {
     public void movePiece(int idx, int position) {
         pieceList.get(idx).setPosition(position);
     }
+    public void movePiece(Piece piece, int position) {
+        piece.setPosition(position);
+    }
     public void removePiece(Piece piece) {      //삭제후 리턴
         remainPieceNumber += piece.getStacked() + 1;
         pieceList.remove(piece);
@@ -31,6 +34,9 @@ public class Player {
     }
     public void disablePiece(int idx) {     //!!!! 말을 업을 때만 사용 !!!!, removePiece와 혼동주의
         pieceList.remove(idx);
+    }
+    public void disablePiece(Piece piece) {
+        pieceList.remove(piece);
     }
 
     public void completePiece(Piece piece) {

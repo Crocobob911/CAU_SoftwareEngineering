@@ -280,8 +280,27 @@ public class GameManager {
         return remainActionNumber;
     }
 
+    public void movePiece(int currentPosition, int destinationPosition) {
+        Piece currentPiece = findPiece(currentPosition);
+        int idx = players[currentPosition].getPieceList().indexOf(currentPiece);
+        Player player = players[currentPosition];
+
+        moveAction(player, idx, destinationPosition);
+    }
+
     //endregion
     //region private method
+    private Piece findPiece(int currentPosition) {
+        List<Piece> pieceList = getAllPieces();
+        for(Piece piece : pieceList) {
+            if(piece.getPosition() == currentPosition) {
+                return piece;
+            }
+        }
+        System.out.println("Piece " + currentPosition + " not found");
+        return null;
+    }
+
     private void nextPlayerTurn() {
         // 나눗셈 연산을 통한 턴 반복
         nowTurnPlayerID = (nowTurnPlayerID + 1) % gameSetting.playerNumber;
@@ -331,6 +350,8 @@ public class GameManager {
         }
         player.movePiece(idx, position);    //말이 없으니까 그냥 이동
     }
+
+
 
     //턴 추가, 잡기, 윷 모
     private void getAction() {
