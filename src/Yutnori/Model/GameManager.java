@@ -4,7 +4,6 @@ import Yutnori.Model.YutPackage.YutResult;
 import Yutnori.Model.YutPackage.Yuts;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -276,7 +275,7 @@ public class GameManager {
         return players;
     }
 
-    public int getRemainPieceNumber() {
+    public int getRemainActionNumber() {
         return remainActionNumber;
     }
 
@@ -318,7 +317,7 @@ public class GameManager {
     }
     private void getFixedYuts(int value) {
         YutResult yutResult = YutResult.fromSteps(value);
-        if(yutResult.isBouns()) getAction();       //추가턴
+        if(yutResult.isBouns()) addAction();       //추가턴
         pendingMoves.add(yutResult);
     }
     //이동 희망시 일반 이동, 업기, 잡기 행동
@@ -337,7 +336,7 @@ public class GameManager {
                 else {
                     players[piece.getOwnerID()].removePiece(piece);
                     player.movePiece(idx, position);    // 잡고 이동
-                    getAction();                        //추가 턴
+                    addAction();                        //추가 턴
                 }
 
                 return;
@@ -354,7 +353,7 @@ public class GameManager {
 
 
     //턴 추가, 잡기, 윷 모
-    private void getAction() {
+    private void addAction() {
         remainActionNumber++;
     }
 
