@@ -20,6 +20,9 @@ public class GameManager {
     private int nowTurnPlayerID;
     private List<YutResult> pendingMoves;
     int remainActionNumber;
+    //view 전송용
+    private List<Integer> moveablePosition;
+
     //region 생성자
     public GameManager (GameSetting gameSetting) {
         this.gameSetting = gameSetting; 
@@ -123,6 +126,11 @@ public class GameManager {
                     nextPlayerTurn();
                 }
             }
+
+
+            if(isCannotMove()) {        // 말 없는 상태에서 백도 상황 체크
+                nextPlayerTurn();
+            }
         }
     }
 
@@ -160,7 +168,7 @@ public class GameManager {
         int piecePosition = player.getPiecePosition(pieceIndex);
 
         System.out.println("moveable position list, now position : " + piecePosition);
-        List<Integer> moveablePosition = board.getNextPosition(piecePosition, moveStep);
+        moveablePosition = board.getNextPosition(piecePosition, moveStep);
         for(int i = 0; i < moveablePosition.size(); i++) {
             System.out.println(i + " : " + moveablePosition.get(i));
         }
@@ -245,6 +253,25 @@ public class GameManager {
             getRandomYuts();
         }
     }
+    public List<YutResult> getPendingMoves() {
+        return pendingMoves;
+    }
+    public List<Piece> getAllPieces() {
+        List<Piece> pieceList = new ArrayList<>();
+        for(int i = 0; i < players.length; i++) {
+            pieceList.addAll(players[i].getPieceList());
+        }
+
+        return pieceList;
+    }
+
+    public List<Integer> getMovablePositions() {
+        return moveablePosition;
+    }
+
+    public Player[] getPlayers() {
+        return players;
+    }
 
     //endregion
     //region private method
@@ -259,7 +286,7 @@ public class GameManager {
         remainActionNumber = 1;
         pendingMoves.clear();  //정상적으로 실행된다면 필요없지만 혹시나
     }
-    
+
     private void getRandomYuts() {
         pendingMoves.add(yuts.rollYuts());
     }
@@ -297,8 +324,23 @@ public class GameManager {
         }
         player.movePiece(idx, position);    //말이 없으니까 그냥 이동
     }
-    private void getAction() {              //턴 추가, 잡기, 윷 모
+
+    //턴 추가, 잡기, 윷 모
+    private void getAction() {
         remainActionNumber++;
+    }
+
+    //움직일 수 없는 말에서 백도 체크
+    private boolean isCannotMove(){
+        if(remainActionNumber == 0 && players[nowTurnPlayerID].getPieceListSize() == 0 && !pendingMoves.isEmpty()) {   //액션 x 말 x pendingMove 1이상
+            for(YutResult yutResult : pendingMoves) {
+                if(yutResult != YutResult.BACK_DO) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
     }
 
     //endregion
