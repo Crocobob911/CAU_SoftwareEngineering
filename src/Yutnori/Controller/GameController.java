@@ -12,13 +12,9 @@ import java.util.List;
 public class GameController {
 
     private GameManager gameManager;
-    private GameController controller;
-    private PlayerInfoController playerInfoController;
 
-    public GameController(GameManager gameManager, GameController controller, PlayerInfoController playerInfoController) {
+    public GameController(GameManager gameManager) {
         this.gameManager = gameManager;
-        this.controller = controller;
-        this.playerInfoController = playerInfoController;
     }
 
     public List<YutResult> ThrowYut(){

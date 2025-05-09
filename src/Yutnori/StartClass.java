@@ -10,45 +10,30 @@ import java.util.Scanner;
 
 public class StartClass {
     public static void main(String[] args) {
-        // setting gameBoard
-        Scanner sc = new Scanner(System.in);
 
-        System.out.println("Enter Player Number 2 ~ 4 :");
-        int playerNumber = sc.nextInt();
-        System.out.println("Enter Piece Number :");
-        int pieceNumber = sc.nextInt();
-        System.out.println("Enter boardType :");
-        int boardType = sc.nextInt();
+        int playerNumber = 0;
+        int pieceNumber = 0;
+        int boardType = 0;
+        // View 측에서 위의 값들을 초기화해줘야함.
 
-        // alert Game Start with setting
-        System.out.println("Player : " + playerNumber + "Piece : " + pieceNumber + "BoardType : " + boardType);
-        System.out.println("Game start");
+        // 1. GameStartController 생성
+        GameStartController startController = new GameStartController();
 
+        // 2. GameStartController로 Model 측 생성
+        GameManager gameManager = startController.InitGameManager(playerNumber,pieceNumber,boardType);
 
-        // --- Controller를 만들어온 김명준의 게임 시작 로직 ---
+        // 3. 다른 Controller 생성
+        GameController gameController = new GameController(gameManager);
+        PlayerInfoController playerInfoController = new PlayerInfoController(gameManager);
 
-            // 1. GameStartController 생성
-            GameStartController startController = new GameStartController();
+        // 4. View 생성 및 View에 Controller 주입
+        // 여기에서윤형의 View 측 초기화. 이때 View에게 각 controller들이 전달되어야.
+        // 예시) View view = new View(startController, gameController, playerInfoController);
 
-            // 2. GameStartController로 Model 측 생성
-            GameSetting gameSetting = startController.MakeGameSetting(playerNumber,pieceNumber,boardType);
-            GameManager gameManager = startController.InitGameManager(gameSetting);
+        // 5. 게임 Start
+        startController.StartGame();
 
-            // 3. 다른 Controller 생성
-            GameController gameController = new GameController(gameManager);
-            PlayerInfoController playerInfoController = new PlayerInfoController(gameManager);
-
-            // 4. View 생성 및 View에 Controller 주입
-            // 여기에서윤형의 View 측 초기화. 이때 View에게 각 controller들이 전달되어야.
-            // 예시) View view = new View(startController, gameController, playerInfoController);
-
-
-            // 5. 게임 Start
-            startController.StartGame();
-
-        // ------ 이상 ------
-
-        new GameManager(gameSetting).startScene();       //테스팅
+        //new GameManager(gameSetting).startScene();       //테스팅
     }
 
 
