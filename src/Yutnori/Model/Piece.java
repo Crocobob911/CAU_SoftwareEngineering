@@ -6,7 +6,6 @@ public class Piece {
     private int stacked;
 
 
-
     public Piece(int ownerID) {
         this.ownerID = ownerID;
         this.position = 0;
