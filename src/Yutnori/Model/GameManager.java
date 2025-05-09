@@ -7,12 +7,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class GameManager {
+public class GameManager implements GameEndSubject {
     //필드
     private final GameSetting gameSetting;
     private Yuts yuts;
     private Player[] players;
     Board board;
+    List<GameEndObserver> gameEndObservers;
     //터미널용 스캐너
     Scanner sc = new Scanner(System.in);
     // 플레이어 관련 필드
@@ -221,7 +222,7 @@ public class GameManager {
     }
     public void endScene() {    //게임 종료
         System.exit(0);
-        
+
     }
     public void fixedEnroll(boolean useAction, int value) {
         if (useAction) {
@@ -266,7 +267,7 @@ public class GameManager {
     public List<Integer> getMovablePositions(int currentPosition, YutResult yutResult) {
         return getMovablePositions(currentPosition, yutResult.getSteps());
     }
-    
+
     public List<Integer> getMovablePositions(int currentPosition, int moveStep) {
         return board.getNextPosition(currentPosition, moveStep);
     }
@@ -287,8 +288,25 @@ public class GameManager {
         moveAction(player, idx, destinationPosition);
     }
 
+    @Override
+    public void registerObserver(GameEndObserver o) {
+        gameEndObservers.add(o);
+    }
+
+    @Override
+    public void removeObserver(GameEndObserver o) {
+        gameEndObservers.remove(o);
+    }
+
+    @Override
+    public void notifyObservers() {
+        for (GameEndObserver o : gameEndObservers) {
+            o.update();
+        }
+    }
     //endregion
     //region private method
+
     private Piece findPiece(int currentPosition) {
         List<Piece> pieceList = getAllPieces();
         for(Piece piece : pieceList) {
@@ -299,19 +317,18 @@ public class GameManager {
         System.out.println("Piece " + currentPosition + " not found");
         return null;
     }
-
     private void nextPlayerTurn() {
         // 나눗셈 연산을 통한 턴 반복
         nowTurnPlayerID = (nowTurnPlayerID + 1) % gameSetting.playerNumber;
 
         resetTurn();
     }
+
     private void resetTurn() {
         // 초기화
         remainActionNumber = 1;
         pendingMoves.clear();  //정상적으로 실행된다면 필요없지만 혹시나
     }
-
     private void getRandomYuts() {
         pendingMoves.add(yuts.rollYuts());
     }
@@ -321,6 +338,7 @@ public class GameManager {
         pendingMoves.add(yutResult);
     }
     //이동 희망시 일반 이동, 업기, 잡기 행동
+
     private void moveAction(Player player, int idx, int position) {
         List<Piece> pieceList = new ArrayList<>();
 
@@ -351,13 +369,13 @@ public class GameManager {
     }
 
 
-
     //턴 추가, 잡기, 윷 모
+
     private void addAction() {
         remainActionNumber++;
     }
-
     //움직일 수 없는 말에서 백도 체크
+
     private boolean isCannotMove(){
         if(remainActionNumber == 0 && players[nowTurnPlayerID].getPieceListSize() == 0 && !pendingMoves.isEmpty()) {   //액션 x 말 x pendingMove 1이상
             for(YutResult yutResult : pendingMoves) {
