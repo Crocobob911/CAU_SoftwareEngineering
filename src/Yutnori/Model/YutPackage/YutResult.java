@@ -1,4 +1,4 @@
-package Yutnori.YutPackage;
+package Yutnori.Model.YutPackage;
 
 public enum YutResult {
     BACK_DO(-1),

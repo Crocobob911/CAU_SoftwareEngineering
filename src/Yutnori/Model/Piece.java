@@ -1,4 +1,4 @@
-package Yutnori;
+package Yutnori.Model;
 
 public class Piece {
     private int ownerID;
@@ -6,10 +6,9 @@ public class Piece {
     private int stacked;
 
 
-
-    public Piece(int ownerID, int position) {
+    public Piece(int ownerID) {
         this.ownerID = ownerID;
-        this.position = position;
+        this.position = 0;
         this.stacked = 0;
     }
 
@@ -24,6 +23,9 @@ public class Piece {
     }
     public int getStacked() {
         return stacked;
+    }
+    public void addStack() {
+        stacked++;
     }
 
 }
