@@ -20,8 +20,6 @@ public class GameManager {
     private int nowTurnPlayerID;
     private List<YutResult> pendingMoves;
     int remainActionNumber;
-    //view 전송용
-    private List<Integer> moveablePosition;
 
     //region 생성자
     public GameManager (GameSetting gameSetting) {
@@ -169,7 +167,7 @@ public class GameManager {
         int piecePosition = player.getPiecePosition(pieceIndex);
 
         System.out.println("moveable position list, now position : " + piecePosition);
-        moveablePosition = board.getNextPosition(piecePosition, moveStep);
+        List<Integer> moveablePosition = board.getNextPosition(piecePosition, moveStep);
         for(int i = 0; i < moveablePosition.size(); i++) {
             System.out.println(i + " : " + moveablePosition.get(i));
         }
@@ -266,8 +264,12 @@ public class GameManager {
         return pieceList;
     }
 
-    public List<Integer> getMovablePositions() {
-        return moveablePosition;
+    public List<Integer> getMovablePositions(int currentPosition, YutResult yutResult) {
+        return getMovablePositions(currentPosition, yutResult.getSteps());
+    }
+    
+    public List<Integer> getMovablePositions(int currentPosition, int moveStep) {
+        return board.getNextPosition(currentPosition, moveStep);
     }
 
     public Player[] getPlayers() {
