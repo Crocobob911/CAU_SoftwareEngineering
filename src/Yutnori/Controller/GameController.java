@@ -47,16 +47,18 @@ public class GameController {
     }
 
     public List<Integer> WhereToGo(int currentIndex, YutResult yutResult) {
+        // 이 말이, 이 윷으로 이동할 수 있는 모든 위치를 반환
         return gameManager.getMovablePositions(currentIndex, yutResult);
     }
 
     public void MoveNewPiece(int destinationIndex){
-        // Model의, 말을 옮기는 로직. (새로운 말의 출발)
+        // 새로운 말의 출발
+        gameManager.movePiece(-1, destinationIndex);
     }
 
     public void MovePiece(int currentIndex, int destinationIndex){
-        // Model의, 말을 옮기는 로직. (기존에 존재하는 말의 이동)
-        // 옮기려는 말의 현위치와, 그 말의 도착지를 파라미터로 전달받음.
+        // 기존에 존재하던 말의 이동
+        gameManager.movePiece(currentIndex, destinationIndex);
     }
 
     public List<Piece> GetAllPieces(){
