@@ -10,15 +10,10 @@ public class GameStartController {
 
     private GameManager gameManager;
 
-    public GameSetting MakeGameSetting(int playerCount, int pieceCount, int boardType) {
-        // 여기서 GameSetting 생성.
-        return new GameSetting(playerCount, pieceCount, boardType);
-    }
 
-    public GameManager InitGameManager(GameSetting gameSetting) {
-        // 여기서 Model 생성.
-        // 게임 재시작은 어케함? = 새로운 Model을 생성하기.
-        gameManager = new GameManager(gameSetting);
+    public GameManager InitGameManager(int playerCount, int pieceCount, int boardType) {
+        // GameSetting 생성
+        gameManager = new GameManager(new GameSetting(playerCount, pieceCount, boardType));
         return gameManager;
     }
 
