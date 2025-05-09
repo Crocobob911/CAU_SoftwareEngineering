@@ -19,6 +19,13 @@ public class GameController {
     }
 
     public List<YutResult> ThrowYut(){
+        // 아니다 이거 GameManager 보니까 이렇게 할 게 아니라
+        // Model한테 윷 하나 굴리라 그러고,
+        // pendingMoves에 접근한 다음, 그걸 view한테 반환하는 식으로 해야함.
+
+        // 아래의 로직은 무시할 것.
+
+
         // 새롭게 윷 던지기
 
         // 1. Model에게, Step 리스트를 하나 새로 만들라고 시키기
