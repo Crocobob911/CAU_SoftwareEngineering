@@ -167,7 +167,7 @@ public class GameManager {
         int piecePosition = player.getPiecePosition(pieceIndex);
 
         System.out.println("moveable position list, now position : " + piecePosition);
-        moveablePosition = board.getNextPosition(piecePosition, moveStep);
+        List<Integer> moveablePosition = board.getNextPosition(piecePosition, moveStep);
         for(int i = 0; i < moveablePosition.size(); i++) {
             System.out.println(i + " : " + moveablePosition.get(i));
         }

@@ -5,6 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="31daac7e-5693-46a6-96b5-01c259af9992" name="변경" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Yutnori/Model/GameManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Yutnori/Model/GameManager.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
