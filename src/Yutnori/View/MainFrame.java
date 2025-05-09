@@ -1,8 +1,11 @@
+package Yutnori.View;
+
 import javax.swing.*;
 import java.awt.*;
 
 import Yutnori.Controller.GameController;
-import Yutnori.GameManager;
+import Yutnori.Model.GameManager;
+
 
 public class MainFrame extends JFrame {
 
