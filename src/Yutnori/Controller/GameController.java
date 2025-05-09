@@ -19,8 +19,7 @@ public class GameController {
     }
 
     public Boolean CanThrow(){
-        //todo: GameManager의 action 값을 get해와서, 0 초과인지 아닌지 체크하는 로직.
-        return false;
+        return gameManager.getRemainActionNumber() != 0;
     }
 
     public List<YutResult> ThrowYut_Random(){
@@ -31,6 +30,7 @@ public class GameController {
         return gameManager.getPendingMoves();
     }
 
+    /// 윷 지정 던지기 ->
     /// value 값 =
     /// 도:1
     /// 개:2
