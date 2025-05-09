@@ -206,6 +206,9 @@ public class GameManager {
         //endScene();
     }
     public void restartScene() {
+        // 명준 : 이거 Controller에서 해야할 듯?
+        // 지금 짜놓은 Restart 로직. 1. Model 재생성. 2. 새로 만든 Model의 startScene() 호출
+
         init();
         resetTurn();
         startTerminalGame();
@@ -214,6 +217,8 @@ public class GameManager {
         System.exit(0);
         
     }
+
+    // 명준 : 이거 뭐하는 함수임?
     public void fixedEnroll(boolean useAction, int value) {
         if (useAction) {
             if(remainActionNumber > 0) {

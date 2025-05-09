@@ -1,8 +1,10 @@
 package Yutnori.Controller;
 
-import Yutnori.GameManager;
-import Yutnori.Player;
+import Yutnori.Model.GameManager;
+import Yutnori.Model.Player;
 
+// 게임 중, 각 Player(Team)별 정보를 다루기 위한 Controller
+// 각 플레이어의 남은 말 수, 졸업한 말 수 등을 다룸.
 public class PlayerInfoController {
     private GameManager gameManager;
 
