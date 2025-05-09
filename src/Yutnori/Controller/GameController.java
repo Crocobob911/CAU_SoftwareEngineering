@@ -17,39 +17,23 @@ public class GameController {
         this.gameManager = gameManager;
     }
 
+    public Boolean CanThrow(){
+        //todo: GameManager의 action 값을 get해와서, 0 초과인지 아닌지 체크하는 로직.
+        return false;
+    }
+
     public List<YutResult> ThrowYut(){
-        // 아니다 이거 GameManager 보니까 이렇게 할 게 아니라
-        // Model한테 윷 하나 굴리라 그러고,
-        // pendingMoves에 접근한 다음, 그걸 view한테 반환하는 식으로 해야함.
-
-        // 아래의 로직은 무시할 것.
-
-
-        // 새롭게 윷 던지기
-
-        // 1. Model에게, Step 리스트를 하나 새로 만들라고 시키기
-        List<YutResult> yutResultListList = GetYutsList();
-
-        // 2. 새로운 윳 던지기
-        YutResult newYuts = GetNewRandomYutResult();
-
-        // 3. Step 리스트에 추가하기
-        yutResultListList.add(newYuts);
-
-        return yutResultListList;
-    }
-
-    private YutResult GetNewRandomYutResult(){
         // 윷 던지기
-        // 도, 개, 걸, 윷, 모 중에서 하나를 반환하기.
-        Yuts yut = new Yuts();
-        return yut.rollYuts();
+        gameManager.randomEnroll(true);
+
+        // pendingList 접근해서 반환
+        return gameManager.getPendingMoves();
     }
 
-    public List<YutResult> GetYutsList(){
-        // Model로부터, 여태 던졌던 윷들 List를 받기. 윷 or 모 나오면 다시 던지잖아.
-        // Model에 없으면, Model보고 새로 만들라고 시켜야함.
+    public List<Integer> WhereToGo(int currentIndex, YutResult yutResult) {
+        //todo: 영욱이가 이거 로직 다 만들어와야함.
         return null;
+        //return gameManager.getMovablePositions(currentIndex, yutResult);
     }
 
     public void MoveNewPiece(int destinationIndex){
