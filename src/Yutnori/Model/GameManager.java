@@ -20,18 +20,20 @@ public class GameManager {
     private int nowTurnPlayerID;
     private List<YutResult> pendingMoves;
     int remainActionNumber;
-    //region 생성자 , singleton 관련
+    //region 생성자
     public GameManager (GameSetting gameSetting) {
-        this.gameSetting = gameSetting;
+        this.gameSetting = gameSetting; 
 
-        init();
+        init();     
     }
 
+    //초기화 메서드
     private void init() {
         yuts = new Yuts();
 
-        board = new Board(gameSetting.boardType);
+        board = new Board(gameSetting.boardType);       //세팅에 따라 보드 생성
 
+        //기본 초기화
         nowTurnPlayerID = 0;
         pendingMoves = new ArrayList<>();
         remainActionNumber = 0;
@@ -57,7 +59,6 @@ public class GameManager {
     }
 
     private void startTerminalGame() {
-        
 
         //printGameStatus();
         while (true) {
@@ -77,10 +78,10 @@ public class GameManager {
                 int value = sc.nextInt();
                 fixedEnroll(true, value);
             }
-            else if (commandNumber == -1) {     //enroll        코스트 소모 없
+            else if (commandNumber == -1) {     //enroll        코스트 소모 없, 던지기
                 randomEnroll(false);
             }
-            else if (commandNumber == 1) {      //enroll        코스트 소모
+            else if (commandNumber == 1) {      //enroll        코스트 소모, 던지기
                 randomEnroll(true);
             }
             else if (commandNumber == -2) {     //turn pass , 강제
@@ -98,6 +99,7 @@ public class GameManager {
                 if(pieceIndex == -1) {
                     System.out.println("moveStep : " + moveStep);
                     if(moveStep == -1) {return;}        //!!!!! 0에서 백도시 중지 !!! gui 단에서 막는게?
+
                     player.initNewPiece();
                     moveAction(player, player.getPieceListSize() - 1, moveStep - 1);    //시작 칸 인덱스가 없어서 -1
                     //초기 시행시엔 갈림길 없다
@@ -164,11 +166,9 @@ public class GameManager {
         }
         System.out.println("choose position number");
         int moveListIdx = sc.nextInt();
-        int destinationPosition = moveablePosition.get(moveListIdx);
 
 
-
-        return destinationPosition;
+        return moveablePosition.get(moveListIdx);
     }
 
     private boolean isPlayerWinner() {
@@ -259,11 +259,7 @@ public class GameManager {
         remainActionNumber = 1;
         pendingMoves.clear();  //정상적으로 실행된다면 필요없지만 혹시나
     }
-    private void rollAction() {
-        YutResult yutResult;
-        yutResult = yuts.rollYuts();
-        pendingMoves.add(yutResult);
-    }
+    
     private void getRandomYuts() {
         pendingMoves.add(yuts.rollYuts());
     }
@@ -272,7 +268,8 @@ public class GameManager {
         if(yutResult.isBouns()) getAction();       //추가턴
         pendingMoves.add(yutResult);
     }
-    private void moveAction(Player player, int idx, int position) {       //이동 희망시 일반 이동, 업기, 잡기 행동
+    //이동 희망시 일반 이동, 업기, 잡기 행동
+    private void moveAction(Player player, int idx, int position) {
         List<Piece> pieceList = new ArrayList<>();
 
         for(int i = 0; i < gameSetting.playerNumber; i++) {
