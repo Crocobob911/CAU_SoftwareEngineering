@@ -1,8 +1,10 @@
-package Yutnori.Model;
+package Yutnori;
 
 import Yutnori.Controller.GameController;
 import Yutnori.Controller.GameStartController;
 import Yutnori.Controller.PlayerInfoController;
+import Yutnori.Model.GameManager;
+import Yutnori.Model.GameSetting;
 
 import java.util.Scanner;
 

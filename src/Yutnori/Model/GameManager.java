@@ -101,7 +101,7 @@ public class GameManager {
                 //이동
                 if(pieceIndex == -1) {
                     System.out.println("moveStep : " + moveStep);
-                    if(moveStep == -1) {return;}        //!!!!! 0에서 백도시 중지 !!! gui 단에서 막는게?
+                    if(moveStep == -1) {return;}        //!!!!! 0에서 백도시 중지 !!! 프론트 단에서 막는게?
 
                     player.initNewPiece();
                     moveAction(player, player.getPieceListSize() - 1, moveStep - 1);    //시작 칸 인덱스가 없어서 -1
@@ -133,6 +133,7 @@ public class GameManager {
             }
         }
     }
+
 
     private int choosePieceIndex(Player player) {
         System.out.println("Piece List : ");
