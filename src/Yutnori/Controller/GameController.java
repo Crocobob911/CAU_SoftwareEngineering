@@ -23,9 +23,24 @@ public class GameController {
         return false;
     }
 
-    public List<YutResult> ThrowYut(){
-        // 윷 던지기
+    public List<YutResult> ThrowYut_Random(){
+        // 윷 랜덤 던지기
         gameManager.randomEnroll(true);
+
+        // pendingList 접근해서 반환
+        return gameManager.getPendingMoves();
+    }
+
+    /// value 값 =
+    /// 도:1
+    /// 개:2
+    /// 걸:3
+    /// 윷:4
+    /// 모:5
+    /// 백도:-1
+    public List<YutResult> ThrowYut_Fixed(int value){
+        // 윷 지정 던지기
+        gameManager.fixedEnroll(true, value);
 
         // pendingList 접근해서 반환
         return gameManager.getPendingMoves();
