@@ -274,6 +274,10 @@ public class GameManager {
         return players;
     }
 
+    public int getRemainPieceNumber() {
+        return remainActionNumber;
+    }
+
     //endregion
     //region private method
     private void nextPlayerTurn() {
