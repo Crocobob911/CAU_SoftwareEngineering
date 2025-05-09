@@ -4,16 +4,16 @@ import Yutnori.Model.YutPackage.YutResult;
 import Yutnori.Model.YutPackage.Yuts;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
-public class GameManager {
+public class GameManager implements GameEndSubject {
     //필드
     private final GameSetting gameSetting;
     private Yuts yuts;
     private Player[] players;
     Board board;
+    List<GameEndObserver> gameEndObservers;
     //터미널용 스캐너
     Scanner sc = new Scanner(System.in);
     // 플레이어 관련 필드
@@ -202,7 +202,7 @@ public class GameManager {
     public void startScene() {
         resetTurn();        //턴 시작 0번
         //debug
-        startTerminalGame();
+        //startTerminalGame();
 
         //todo > gui 처리
     }
@@ -222,7 +222,7 @@ public class GameManager {
     }
     public void endScene() {    //게임 종료
         System.exit(0);
-        
+
     }
     public void fixedEnroll(boolean useAction, int value) {
         if (useAction) {
@@ -267,7 +267,7 @@ public class GameManager {
     public List<Integer> getMovablePositions(int currentPosition, YutResult yutResult) {
         return getMovablePositions(currentPosition, yutResult.getSteps());
     }
-    
+
     public List<Integer> getMovablePositions(int currentPosition, int moveStep) {
         return board.getNextPosition(currentPosition, moveStep);
     }
@@ -276,33 +276,71 @@ public class GameManager {
         return players;
     }
 
-    public int getRemainPieceNumber() {
+    public int getRemainActionNumber() {
         return remainActionNumber;
     }
 
+    public void movePiece(int currentPosition, int destinationPosition) {
+        Piece currentPiece = findPiece(currentPosition);
+        int idx = players[currentPosition].getPieceList().indexOf(currentPiece);
+        Player player = players[currentPosition];
+
+        moveAction(player, idx, destinationPosition);
+    }
+
+    @Override
+    public void registerObserver(GameEndObserver o) {
+        gameEndObservers.add(o);
+    }
+
+    @Override
+    public void removeObserver(GameEndObserver o) {
+        gameEndObservers.remove(o);
+    }
+
+    @Override
+    public void notifyObservers() {
+        for (GameEndObserver o : gameEndObservers) {
+            o.update();
+        }
+    }
     //endregion
     //region private method
-    private void nextPlayerTurn() {
+
+    private Piece findPiece(int currentPosition) {
+        List<Piece> pieceList = getAllPieces();
+        for(Piece piece : pieceList) {
+            if(piece.getPosition() == currentPosition) {
+                return piece;
+            }
+        }
+        System.out.println("Piece " + currentPosition + " not found");
+        return null;
+    }
+
+    //이거 컨트롤에서 불러오기 위해 퍼블릭으로 바꿈 -- 김윤형
+    public void nextPlayerTurn() {
         // 나눗셈 연산을 통한 턴 반복
         nowTurnPlayerID = (nowTurnPlayerID + 1) % gameSetting.playerNumber;
 
         resetTurn();
     }
+
     private void resetTurn() {
         // 초기화
         remainActionNumber = 1;
         pendingMoves.clear();  //정상적으로 실행된다면 필요없지만 혹시나
     }
-
     private void getRandomYuts() {
         pendingMoves.add(yuts.rollYuts());
     }
     private void getFixedYuts(int value) {
         YutResult yutResult = YutResult.fromSteps(value);
-        if(yutResult.isBouns()) getAction();       //추가턴
+        if(yutResult.isBouns()) addAction();       //추가턴
         pendingMoves.add(yutResult);
     }
     //이동 희망시 일반 이동, 업기, 잡기 행동
+
     private void moveAction(Player player, int idx, int position) {
         List<Piece> pieceList = new ArrayList<>();
 
@@ -318,7 +356,7 @@ public class GameManager {
                 else {
                     players[piece.getOwnerID()].removePiece(piece);
                     player.movePiece(idx, position);    // 잡고 이동
-                    getAction();                        //추가 턴
+                    addAction();                        //추가 턴
                 }
 
                 return;
@@ -332,12 +370,14 @@ public class GameManager {
         player.movePiece(idx, position);    //말이 없으니까 그냥 이동
     }
 
+
     //턴 추가, 잡기, 윷 모
-    private void getAction() {
+
+    private void addAction() {
         remainActionNumber++;
     }
-
     //움직일 수 없는 말에서 백도 체크
+
     private boolean isCannotMove(){
         if(remainActionNumber == 0 && players[nowTurnPlayerID].getPieceListSize() == 0 && !pendingMoves.isEmpty()) {   //액션 x 말 x pendingMove 1이상
             for(YutResult yutResult : pendingMoves) {

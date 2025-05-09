@@ -10,7 +10,6 @@ public class GameStartController {
 
     private GameManager gameManager;
 
-
     public GameManager InitGameManager(int playerCount, int pieceCount, int boardType) {
         // GameSetting 및 GameManager 생성
         gameManager = new GameManager(new GameSetting(playerCount, pieceCount, boardType));

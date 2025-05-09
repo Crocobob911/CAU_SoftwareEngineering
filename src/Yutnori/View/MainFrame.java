@@ -3,14 +3,12 @@ import java.awt.*;
 
 import Yutnori.Controller.GameController;
 import Yutnori.Controller.GameStartController;
-import Yutnori.Controller.PlayerInfoController;
 import Yutnori.Model.GameManager;
 
 public class MainFrame extends JFrame {
 
     private GameController gameController;
     private GameStartController gameStartController;
-    private PlayerInfoController playerInfoController;
     private GameManager gameManager;
 
     public MainFrame() {
@@ -44,8 +42,6 @@ public class MainFrame extends JFrame {
         gameStartController = new GameStartController();
         gameManager = gameStartController.InitGameManager(players, horses, boardTypeInt);
         gameController = new GameController(gameManager);
-        playerInfoController = new PlayerInfoController(gameManager);
-
         // 게임 시작
         gameStartController.StartGame();
 
