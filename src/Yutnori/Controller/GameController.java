@@ -2,6 +2,7 @@ package Yutnori.Controller;
 
 import Yutnori.Model.GameManager;
 import Yutnori.Model.Piece;
+import Yutnori.Model.Player;
 import Yutnori.Model.YutPackage.YutResult;
 import Yutnori.Model.YutPackage.Yuts;
 
@@ -17,6 +18,8 @@ public class GameController {
     public GameController(GameManager gameManager) {
         this.gameManager = gameManager;
     }
+
+    // region Throw Yut
 
     public Boolean CanThrow(){
         return gameManager.getRemainActionNumber() != 0;
@@ -46,6 +49,10 @@ public class GameController {
         return gameManager.getPendingMoves();
     }
 
+    // endregion
+
+    // region Move Horse
+
     public List<Integer> WhereToGo(int currentIndex, YutResult yutResult) {
         // 이 말이, 이 윷으로 이동할 수 있는 모든 위치를 반환
         return gameManager.getMovablePositions(currentIndex, yutResult);
@@ -66,4 +73,15 @@ public class GameController {
         // 모든 말의 정보를 전달받아, UI에 표시하는 각 말의 위치 업데이트.
         return gameManager.getAllPieces();
     }
+
+    // endregion
+
+    // region Players
+
+    /// 왜 List<Player>가 아니고 Player[]이냐.
+    /// = 한 게임동안 안 바뀌는 거면, Model에서 배열로 취급했다네요.
+    public Player[] GetPlayerInfos() {
+        return gameManager.getPlayers();
+    }
+    // endregion
 }
