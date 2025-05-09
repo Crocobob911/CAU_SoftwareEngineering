@@ -1,15 +1,17 @@
-package Yutnori.View;
-
 import javax.swing.*;
 import java.awt.*;
 
 import Yutnori.Controller.GameController;
+import Yutnori.Controller.GameStartController;
+import Yutnori.Controller.PlayerInfoController;
 import Yutnori.Model.GameManager;
-
 
 public class MainFrame extends JFrame {
 
     private GameController gameController;
+    private GameStartController gameStartController;
+    private PlayerInfoController playerInfoController;
+    private GameManager gameManager;
 
     public MainFrame() {
         setTitle("YutNori Game");
@@ -18,15 +20,10 @@ public class MainFrame extends JFrame {
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
-        // GameManager와 Controller 생성 (모델 연동용, 임시로 null 전달)
-        GameManager gameManager = null;  // 실제로는 GameManager 인스턴스를 넣어야 함
-        this.gameController = new GameController(gameManager);
-
+        // StartScreen 먼저 보여주기
         showStartScreen();
-        //showGameScreen(4, 4, "사각형");
     }
 
-    // 시작 화면 표시
     public void showStartScreen() {
         StartScreen startScreen = new StartScreen(this);
         setContentPane(startScreen);
@@ -34,12 +31,26 @@ public class MainFrame extends JFrame {
         repaint();
     }
 
-    // 게임 화면 표시 (StartScreen에서 호출됨)
     public void showGameScreen(int players, int horses, String boardType) {
-        System.out.println("선택된 값 → players: " + players + ", horses: " + horses + ", boardType: " + boardType);
+        int boardTypeInt;
+        switch (boardType) {
+            case "사각형": boardTypeInt = 4; break;
+            case "오각형": boardTypeInt = 5; break;
+            case "육각형": boardTypeInt = 6; break;
+            default: boardTypeInt = 4; break;
+        }
 
+        // Controller 생성
+        gameStartController = new GameStartController();
+        gameManager = gameStartController.InitGameManager(players, horses, boardTypeInt);
+        gameController = new GameController(gameManager);
+        playerInfoController = new PlayerInfoController(gameManager);
+
+        // 게임 시작
+        gameStartController.StartGame();
+
+        // GameScreen으로 전환
         GameScreen gameScreen = new GameScreen(players, horses, boardType, gameController);
-
         setContentPane(gameScreen);
         revalidate();
         repaint();

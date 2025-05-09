@@ -1,5 +1,3 @@
-package Yutnori.View;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -47,7 +45,6 @@ public class StartScreen extends JPanel {
                 int players = (int) playerNum.getSelectedItem();
                 int horses = (int) horseNum.getSelectedItem();
                 String board = (String) boardType.getSelectedItem();
-                System.out.println("선택 완료 → players: " + players + ", horses: " + horses + ", board: " + board);
                 mainFrame.showGameScreen(players, horses, board);
             }
         });

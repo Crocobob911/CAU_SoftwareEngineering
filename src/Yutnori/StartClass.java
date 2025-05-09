@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 public class StartClass {
     public static void main(String[] args) {
-
+        
         int playerNumber = 0;
         int pieceNumber = 0;
         int boardType = 0;
