@@ -12,10 +12,13 @@ import java.util.List;
 public class GameController {
 
     private GameManager gameManager;
+    private GameController controller;
+    private PlayerInfoController playerInfoController;
 
-    public GameController(GameManager gameManager) {
-        // Dependency Injection. 의존성 주입.
+    public GameController(GameManager gameManager, GameController controller, PlayerInfoController playerInfoController) {
         this.gameManager = gameManager;
+        this.controller = controller;
+        this.playerInfoController = playerInfoController;
     }
 
     public List<YutResult> ThrowYut(){
@@ -53,7 +56,7 @@ public class GameController {
         return null;
     }
 
-    public void MoveNewPiece(int playerTeamIndex, int destinationIndex){
+    public void MoveNewPiece(int destinationIndex){
         // Model의, 말을 옮기는 로직. (새로운 말의 출발)
     }
 
