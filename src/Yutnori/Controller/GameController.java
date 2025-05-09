@@ -1,11 +1,14 @@
 package Yutnori.Controller;
 
-import Yutnori.GameManager;
-import Yutnori.YutPackage.YutResult;
-import Yutnori.YutPackage.Yuts;
+import Yutnori.Model.GameManager;
+import Yutnori.Model.YutPackage.YutResult;
+import Yutnori.Model.YutPackage.Yuts;
 
 import java.util.List;
 
+// 윷놀이 게임 진행에 대한 Controller
+// 윷을 던지고,
+// Board 위의 Piece들을 조정하는 controller
 public class GameController {
 
     private GameManager gameManager;
@@ -44,16 +47,17 @@ public class GameController {
     }
 
     public void MoveNewPiece(int playerTeamIndex, int destinationIndex){
-        // Model의, 새로운 말을 출발시키는 로직 호출.
+        // Model의, 말을 옮기는 로직. (새로운 말의 출발)
     }
 
     public void MovePiece(int currentIndex, int destinationIndex){
-        // Model의, 기존에 존재하는 말을 옮기는 로직 호출.
-        // 옮기려는 말의 현위치와, 그 말의 도착지를 전달받음.
+        // Model의, 말을 옮기는 로직. (기존에 존재하는 말의 이동)
+        // 옮기려는 말의 현위치와, 그 말의 도착지를 파라미터로 전달받음.
     }
 
     public List<Integer> GetAllPiecePositions(){
         // 현재 윷놀이 판에서, 무슨 말이 무슨 index에 있는지를 전부 반환.
+        // 이걸 호출해서, 모든 말의 위치정보를 전달받아, UI에 표시할 말의 위치를 업데이트.
         // 반환형식 List<Interger>는 아직 예시.
         return null;
     }
