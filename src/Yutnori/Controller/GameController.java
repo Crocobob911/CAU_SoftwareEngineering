@@ -1,6 +1,7 @@
 package Yutnori.Controller;
 
 import Yutnori.Model.GameManager;
+import Yutnori.Model.Piece;
 import Yutnori.Model.YutPackage.YutResult;
 import Yutnori.Model.YutPackage.Yuts;
 
@@ -31,9 +32,7 @@ public class GameController {
     }
 
     public List<Integer> WhereToGo(int currentIndex, YutResult yutResult) {
-        //todo: 영욱이가 이거 로직 다 만들어와야함.
-        return null;
-        //return gameManager.getMovablePositions(currentIndex, yutResult);
+        return gameManager.getMovablePositions(currentIndex, yutResult);
     }
 
     public void MoveNewPiece(int destinationIndex){
@@ -45,10 +44,9 @@ public class GameController {
         // 옮기려는 말의 현위치와, 그 말의 도착지를 파라미터로 전달받음.
     }
 
-    public List<Integer> GetAllPiecePositions(){
+    public List<Piece> GetAllPieces(){
         // 현재 윷놀이 판에서, 무슨 말이 무슨 index에 있는지를 전부 반환.
-        // 이걸 호출해서, 모든 말의 위치정보를 전달받아, UI에 표시할 말의 위치를 업데이트.
-        // 반환형식 List<Interger>는 아직 예시.
-        return null;
+        // 모든 말의 정보를 전달받아, UI에 표시하는 각 말의 위치 업데이트.
+        return gameManager.getAllPieces();
     }
 }

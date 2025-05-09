@@ -12,13 +12,12 @@ public class GameStartController {
 
 
     public GameManager InitGameManager(int playerCount, int pieceCount, int boardType) {
-        // GameSetting 생성
+        // GameSetting 및 GameManager 생성
         gameManager = new GameManager(new GameSetting(playerCount, pieceCount, boardType));
         return gameManager;
     }
 
     public void StartGame() {
-        // 여기서, 게임 시작.
-        gameManager.startScene(); // 이거 맞음 영욱? 이거 호출하면 게임 시작임?
+        gameManager.startScene();
     }
 }
