@@ -217,8 +217,6 @@ public class GameManager {
         System.exit(0);
         
     }
-
-    // 명준 : 이거 뭐하는 함수임?
     public void fixedEnroll(boolean useAction, int value) {
         if (useAction) {
             if(remainActionNumber > 0) {
