@@ -2,6 +2,7 @@ package Yutnori.Controller;
 
 import Yutnori.Model.GameManager;
 import Yutnori.Model.Piece;
+import Yutnori.Model.Player;
 import Yutnori.Model.YutPackage.YutResult;
 import Yutnori.Model.YutPackage.Yuts;
 
@@ -18,9 +19,10 @@ public class GameController {
         this.gameManager = gameManager;
     }
 
+    // region Throw Yut
+
     public Boolean CanThrow(){
-        //todo: GameManager의 action 값을 get해와서, 0 초과인지 아닌지 체크하는 로직.
-        return false;
+        return gameManager.getRemainActionNumber() != 0;
     }
 
     public List<YutResult> ThrowYut_Random(){
@@ -31,6 +33,7 @@ public class GameController {
         return gameManager.getPendingMoves();
     }
 
+    /// 윷 지정 던지기 ->
     /// value 값 =
     /// 도:1
     /// 개:2
@@ -46,17 +49,23 @@ public class GameController {
         return gameManager.getPendingMoves();
     }
 
+    // endregion
+
+    // region Move Horse
+
     public List<Integer> WhereToGo(int currentIndex, YutResult yutResult) {
+        // 이 말이, 이 윷으로 이동할 수 있는 모든 위치를 반환
         return gameManager.getMovablePositions(currentIndex, yutResult);
     }
 
     public void MoveNewPiece(int destinationIndex){
-        // Model의, 말을 옮기는 로직. (새로운 말의 출발)
+        // 새로운 말의 출발
+        gameManager.movePiece(-1, destinationIndex);
     }
 
     public void MovePiece(int currentIndex, int destinationIndex){
-        // Model의, 말을 옮기는 로직. (기존에 존재하는 말의 이동)
-        // 옮기려는 말의 현위치와, 그 말의 도착지를 파라미터로 전달받음.
+        // 기존에 존재하던 말의 이동
+        gameManager.movePiece(currentIndex, destinationIndex);
     }
 
     public List<Piece> GetAllPieces(){
@@ -64,4 +73,15 @@ public class GameController {
         // 모든 말의 정보를 전달받아, UI에 표시하는 각 말의 위치 업데이트.
         return gameManager.getAllPieces();
     }
+
+    // endregion
+
+    // region Players
+
+    /// 왜 List<Player>가 아니고 Player[]이냐.
+    /// = 한 게임동안 안 바뀌는 거면, Model에서 배열로 취급했다네요.
+    public Player[] GetPlayerInfos() {
+        return gameManager.getPlayers();
+    }
+    // endregion
 }
