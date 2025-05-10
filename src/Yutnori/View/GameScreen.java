@@ -1,14 +1,16 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
 import Yutnori.Controller.GameController;
+import Yutnori.Model.GameEndObserver;
 import Yutnori.Model.Piece;
 import Yutnori.Model.Player;
 import Yutnori.Model.YutPackage.YutResult;
 
-public class GameScreen extends JPanel {
+public class GameScreen extends JPanel implements GameEndObserver {
 
     private JLabel resultLabel;
     private GameController gameController;
@@ -27,6 +29,9 @@ public class GameScreen extends JPanel {
         this.gameController = controller;
         this.boardIndex = new BoardIndex(boardType);
         this.horseLabels = new JLabel[playerNum][horseNum];
+
+        // GameEnd Observer 등록
+        gameController.AddObserver(this);
 
         setLayout(null);
         setPreferredSize(new Dimension(1200, 750));
@@ -266,5 +271,12 @@ public class GameScreen extends JPanel {
             return;
         }
         showMoveCandidates(-3, selectedYutResult);
+    }
+
+    // Game End 로직
+    @Override
+    public void update(int winner) {
+        // GameEndScreen을 생성
+        GameEndScreen endScreen = new GameEndScreen(winner);
     }
 }
