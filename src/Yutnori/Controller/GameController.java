@@ -1,8 +1,6 @@
 package Yutnori.Controller;
 
-import Yutnori.Model.GameManager;
-import Yutnori.Model.Piece;
-import Yutnori.Model.Player;
+import Yutnori.Model.*;
 import Yutnori.Model.YutPackage.YutResult;
 import Yutnori.Model.YutPackage.Yuts;
 
@@ -19,6 +17,10 @@ public class GameController {
         this.gameManager = gameManager;
     }
 
+    public void AddObserver(GameEndObserver observer) {
+        gameManager.registerObserver(observer);
+    }
+    
     // region Throw Yut
 
     public Boolean CanThrow(){
@@ -72,6 +74,15 @@ public class GameController {
         // 현재 윷놀이 판에서, 무슨 말이 무슨 index에 있는지를 전부 반환.
         // 모든 말의 정보를 전달받아, UI에 표시하는 각 말의 위치 업데이트.
         return gameManager.getAllPieces();
+    }
+
+    // 턴 넘겨주는 컨트롤 -- 김윤형이 추가함
+    public void NextPlayerTurn() {
+        gameManager.nextPlayerTurn();
+    }
+    // 누적된 윷 결과 반환
+    public List<YutResult> getPendingMoves() {
+        return gameManager.getPendingMoves();
     }
 
     // endregion

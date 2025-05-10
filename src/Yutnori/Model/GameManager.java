@@ -116,7 +116,7 @@ public class GameManager implements GameEndSubject {
                 //승리 조건 확인
                 if (isPlayerWinner()) {
                     System.out.println("Winner : " + player.getTeamIndex());
-                    finishScene();
+                    finishScene(player.getTeamIndex());
                 }
 
                 //남아 있는 이동 수가 없으면 턴 종료
@@ -202,15 +202,16 @@ public class GameManager implements GameEndSubject {
     public void startScene() {
         resetTurn();        //턴 시작 0번
         //debug
-        startTerminalGame();
+        //startTerminalGame();
 
         //todo > gui 처리
     }
-    public void finishScene() {
+    public void finishScene(int winner) {
         //todo > 게임 종료후 gui 처리
         //todo > 게임 재시작 방법 어떤식으로?
         //resetTurn();
         //endScene();
+        notifyObservers(winner);
     }
     public void restartScene() {
         // 명준 : 이거 Controller에서 해야할 듯?
@@ -299,9 +300,9 @@ public class GameManager implements GameEndSubject {
     }
 
     @Override
-    public void notifyObservers() {
+    public void notifyObservers(int winner) {
         for (GameEndObserver o : gameEndObservers) {
-            o.update();
+            o.update(winner);
         }
     }
     //endregion
@@ -317,7 +318,9 @@ public class GameManager implements GameEndSubject {
         System.out.println("Piece " + currentPosition + " not found");
         return null;
     }
-    private void nextPlayerTurn() {
+
+    //이거 컨트롤에서 불러오기 위해 퍼블릭으로 바꿈 -- 김윤형
+    public void nextPlayerTurn() {
         // 나눗셈 연산을 통한 턴 반복
         nowTurnPlayerID = (nowTurnPlayerID + 1) % gameSetting.playerNumber;
 
@@ -362,6 +365,9 @@ public class GameManager implements GameEndSubject {
         }
         if (position == -2) {                                               //완주
             player.completePiece(player.getPiece(idx));        //선택한 피스 스택 수 만큼 완주 스택 증가
+            if(isPlayerWinner()){
+                finishScene(player.getTeamIndex());
+            };
             return;                                             //말 내리고 이동 x
 
         }
