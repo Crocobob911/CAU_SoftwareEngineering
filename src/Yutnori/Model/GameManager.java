@@ -309,6 +309,10 @@ public class GameManager implements GameEndSubject {
         }
     }
 
+    public void removePendingMoveList(int steps) {
+        pendingMoves.remove(YutResult.fromSteps(steps));
+    }
+
     public void initNewPiece(Player player) {
         player.initNewPiece();
     }
