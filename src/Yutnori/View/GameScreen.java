@@ -212,12 +212,19 @@ public class GameScreen extends JPanel implements GameEndObserver {
             Point point = boardIndex.getPoint(pos);
             if (point == null) continue;
 
-            String imgPath = stacked == 1
-                ? "src/Yutnori/View/picture/mal" + (team + 1) + ".png"
-                : "src/Yutnori/View/picture/mal" + (team + 1) + "-" + stacked + ".png";
+            System.out.println("team : " + team);
+            System.out.println("pos : " + pos);
+            System.out.println("stacked : " + stacked);
+            String imgPath = "src/Yutnori/View/picture/mal" + (team + 1) + ".png";
+//            String imgPath = stacked == 1
+//                ? "src/Yutnori/View/picture/mal" + (team + 1) + ".png"
+//                : "src/Yutnori/View/picture/mal" + (team + 1) + "-" + stacked + ".png";
+            System.out.println("imgPath : " + imgPath);
 
             ImageIcon icon = new ImageIcon(imgPath);
+            System.out.println("icon.getIconWidth() = " + icon.getIconWidth());
             int w = icon.getIconWidth() / 2, h = icon.getIconHeight() / 2;
+            System.out.println("w:" + w + " h:" + h);
             Image scaled = icon.getImage().getScaledInstance(w, h, Image.SCALE_SMOOTH);
             icon = new ImageIcon(scaled);
             JLabel malLabel = new JLabel(icon);
