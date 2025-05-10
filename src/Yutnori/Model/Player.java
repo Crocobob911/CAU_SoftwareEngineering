@@ -71,4 +71,6 @@ public class Player {
     public int getRemainPieceNumber() {
         return remainPieceNumber;
     }
+
+    public int getCompletedPieceNumber() {return completedPieceNumber;}
 }
