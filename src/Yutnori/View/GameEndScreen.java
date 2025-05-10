@@ -1,3 +1,5 @@
+package Yutnori.View;
+
 import javax.swing.*;
 import java.awt.*;
 
