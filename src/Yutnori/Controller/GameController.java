@@ -62,7 +62,7 @@ public class GameController {
 
     public void MoveNewPiece(int destinationIndex){
         // 새로운 말의 출발
-        gameManager.movePiece(-3, destinationIndex);
+        gameManager.moveNewPiece(destinationIndex);
     }
 
     public void MovePiece(int currentIndex, int destinationIndex){

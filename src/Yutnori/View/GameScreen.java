@@ -115,11 +115,7 @@ public class GameScreen extends JPanel {
                 JButton btn = new JButton("→");
                 btn.setBounds(point.x, point.y, 50, 30);
                 btn.addActionListener(e -> {
-                    if (currentIndex == -3) {
-                        gameController.MoveNewPiece(pos);
-                    } else {
-                        gameController.MovePiece(currentIndex, pos);
-                    }
+                    movePieceByIndex(currentIndex, pos);
                     UpdatePiecesOfBoard();
                     UpdatePlayerInfos();
                     clearActiveMoveButtons();
@@ -146,17 +142,17 @@ public class GameScreen extends JPanel {
     
 
     private void handleThrowYut() {
-        // 게임 컨트롤러에서 윷 던지기
-        List<YutResult> pendingMoves = gameController.ThrowYut_Random();
-    
-        // 결과 이미지 업데이트
-        if (!pendingMoves.isEmpty()) {
-            String imgPath = "src/Yutnori/View/picture/" + pendingMoves.get(0).name().toLowerCase() + ".png";
-            resultLabel.setIcon(new ImageIcon(imgPath));
+        if(!gameController.CanThrow()){
+            return;
         }
-    
         // 선택 가능한 윷 버튼 생성
-        updatePendingMovesDisplay(pendingMoves);
+        List<YutResult> results = gameController.ThrowYut_Random();
+        if(!results.isEmpty()){
+            YutResult result = results.get(0);
+            String imagePath = "src/Yutnori/picture" + result.name() + ".png";
+            resultLabel.setIcon(new ImageIcon(imagePath));
+        }
+        updatePendingMovesDisplay(results);
     }
 
     private void updatePendingMovesDisplay(List<YutResult> pendingMoves) {
@@ -174,34 +170,51 @@ public class GameScreen extends JPanel {
     }
 
     private void UpdatePiecesOfBoard() {
-        for (JLabel[] horseArray : horseLabels)
-            for (JLabel horse : horseArray)
+        // 기존 말 라벨 제거
+        for (JLabel[] horseArray : horseLabels) {
+            for (JLabel horse : horseArray) {
                 if (horse != null) layeredPane.remove(horse);
-
+            }
+        }
+    
+        // 최신 말 리스트 가져오기
         List<Piece> pieces = gameController.GetAllPieces();
-        horseLabels = new JLabel[4][5];
-
+        horseLabels = new JLabel[4][5];  // 4팀, 팀당 최대 5개 말
+    
         for (Piece piece : pieces) {
             int team = piece.getOwnerID();
             int pos = piece.getPosition();
             int stacked = piece.getStacked();
-
+    
             Point point = boardIndex.getPoint(pos);
             if (point == null) continue;
-
+    
+            // 말 이미지 경로 설정
             String imgPath = stacked == 1
                 ? "src/Yutnori/View/picture/mal" + (team + 1) + ".png"
                 : "src/Yutnori/View/picture/mal" + (team + 1) + "-" + stacked + ".png";
-
+    
             ImageIcon icon = new ImageIcon(imgPath);
             int w = icon.getIconWidth() / 2, h = icon.getIconHeight() / 2;
             Image scaled = icon.getImage().getScaledInstance(w, h, Image.SCALE_SMOOTH);
             icon = new ImageIcon(scaled);
             JLabel malLabel = new JLabel(icon);
             malLabel.setBounds(point.x, point.y, w, h);
+    
+            // ⭐ 말 클릭 리스너 추가
+            malLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+                @Override
+                public void mouseClicked(java.awt.event.MouseEvent e) {
+                    handlePieceClick(pos);
+                }
+            });
+    
             layeredPane.add(malLabel, Integer.valueOf(10));
             horseLabels[team][0] = malLabel;
         }
+    
+        layeredPane.revalidate();
+        layeredPane.repaint();
     }
 
     private void UpdatePlayerInfos() {
@@ -213,5 +226,21 @@ public class GameScreen extends JPanel {
         }
         layeredPane.revalidate();
         layeredPane.repaint();
+    }
+
+    private void handlePieceClick(int pos) {
+        if (selectedYutResult == null) {
+            JOptionPane.showMessageDialog(this, "먼저 사용할 윷 결과를 선택하세요.");
+            return;
+        }
+        selectedPiecePosition = pos;
+        showMoveCandidates(pos, selectedYutResult);
+    }
+    private void movePieceByIndex(int currentIndex, int pos) {
+        if (currentIndex == -3) {
+            gameController.MoveNewPiece(pos);
+        } else {
+            gameController.MovePiece(currentIndex, pos);
+        }
     }
 }
