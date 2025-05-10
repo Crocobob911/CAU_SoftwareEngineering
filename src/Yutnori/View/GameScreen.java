@@ -15,6 +15,8 @@ public class GameScreen extends JPanel {
     private BoardIndex boardIndex;
     private JLayeredPane layeredPane;
     private int currentPlayerIndex = 0; // 현재 플레이어 인덱스 (예: 0번 플레이어로 시작)
+    private JLabel turnLabel;
+    private List<JButton> activeMoveButtons = new ArrayList<>();
 
     public GameScreen(int playerNum, int horseNum, String boardType, GameController controller) {
 
@@ -63,6 +65,13 @@ public class GameScreen extends JPanel {
         resultLabel = new JLabel(new ImageIcon("CAU_SoftwareEngineering/src/Yutnori/View/picture/mo.png"));
         resultLabel.setBounds(690, 105, 425, 210);
         layeredPane.add(resultLabel, Integer.valueOf(2));
+
+        // 현재 턴 정보 표시
+        turnLabel = new JLabel("Player 1의 턴입니다.");
+        turnLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        turnLabel.setForeground(Color.BLACK);
+        turnLabel.setBounds(850, 30, 300, 30);
+        layeredPane.add(turnLabel, Integer.valueOf(2));
 
         // 팀 위치 배열
         int[][] teamPositions = {
@@ -118,9 +127,7 @@ public class GameScreen extends JPanel {
             }
         }
     }
-    private void onHorseClicked(int playerIndex, int horseIndex) {
-        System.out.printf("[INFO] 클릭됨 → Player %d, Horse %d%n", playerIndex + 1, horseIndex + 1);
-    
+    private void onHorseClicked(int playerIndex, int horseIndex) {    
         clearHorseBorders();
         JLabel malLabel = horseLabels[playerIndex][horseIndex];
         malLabel.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
@@ -141,6 +148,13 @@ public class GameScreen extends JPanel {
         }
     }
     private void showMoveButtons(int playerIndex, int horseIndex, List<Integer> positions) {
+        // 👉 기존 버튼들 혹시 남아있으면 먼저 다 지움
+        for (JButton btn : activeMoveButtons) {
+            layeredPane.remove(btn);
+        }
+        activeMoveButtons.clear();
+    
+        // 👉 새로 표시할 이동 버튼들 추가
         for (int index : positions) {
             Point point = boardIndex.getPoint(index);
             if (point != null) {
@@ -149,12 +163,11 @@ public class GameScreen extends JPanel {
     
                 moveButton.addActionListener(e -> {
                     moveHorse(playerIndex, horseIndex, index);
-                    layeredPane.remove(moveButton);
-                    layeredPane.revalidate();
-                    layeredPane.repaint();
+                    //버튼 하나 제거 X → moveHorse에서 모두 제거
                 });
     
                 layeredPane.add(moveButton, Integer.valueOf(4));
+                activeMoveButtons.add(moveButton);
             }
         }
         layeredPane.revalidate();
@@ -166,24 +179,27 @@ public class GameScreen extends JPanel {
         if (destPoint != null) {
             malLabel.setLocation(destPoint.x, destPoint.y);
             malLabel.putClientProperty("boardIndex", destinationIndex);
-            System.out.printf("[INFO] Player %d, Horse %d → Index %d 이동 완료%n", playerIndex + 1, horseIndex + 1, destinationIndex);
+    
+            // 👉 이동 버튼들 모두 제거
+            for (JButton btn : activeMoveButtons) {
+                layeredPane.remove(btn);
+            }
+            activeMoveButtons.clear();
     
             // pendingMoves에서 현재 이동 제거
             if (!gameController.getPendingMoves().isEmpty()) {
                 gameController.getPendingMoves().remove(0);
             }
     
-            // 추가: 이동 후 canThrow 체크
             if (!gameController.CanThrow()) {
-                System.out.println("[INFO] 턴 종료 → 다음 플레이어로 넘어갑니다.");
                 gameController.NextPlayerTurn();
-    
-                // 플레이어 인덱스 갱신
                 int playerNum = horseLabels.length;
                 currentPlayerIndex = (currentPlayerIndex + 1) % playerNum;
-    
-                System.out.printf("[INFO] 이제 Player %d의 턴입니다.%n", currentPlayerIndex +1);
+                turnLabel.setText("Player " + (currentPlayerIndex + 1) + "의 턴입니다.");
             }
+    
+            layeredPane.revalidate();
+            layeredPane.repaint();
         }
     }
     
@@ -209,7 +225,6 @@ public class GameScreen extends JPanel {
     
         createPieceButton.setBounds(460, 550, buttonWidth, buttonHeight);
         createPieceButton.addActionListener(e -> {
-            System.out.println("새 말 생성 버튼 클릭됨!");
             handleCreatePiece(currentPlayerIndex);  // 현재 플레이어 인덱스는 따로 관리 필요
         });
     
@@ -226,25 +241,30 @@ public class GameScreen extends JPanel {
     private void handleCreatePiece(int playerIndex) {
         for (int j = horseLabels[playerIndex].length - 1; j >= 0; j--) {
             JLabel malLabel = horseLabels[playerIndex][j];
-            if (malLabel.isVisible()) {
+            Integer boardIndexValue = (Integer) malLabel.getClientProperty("boardIndex");
+    
+            // ➥ 아직 boardIndex 설정 안 됨 (= 대기 중인 말)
+            if (boardIndexValue == null) {
                 Point boardPoint = boardIndex.getPoint(100);
-                if (boardPoint != null) {
-                    String imagePath = "CAU_SoftwareEngineering/src/Yutnori/View/picture/mal" + (playerIndex + 1) + ".png";
-                    ImageIcon originalIcon = new ImageIcon(imagePath);
-                    malLabel.setIcon(originalIcon);
-
-                    int width = originalIcon.getIconWidth();
-                    int height = originalIcon.getIconHeight();
-                    malLabel.setBounds(boardPoint.x, boardPoint.y, width, height);
-                    
-                    layeredPane.setLayer(malLabel, 3); // z-index를 올림
-                    malLabel.repaint();
-                } else {
-                    System.out.println("보드 인덱스 100 좌표를 찾을 수 없습니다.");
-                }
-                System.out.println("플레이어 " + playerIndex + " 말 " + j + " 이동 완료");
-                break;
+                String imagePath = "CAU_SoftwareEngineering/src/Yutnori/View/picture/mal" + (playerIndex + 1) + ".png";
+                ImageIcon originalIcon = new ImageIcon(imagePath);
+                malLabel.setIcon(originalIcon);
+    
+                int width = originalIcon.getIconWidth();
+                int height = originalIcon.getIconHeight();
+                malLabel.setBounds(boardPoint.x, boardPoint.y, width, height);
+                
+                // layeredPane에서 z-index 올리기
+                layeredPane.setLayer(malLabel, 3);
+                malLabel.putClientProperty("boardIndex", 0);  // 새로 올린 말은 출발 index 100로 설정
+                malLabel.repaint();
+    
+                System.out.println("플레이어 " + (playerIndex + 1) + "의 새 말 생성됨 (index " + j + ")");
+                return;  // 하나만 추가하고 종료
             }
         }
+    
+        // ➥ 대기 중인 말이 없으면 안내 메시지
+        System.out.println("플레이어 " + (playerIndex + 1) + "의 대기 중인 말이 없습니다.");
     }
 }
