@@ -211,6 +211,9 @@ public class GameManager implements GameEndSubject {
         //todo > 게임 재시작 방법 어떤식으로?
         //resetTurn();
         //endScene();
+        for(GameEndObserver observer : gameEndObservers){
+            observer.update();
+        }
     }
     public void restartScene() {
         // 명준 : 이거 Controller에서 해야할 듯?
@@ -364,6 +367,9 @@ public class GameManager implements GameEndSubject {
         }
         if (position == -2) {                                               //완주
             player.completePiece(player.getPiece(idx));        //선택한 피스 스택 수 만큼 완주 스택 증가
+            if(isPlayerWinner()){
+                finishScene();
+            };
             return;                                             //말 내리고 이동 x
 
         }
