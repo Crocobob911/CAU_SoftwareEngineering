@@ -1,14 +1,13 @@
+import Yutnori.Controller.GameController;
+import Yutnori.Model.GameEndObserver;
+import Yutnori.Model.YutPackage.YutResult;
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import Yutnori.Controller.GameController;
-import Yutnori.Model.YutPackage.YutResult;
-
-public class GameScreen extends JPanel {
-
+public class GameScreen extends JPanel implements GameEndObserver {
     private JLabel resultLabel;
     private GameController gameController;
     private JLabel[][] horseLabels;
@@ -23,6 +22,9 @@ public class GameScreen extends JPanel {
         this.gameController = controller;
         this.boardIndex = new BoardIndex(boardType);
         this.horseLabels = new JLabel[playerNum][horseNum];
+
+        // GameEnd Observer 등록
+        gameController.AddObserver(this);
 
         setLayout(null);
         setPreferredSize(new Dimension(1200, 750));
@@ -292,5 +294,11 @@ public class GameScreen extends JPanel {
     
         // ➥ 대기 중인 말이 없으면 안내 메시지
         System.out.println("플레이어 " + (playerIndex + 1) + "의 대기 중인 말이 없습니다.");
+    }
+
+    // Game End 로직
+    @Override
+    public void update() {
+        // GameEndScreen을 생성
     }
 }
