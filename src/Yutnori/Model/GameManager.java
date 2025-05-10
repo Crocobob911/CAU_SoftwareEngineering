@@ -37,6 +37,7 @@ public class GameManager implements GameEndSubject {
         //기본 초기화
         nowTurnPlayerID = 0;
         pendingMoves = new ArrayList<>();
+        gameEndObservers = new ArrayList<>();
         remainActionNumber = 0;
         players = new Player[gameSetting.playerNumber];
         for (int i = 0; i < gameSetting.playerNumber; i++) {
