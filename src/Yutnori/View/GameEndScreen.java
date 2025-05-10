@@ -14,7 +14,7 @@ public class GameEndScreen extends JPanel {
         victoryLabel.setBounds(300, 200, 600, 100);
         add(victoryLabel);
 
-        // 다시 시작 버튼
+        //다시 시작 버튼
         JButton restartButton = new JButton("다시 시작");
         restartButton.setFont(new Font("Arial", Font.PLAIN, 20));
         restartButton.setBounds(450, 350, 300, 60);

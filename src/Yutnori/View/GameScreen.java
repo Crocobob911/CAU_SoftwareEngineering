@@ -24,11 +24,13 @@ public class GameScreen extends JPanel implements GameEndObserver {
     private YutResult selectedYutResult;
     private int selectedPiecePosition = -1;
     private JComboBox<String> yutComboBox;
+    private MainFrame mainFrame;
 
-    public GameScreen(int playerNum, int horseNum, String boardType, GameController controller) {
+    public GameScreen(int playerNum, int horseNum, String boardType, GameController controller, MainFrame mainFrame) {
         this.gameController = controller;
         this.boardIndex = new BoardIndex(boardType);
         this.horseLabels = new JLabel[playerNum][horseNum];
+        this.mainFrame = mainFrame;
 
         // GameEnd Observer 등록
         gameController.AddObserver(this);
@@ -263,6 +265,8 @@ public class GameScreen extends JPanel implements GameEndObserver {
             gameController.MovePiece(currentIndex, pos);
         }
         gameController.removePendingMoveList(selectedYutResult.getSteps());
+            selectedYutResult = null; 
+
     }
 
     private void handleCreateNewPiece() {
@@ -276,7 +280,9 @@ public class GameScreen extends JPanel implements GameEndObserver {
     // Game End 로직
     @Override
     public void update(int winner) {
-        // GameEndScreen을 생성
-        GameEndScreen endScreen = new GameEndScreen(winner);
+        GameEndScreen endScreen = new GameEndScreen(mainFrame, winner);
+        mainFrame.setContentPane(endScreen);
+        mainFrame.revalidate();
+        mainFrame.repaint();
     }
 }

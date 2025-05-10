@@ -46,12 +46,12 @@ public class MainFrame extends JFrame {
         gameStartController.StartGame();
 
         // GameScreen으로 전환
-        GameScreen gameScreen = new GameScreen(players, horses, boardType, gameController);
+        GameScreen gameScreen = new GameScreen(players, horses, boardType, gameController, this);
         setContentPane(gameScreen);
         revalidate();
         repaint();
     }
-    public void showGameEndScreen(int winnerTeam) {
+        public void showGameEndScreen(int winnerTeam) {
         GameEndScreen endScreen = new GameEndScreen(this, winnerTeam);
         setContentPane(endScreen);
         revalidate();
