@@ -1,5 +1,3 @@
-package Yutnori.View;
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -50,6 +48,12 @@ public class MainFrame extends JFrame {
         // GameScreen으로 전환
         GameScreen gameScreen = new GameScreen(players, horses, boardType, gameController);
         setContentPane(gameScreen);
+        revalidate();
+        repaint();
+    }
+    public void showGameEndScreen(int winnerTeam) {
+        GameEndScreen endScreen = new GameEndScreen(this, winnerTeam);
+        setContentPane(endScreen);
         revalidate();
         repaint();
     }
