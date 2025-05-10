@@ -287,12 +287,22 @@ public class GameManager implements GameEndSubject {
         Player player = players[currentPosition];
 
         moveAction(player, idx, destinationPosition);
+        //이동 후 턴 넘기기 확인
+        //남아 있는 이동 수가 없으면 턴 종료
+        if (isTurnEnd()) {
+            nextPlayerTurn();
+        }
     }
 
     public void moveNewPiece(int destinationPosition) {
         Player player = players[nowTurnPlayerID];
         player.initNewPiece();
         moveAction(player, player.getPieceListSize() - 1, destinationPosition);     //맨 마지막에 add 되기에 idx고정값
+        //이동 후 턴 넘기기 확인
+        //남아 있는 이동 수가 없으면 턴 종료
+        if (isTurnEnd()) {
+            nextPlayerTurn();
+        }
     }
 
     public void initNewPiece(Player player) {
@@ -383,7 +393,9 @@ public class GameManager implements GameEndSubject {
         }
         player.movePiece(idx, position);    //말이 없으니까 그냥 이동
     }
-
+    private boolean isTurnEnd() {
+        return pendingMoves.isEmpty() && remainActionNumber == 0;
+    }
 
     //턴 추가, 잡기, 윷 모
 
