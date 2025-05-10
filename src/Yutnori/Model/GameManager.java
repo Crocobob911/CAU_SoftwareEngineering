@@ -289,6 +289,16 @@ public class GameManager implements GameEndSubject {
         moveAction(player, idx, destinationPosition);
     }
 
+    public void moveNewPiece(int destinationPosition) {
+        Player player = players[nowTurnPlayerID];
+        player.initNewPiece();
+        moveAction(player, player.getPieceListSize() - 1, destinationPosition);     //맨 마지막에 add 되기에 idx고정값
+    }
+
+    public void initNewPiece(Player player) {
+        player.initNewPiece();
+    }
+
     @Override
     public void registerObserver(GameEndObserver o) {
         gameEndObservers.add(o);
