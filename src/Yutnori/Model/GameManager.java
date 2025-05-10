@@ -116,7 +116,7 @@ public class GameManager implements GameEndSubject {
                 //승리 조건 확인
                 if (isPlayerWinner()) {
                     System.out.println("Winner : " + player.getTeamIndex());
-                    finishScene();
+                    finishScene(player.getTeamIndex());
                 }
 
                 //남아 있는 이동 수가 없으면 턴 종료
@@ -206,14 +206,12 @@ public class GameManager implements GameEndSubject {
 
         //todo > gui 처리
     }
-    public void finishScene() {
+    public void finishScene(int winner) {
         //todo > 게임 종료후 gui 처리
         //todo > 게임 재시작 방법 어떤식으로?
         //resetTurn();
         //endScene();
-        for(GameEndObserver observer : gameEndObservers){
-            observer.update();
-        }
+        notifyObservers(winner);
     }
     public void restartScene() {
         // 명준 : 이거 Controller에서 해야할 듯?
@@ -302,9 +300,9 @@ public class GameManager implements GameEndSubject {
     }
 
     @Override
-    public void notifyObservers() {
+    public void notifyObservers(int winner) {
         for (GameEndObserver o : gameEndObservers) {
-            o.update();
+            o.update(winner);
         }
     }
     //endregion
@@ -368,7 +366,7 @@ public class GameManager implements GameEndSubject {
         if (position == -2) {                                               //완주
             player.completePiece(player.getPiece(idx));        //선택한 피스 스택 수 만큼 완주 스택 증가
             if(isPlayerWinner()){
-                finishScene();
+                finishScene(player.getTeamIndex());
             };
             return;                                             //말 내리고 이동 x
 

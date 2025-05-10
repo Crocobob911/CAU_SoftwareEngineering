@@ -1,5 +1,5 @@
 package Yutnori.Model;
 
 public interface GameEndObserver {
-    void update();
+    void update(int winner);
 }

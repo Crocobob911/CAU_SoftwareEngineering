@@ -1,3 +1,5 @@
+package Yutnori.View;
+
 import Yutnori.Controller.GameController;
 import Yutnori.Model.GameEndObserver;
 import Yutnori.Model.YutPackage.YutResult;
@@ -298,7 +300,8 @@ public class GameScreen extends JPanel implements GameEndObserver {
 
     // Game End 로직
     @Override
-    public void update() {
+    public void update(int winner) {
         // GameEndScreen을 생성
+        GameEndScreen endScreen = new GameEndScreen(winner);
     }
 }
