@@ -60,7 +60,7 @@ public class GameController {
         return gameManager.getMovablePositions(currentIndex, yutResult);
     }
 
-    public void MoveNewPiece(int destinationIndex){
+    public void MoveNewPiece(int yutResult, int destinationIndex){
         // 새로운 말의 출발
         gameManager.moveNewPiece(destinationIndex);
     }

@@ -82,6 +82,8 @@ public class GameScreen extends JPanel {
             layeredPane.add(infoLabel, Integer.valueOf(2));
             teamInfoLabels[i] = infoLabel;
         }
+        UpdatePiecesOfBoard();
+        UpdatePlayerInfos();
         // pendingMovesPanel 생성 및 설정
         pendingMovesPanel = new JPanel();
         pendingMovesPanel.setLayout(new FlowLayout());
@@ -149,7 +151,7 @@ public class GameScreen extends JPanel {
         List<YutResult> results = gameController.ThrowYut_Random();
         if(!results.isEmpty()){
             YutResult result = results.get(0);
-            String imagePath = "src/Yutnori/picture" + result.name() + ".png";
+            String imagePath = "src/Yutnori/View/picture/" + result.name() + ".png";
             resultLabel.setIcon(new ImageIcon(imagePath));
         }
         updatePendingMovesDisplay(results);

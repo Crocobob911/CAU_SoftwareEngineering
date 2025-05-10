@@ -300,8 +300,12 @@ public class GameManager implements GameEndSubject {
         moveAction(player, player.getPieceListSize() - 1, destinationPosition);     //맨 마지막에 add 되기에 idx고정값
         //이동 후 턴 넘기기 확인
         //남아 있는 이동 수가 없으면 턴 종료
+        System.out.println(pendingMoves.size());
+        System.out.println(remainActionNumber);
+        System.out.println("sibal");
         if (isTurnEnd()) {
             nextPlayerTurn();
+            System.out.println("sibal");
         }
     }
 
