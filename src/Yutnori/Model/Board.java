@@ -15,7 +15,11 @@ public class Board {
         int line = from / 10;
         int index = from % 10;
 
-        if (from < 0) {   //도 백도 이후 뭐든 나오면 종료
+        if(from == -3) {
+            result.add(step);
+            return result;
+        }
+        else if (from == -1) {   //도 백도(idx = -1) 이후 뭐든 나오면 종료
             result.add(-2);
             return result;
         }
