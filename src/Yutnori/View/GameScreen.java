@@ -127,26 +127,31 @@ public class GameScreen extends JPanel {
             }
         }
     }
-    private void onHorseClicked(int playerIndex, int horseIndex) {    
+    private void onHorseClicked(int playerIndex, int horseIndex) {
+        // 현재 턴이 아닌 플레이어의 말 클릭 방지
+        if (playerIndex != currentPlayerIndex) {
+            System.out.printf("[경고] Player %d의 턴입니다. Player %d의 말을 선택할 수 없습니다.%n", currentPlayerIndex + 1, playerIndex + 1);
+            return;
+        }
+    
         clearHorseBorders();
         JLabel malLabel = horseLabels[playerIndex][horseIndex];
         malLabel.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
     
         Integer currentBoardIndex = (Integer) malLabel.getClientProperty("boardIndex");
         if (currentBoardIndex == null) {
-            currentBoardIndex = 0; // 기본 출발 위치 ---> 이거 임시로 0으로 해놨는데 나중에 원점으로 수정해야함
+            currentBoardIndex = 0; // 기본 출발 위치
         }
     
-        // 현재 pendingMoves에서 첫 번째 yutResult 가져오기
         if (!gameController.getPendingMoves().isEmpty()) {
             YutResult currentResult = gameController.getPendingMoves().get(0);
             List<Integer> possiblePositions = gameController.WhereToGo(currentBoardIndex, currentResult);
-    
             showMoveButtons(playerIndex, horseIndex, possiblePositions);
         } else {
             System.out.println("이동할 윳 결과가 없습니다.");
         }
     }
+    
     private void showMoveButtons(int playerIndex, int horseIndex, List<Integer> positions) {
         // 👉 기존 버튼들 혹시 남아있으면 먼저 다 지움
         for (JButton btn : activeMoveButtons) {
@@ -176,31 +181,55 @@ public class GameScreen extends JPanel {
     private void moveHorse(int playerIndex, int horseIndex, int destinationIndex) {
         JLabel malLabel = horseLabels[playerIndex][horseIndex];
         Point destPoint = boardIndex.getPoint(destinationIndex);
-        if (destPoint != null) {
+        
+        if (destinationIndex <= -1) {
+            // 👉 우측 하단 대기 공간 좌표 계산
+            int baseX = 625 + (playerIndex % 2) * 310;  // 1P/3P, 2P/4P 구분
+            int baseY = 400 + (playerIndex / 2) * 150;  // 위/아래 구분
+            int offsetX = (horseIndex % 3) * 40;        // 옆으로 간격 배치
+            int offsetY = 50;                          // y축 간격 (원하면 추가로 조정)
+    
+            int malX = baseX + offsetX;
+            int malY = baseY + offsetY;
+    
+            // 👉 이미지 크기 반으로 줄이기
+            String imagePath = "CAU_SoftwareEngineering/src/Yutnori/View/picture/mal" + (playerIndex + 1) + ".png";
+            ImageIcon icon = new ImageIcon(imagePath);
+            int newWidth = icon.getIconWidth() / 2;
+            int newHeight = icon.getIconHeight() / 2;
+            Image scaledImage = icon.getImage().getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
+            malLabel.setIcon(new ImageIcon(scaledImage));
+    
+            malLabel.setBounds(malX, malY, newWidth, newHeight);
+            malLabel.putClientProperty("boardIndex", null);  // 대기 상태로 전환
+    
+            System.out.printf("[INFO] Player %d, Horse %d → 대기 위치로 이동%n", playerIndex + 1, horseIndex + 1);
+        } else if (destPoint != null) {
+            // 👉 일반 이동
             malLabel.setLocation(destPoint.x, destPoint.y);
             malLabel.putClientProperty("boardIndex", destinationIndex);
-    
-            // 👉 이동 버튼들 모두 제거
-            for (JButton btn : activeMoveButtons) {
-                layeredPane.remove(btn);
-            }
-            activeMoveButtons.clear();
-    
-            // pendingMoves에서 현재 이동 제거
-            if (!gameController.getPendingMoves().isEmpty()) {
-                gameController.getPendingMoves().remove(0);
-            }
-    
-            if (!gameController.CanThrow()) {
-                gameController.NextPlayerTurn();
-                int playerNum = horseLabels.length;
-                currentPlayerIndex = (currentPlayerIndex + 1) % playerNum;
-                turnLabel.setText("Player " + (currentPlayerIndex + 1) + "의 턴입니다.");
-            }
-    
-            layeredPane.revalidate();
-            layeredPane.repaint();
         }
+    
+        // 👉 이동 버튼 모두 제거
+        for (JButton btn : activeMoveButtons) {
+            layeredPane.remove(btn);
+        }
+        activeMoveButtons.clear();
+    
+        // 👉 pendingMoves에서 현재 이동 제거
+        if (!gameController.getPendingMoves().isEmpty()) {
+            gameController.getPendingMoves().remove(0);
+        }
+    
+        if (!gameController.CanThrow()) {
+            gameController.NextPlayerTurn();
+            int playerNum = horseLabels.length;
+            currentPlayerIndex = (currentPlayerIndex + 1) % playerNum;
+            turnLabel.setText("Player " + (currentPlayerIndex + 1) + "의 턴입니다.");
+        }
+    
+        layeredPane.revalidate();
+        layeredPane.repaint();
     }
     
     private void handleThrowButton() {
@@ -246,17 +275,14 @@ public class GameScreen extends JPanel {
             // ➥ 아직 boardIndex 설정 안 됨 (= 대기 중인 말)
             if (boardIndexValue == null) {
                 Point boardPoint = boardIndex.getPoint(100);
-                String imagePath = "CAU_SoftwareEngineering/src/Yutnori/View/picture/mal" + (playerIndex + 1) + ".png";
-                ImageIcon originalIcon = new ImageIcon(imagePath);
-                malLabel.setIcon(originalIcon);
     
-                int width = originalIcon.getIconWidth();
-                int height = originalIcon.getIconHeight();
+                // 기존 아이콘과 크기 그대로 사용
+                int width = malLabel.getWidth();
+                int height = malLabel.getHeight();
                 malLabel.setBounds(boardPoint.x, boardPoint.y, width, height);
-                
-                // layeredPane에서 z-index 올리기
+    
                 layeredPane.setLayer(malLabel, 3);
-                malLabel.putClientProperty("boardIndex", 0);  // 새로 올린 말은 출발 index 100로 설정
+                malLabel.putClientProperty("boardIndex", 0);  // 출발 인덱스로 설정
                 malLabel.repaint();
     
                 System.out.println("플레이어 " + (playerIndex + 1) + "의 새 말 생성됨 (index " + j + ")");
