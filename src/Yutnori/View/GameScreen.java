@@ -249,8 +249,7 @@ public class GameScreen extends JPanel implements GameEndObserver {
     private void UpdatePlayerInfos() {
         Player[] players = gameController.GetPlayerInfos();
         for (int i = 0; i < players.length; i++) {
-            //int waiting = players[i].getRemainPieceNumber();
-            int waiting = 100;
+            int waiting = players[i].getRemainPieceNumber();
             int finished = players[i].getCompletedPieceNumber();
             teamInfoLabels[i].setText("대기: " + waiting + " 완료: " + finished);
         }

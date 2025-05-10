@@ -28,6 +28,10 @@ public class GameManager implements GameEndSubject {
         init();     
     }
 
+
+
+
+
     //초기화 메서드
     private void init() {
         yuts = new Yuts();
