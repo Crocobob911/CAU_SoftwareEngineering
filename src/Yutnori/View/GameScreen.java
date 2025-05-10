@@ -31,7 +31,7 @@ public class GameScreen extends JPanel {
         layeredPane.setBounds(0, 0, 1200, 750);
 
         // 배경 이미지
-        ImageIcon combinedIcon = new ImageIcon("CAU_SoftwareEngineering/src/Yutnori/View/picture/background.png");
+        ImageIcon combinedIcon = new ImageIcon("src/Yutnori/View/picture/background.png");
         JLabel combinedLabel = new JLabel(combinedIcon);
         combinedLabel.setBounds(0, 0, 1200, 750);
         layeredPane.add(combinedLabel, Integer.valueOf(0));
@@ -40,16 +40,16 @@ public class GameScreen extends JPanel {
         String boardImagePath;
         switch (boardType) {
             case "사각형":
-                boardImagePath = "CAU_SoftwareEngineering/src/Yutnori/View/picture/rectYutBoard.png";
+                boardImagePath = "src/Yutnori/View/picture/rectYutBoard.png";
                 break;
             case "오각형":
-                boardImagePath = "CAU_SoftwareEngineering/src/Yutnori/View/picture/pentaYutBoard.png";
+                boardImagePath = "src/Yutnori/View/picture/pentaYutBoard.png";
                 break;
             case "육각형":
-                boardImagePath = "CAU_SoftwareEngineering/src/Yutnori/View/picture/hexaYutBoard.png";
+                boardImagePath = "src/Yutnori/View/picture/hexaYutBoard.png";
                 break;
             default:
-                boardImagePath = "CAU_SoftwareEngineering/src/Yutnori/View/picture/rectYutBoard.png";
+                boardImagePath = "src/Yutnori/View/picture/rectYutBoard.png";
         }
         ImageIcon boardIcon = new ImageIcon(boardImagePath);
         JLabel boardLabel = new JLabel(boardIcon);
@@ -62,7 +62,7 @@ public class GameScreen extends JPanel {
         layeredPane.add(throwButton, Integer.valueOf(2));
 
         // 우상단 mo 이미지
-        resultLabel = new JLabel(new ImageIcon("CAU_SoftwareEngineering/src/Yutnori/View/picture/mo.png"));
+        resultLabel = new JLabel(new ImageIcon("src/Yutnori/View/picture/mo.png"));
         resultLabel.setBounds(690, 105, 425, 210);
         layeredPane.add(resultLabel, Integer.valueOf(2));
 
@@ -80,14 +80,14 @@ public class GameScreen extends JPanel {
 
         // 말 초기 배치
         for (int i = 0; i < playerNum; i++) {
-            ImageIcon teamIcon = new ImageIcon("CAU_SoftwareEngineering/src/Yutnori/View/picture/team" + (i + 1) + ".png");
+            ImageIcon teamIcon = new ImageIcon("src/Yutnori/View/picture/team" + (i + 1) + ".png");
             JLabel teamLabel = new JLabel(teamIcon);
             int x = teamPositions[i][0];
             int y = teamPositions[i][1];
             teamLabel.setBounds(x, y, teamIcon.getIconWidth(), teamIcon.getIconHeight());
             layeredPane.add(teamLabel, Integer.valueOf(1));
 
-            ImageIcon malIcon = new ImageIcon("CAU_SoftwareEngineering/src/Yutnori/View/picture/mal" + (i + 1) + ".png");
+            ImageIcon malIcon = new ImageIcon("src/Yutnori/View/picture/mal" + (i + 1) + ".png");
             int malWidth = malIcon.getIconWidth() / 2;
             int malHeight = malIcon.getIconHeight() / 2;
             Image scaledImage = malIcon.getImage().getScaledInstance(malWidth, malHeight, Image.SCALE_SMOOTH);
@@ -193,7 +193,7 @@ public class GameScreen extends JPanel {
             int malY = baseY + offsetY;
     
             // 👉 이미지 크기 반으로 줄이기
-            String imagePath = "CAU_SoftwareEngineering/src/Yutnori/View/picture/mal" + (playerIndex + 1) + ".png";
+            String imagePath = "src/Yutnori/View/picture/mal" + (playerIndex + 1) + ".png";
             ImageIcon icon = new ImageIcon(imagePath);
             int newWidth = icon.getIconWidth() / 2;
             int newHeight = icon.getIconHeight() / 2;
@@ -263,7 +263,7 @@ public class GameScreen extends JPanel {
     }
 
     private void updateResultImage(YutResult result) {
-        String imagePath = "CAU_SoftwareEngineering/src/Yutnori/View/picture/" + result.name() + ".png";
+        String imagePath = "src/Yutnori/View/picture/" + result.name() + ".png";
         resultLabel.setIcon(new ImageIcon(imagePath));
     }
 
