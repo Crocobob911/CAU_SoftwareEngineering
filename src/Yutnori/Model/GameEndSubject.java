@@ -4,5 +4,5 @@ package Yutnori.Model;
 public interface GameEndSubject {
     void registerObserver(GameEndObserver o);
     void removeObserver(GameEndObserver o);
-    void notifyObservers();
+    void notifyObservers(int winner);
 }

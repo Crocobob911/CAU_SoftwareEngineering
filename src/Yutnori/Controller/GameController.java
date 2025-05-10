@@ -1,8 +1,6 @@
 package Yutnori.Controller;
 
-import Yutnori.Model.GameManager;
-import Yutnori.Model.Piece;
-import Yutnori.Model.Player;
+import Yutnori.Model.*;
 import Yutnori.Model.YutPackage.YutResult;
 import Yutnori.Model.YutPackage.Yuts;
 
@@ -17,6 +15,10 @@ public class GameController {
 
     public GameController(GameManager gameManager) {
         this.gameManager = gameManager;
+    }
+
+    public void AddObserver(GameEndObserver observer) {
+        gameManager.registerObserver(observer);
     }
     
     // region Throw Yut
