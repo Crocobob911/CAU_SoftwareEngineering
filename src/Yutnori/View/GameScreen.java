@@ -82,8 +82,10 @@ public class GameScreen extends JPanel {
             layeredPane.add(infoLabel, Integer.valueOf(2));
             teamInfoLabels[i] = infoLabel;
         }
+        // 초기 업데이트
         UpdatePiecesOfBoard();
         UpdatePlayerInfos();
+
         // pendingMovesPanel 생성 및 설정
         pendingMovesPanel = new JPanel();
         pendingMovesPanel.setLayout(new FlowLayout());
@@ -110,13 +112,15 @@ public class GameScreen extends JPanel {
         clearActiveMoveButtons();
     
         List<Integer> positions = gameController.WhereToGo(currentIndex, yutResult);
-        System.out.println("WhereToGo positions: " + positions);
         for (int pos : positions) {
             Point point = boardIndex.getPoint(pos);
             if (point != null) {
                 JButton btn = new JButton("→");
-                btn.setBounds(point.x, point.y, 50, 30);
+                btn.setBounds(point.x, point.y, 50, 40);
+                btn.setBorderPainted(true);
                 btn.addActionListener(e -> {
+                    System.out.println(currentIndex);
+                    System.out.println(yutResult);
                     movePieceByIndex(currentIndex, pos);
                     UpdatePiecesOfBoard();
                     UpdatePlayerInfos();
@@ -164,6 +168,7 @@ public class GameScreen extends JPanel {
             btn.addActionListener(e -> {
                 selectedYutResult = result;
                 JOptionPane.showMessageDialog(this, "선택됨: " + result.name());
+                gameController.removePendingMoveList(selectedYutResult.getSteps());
             });
             pendingMovesPanel.add(btn);
         }
@@ -203,7 +208,7 @@ public class GameScreen extends JPanel {
             JLabel malLabel = new JLabel(icon);
             malLabel.setBounds(point.x, point.y, w, h);
     
-            // ⭐ 말 클릭 리스너 추가
+            // 말 클릭 리스너 추가
             malLabel.addMouseListener(new java.awt.event.MouseAdapter() {
                 @Override
                 public void mouseClicked(java.awt.event.MouseEvent e) {

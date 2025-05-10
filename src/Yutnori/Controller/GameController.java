@@ -60,7 +60,7 @@ public class GameController {
         return gameManager.getMovablePositions(currentIndex, yutResult);
     }
 
-    public void MoveNewPiece(int yutResult, int destinationIndex){
+    public void MoveNewPiece(int destinationIndex){
         // 새로운 말의 출발
         gameManager.moveNewPiece(destinationIndex);
     }
@@ -68,6 +68,9 @@ public class GameController {
     public void MovePiece(int currentIndex, int destinationIndex){
         // 기존에 존재하던 말의 이동
         gameManager.movePiece(currentIndex, destinationIndex);
+    }
+    public void removePendingMoveList(int steps) {
+        gameManager.removePendingMoveList(steps);
     }
 
     public List<Piece> GetAllPieces(){
@@ -79,6 +82,7 @@ public class GameController {
     // 턴 넘겨주는 컨트롤 -- 김윤형이 추가함
     public void NextPlayerTurn() {
         gameManager.nextPlayerTurn();
+
     }
     // 누적된 윷 결과 반환
     public List<YutResult> getPendingMoves() {
