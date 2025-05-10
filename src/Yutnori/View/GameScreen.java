@@ -47,6 +47,12 @@ public class GameScreen extends JPanel {
         boardLabel.setBounds(20, 25, boardIcon.getIconWidth(), boardIcon.getIconHeight());
         layeredPane.add(boardLabel, Integer.valueOf(1));
 
+        // ComboBox 생성
+        String[] yutOptions = {"도", "개", "걸", "윷", "모", "백도"};
+        JComboBox<String> yutComboBox = new JComboBox<>(yutOptions);
+        yutComboBox.setBounds(700, 320, 120, 50);
+        layeredPane.add(yutComboBox, Integer.valueOf(2));   
+
         JButton throwButton = new JButton("던지기");
         throwButton.setBounds(850, 320, 100, 50);
         throwButton.addActionListener(e -> handleThrowYut());
@@ -55,6 +61,7 @@ public class GameScreen extends JPanel {
         resultLabel = new JLabel(new ImageIcon("src/Yutnori/View/picture/mo.png"));
         resultLabel.setBounds(690, 105, 425, 210);
         layeredPane.add(resultLabel, Integer.valueOf(2));
+        
 
         int[][] teamPositions = {{625, 400}, {935, 400}, {625, 550}, {935, 550}};
         teamInfoLabels = new JLabel[playerNum];
@@ -101,6 +108,7 @@ public class GameScreen extends JPanel {
         clearActiveMoveButtons();
     
         List<Integer> positions = gameController.WhereToGo(currentIndex, yutResult);
+        System.out.println("WhereToGo positions: " + positions);
         for (int pos : positions) {
             Point point = boardIndex.getPoint(pos);
             if (point != null) {
@@ -131,7 +139,11 @@ public class GameScreen extends JPanel {
             layeredPane.remove(btn);
         }
         activeMoveButtons.clear();
+    
+        layeredPane.revalidate();
+        layeredPane.repaint();
     }
+    
 
     private void handleThrowYut() {
         // 게임 컨트롤러에서 윷 던지기
@@ -187,7 +199,7 @@ public class GameScreen extends JPanel {
             icon = new ImageIcon(scaled);
             JLabel malLabel = new JLabel(icon);
             malLabel.setBounds(point.x, point.y, w, h);
-            layeredPane.add(malLabel, Integer.valueOf(3));
+            layeredPane.add(malLabel, Integer.valueOf(10));
             horseLabels[team][0] = malLabel;
         }
     }

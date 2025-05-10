@@ -16,7 +16,7 @@ public class Board {
         int index = from % 10;
 
         if(from == -3) {
-            result.add(step);
+            result.add(step-1);
             return result;
         }
         else if (from == -1) {   //도 백도(idx = -1) 이후 뭐든 나오면 종료
