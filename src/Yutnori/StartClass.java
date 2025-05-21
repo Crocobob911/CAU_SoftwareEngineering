@@ -1,23 +1,17 @@
 package Yutnori;
 
-import Yutnori.Controller.GameController;
-import Yutnori.Controller.GameStartController;
-import Yutnori.Model.GameManager;
+import Yutnori.Controller.GameSettingController;
 import Yutnori.Model.GameSetting;
-import Yutnori.View.Console.ConsoleSettingView;
-import Yutnori.View.GameSettingView;
 
 public class StartClass {
     public static void main(String[] args) {
-        // 게임 설정을 위한 View 클래스
-        GameSettingView gameSettingView = new ConsoleSettingView();
+        GameSettingController gameStartController = new GameSettingController();
+        gameStartController.startSetting();
 
-        gameSettingView.displayGameSettingOptions();
-        gameSettingView.setupGame();
-        GameSetting gameSetting = gameSettingView.getGameSetting();
+        GameSetting gameSetting = gameStartController.getGameSetting();
+        // 게임 설정을 완료한 후, GameSceneController를 통해 게임을 시작합니다.
 
 
     }
-
 
 }
