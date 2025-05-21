@@ -1,7 +1,10 @@
-package Yutnori.Model;
+package Yutnori.Model.YutPackage.Legacy;
 
+import Yutnori.Model.Board;
+import Yutnori.Model.GameSetting;
 import Yutnori.Model.Observer.GameEndObserver;
 import Yutnori.Model.Observer.GameEndSubject;
+import Yutnori.Model.Piece;
 import Yutnori.Model.YutPackage.YutResult;
 import Yutnori.Model.YutPackage.Yuts;
 
@@ -9,11 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class GameManager implements GameEndSubject {
+public class LegacyGameManager implements GameEndSubject {
     //필드
-    private final GameSetting gameSetting;
+    private GameSetting gameSetting;
     private Yuts yuts;
-    private Player[] players;
+    private LegacyPlayer[] legacyPlayers;
     Board board;
     List<GameEndObserver> gameEndObservers;
     //터미널용 스캐너
@@ -24,8 +27,7 @@ public class GameManager implements GameEndSubject {
     int remainActionNumber;
 
     //region 생성자
-    public GameManager (GameSetting gameSetting) {
-        this.gameSetting = gameSetting; 
+    public LegacyGameManager( ) {
 
         init();     
     }
@@ -45,120 +47,35 @@ public class GameManager implements GameEndSubject {
         pendingMoves = new ArrayList<>();
         gameEndObservers = new ArrayList<>();
         remainActionNumber = 0;
-        players = new Player[gameSetting.playerNumber];
+        legacyPlayers = new LegacyPlayer[gameSetting.playerNumber];
         for (int i = 0; i < gameSetting.playerNumber; i++) {
-            players[i] = new Player(i, gameSetting.pieceNumber);
+            legacyPlayers[i] = new LegacyPlayer(i, gameSetting.pieceNumber);
         }
 
 
     }
     //endregion
 
-    //region 테스트 용 터미널
-    private void printGameStatus() {
-        System.out.println("\nYutnori Game Status");
-        System.out.println("Now Turn Player: " + nowTurnPlayerID);
-        System.out.println("Pending Moves: " + pendingMoves.size());
-        for (YutResult yutResult : pendingMoves) {
-            System.out.println(yutResult.toString());
-        }
-        System.out.println("Remaining Actions: " + remainActionNumber);
-        System.out.println("------enter command");
-    }
 
-    private void startTerminalGame() {
-
-        //printGameStatus();
-        while (true) {
-            printGameStatus();
-            int commandNumber = sc.nextInt();
-            //커맨드 음수 -> 강제 커맨드
-            if(commandNumber == 0) {            //printStatus
-                printPlayerPiece(nowTurnPlayerID);
-            }
-            else if (commandNumber == -3) {     //윳 지정 던지기
-                System.out.println("enter yut type , -1, 1, 2, 3, 4, 5");
-                int value = sc.nextInt();
-                fixedEnroll(false, value);
-            }
-            else if (commandNumber == 3) {     //윳 지정 던지기 코스트 소모
-                System.out.println("enter yut type , -1, 1, 2, 3, 4, 5");
-                int value = sc.nextInt();
-                fixedEnroll(true, value);
-            }
-            else if (commandNumber == -1) {     //enroll        코스트 소모 없, 던지기
-                randomEnroll(false);
-            }
-            else if (commandNumber == 1) {      //enroll        코스트 소모, 던지기
-                randomEnroll(true);
-            }
-            else if (commandNumber == -2) {     //turn pass , 강제
-                nextPlayerTurn();
-            }
-            else if (commandNumber == 2) {      //use move
-                Player player = players[nowTurnPlayerID];
-                //piece index 선택
-                int pieceIndex = choosePieceIndex(player);
-
-                //move 양 선택
-                int moveStep = chooseMoveIndex(player);
-
-                //이동
-                if(pieceIndex == -1) {
-                    System.out.println("moveStep : " + moveStep);
-                    if(moveStep == -1) {return;}        //!!!!! 0에서 백도시 중지 !!! 프론트 단에서 막는게?
-
-                    player.initNewPiece();
-                    moveAction(player, player.getPieceListSize() - 1, moveStep - 1);    //시작 칸 인덱스가 없어서 -1
-                    //초기 시행시엔 갈림길 없다
-                }
-                else {
-                    int destinationPosition = chooseDestination(player, pieceIndex, moveStep);
-
-                    moveAction(player, pieceIndex, destinationPosition);
-                }
-                
-
-
-                //승리 조건 확인
-                if (isPlayerWinner()) {
-                    System.out.println("Winner : " + player.getTeamIndex());
-                    finishScene(player.getTeamIndex());
-                }
-
-                //남아 있는 이동 수가 없으면 턴 종료
-                if (pendingMoves.isEmpty() && remainActionNumber == 0) {
-                    nextPlayerTurn();
-                }
-            }
-
-
-            if(isCannotMove()) {        // 말 없는 상태에서 백도 상황 체크
-                nextPlayerTurn();
-            }
-        }
-    }
-
-
-    private int choosePieceIndex(Player player) {
+    private int choosePieceIndex(LegacyPlayer legacyPlayer) {
         System.out.println("Piece List : ");
-        int pieceListSize = player.getPieceListSize();
-        System.out.println("remain piece number : " + player.getRemainPieceNumber());
+        int pieceListSize = legacyPlayer.getPieceListSize();
+        System.out.println("remain piece number : " + legacyPlayer.getRemainPieceNumber());
         System.out.println("active piece list : ");
         for(int i = 0; i < pieceListSize; i++) {
-            System.out.println(i + " : " + player.getPiece(i).getPosition());
+            System.out.println(i + " : " + legacyPlayer.getPiece(i).getPosition());
         }
         System.out.println("choose Piece number : -1 : new Piece, 0~ : active piece");
         int pieceIndex = sc.nextInt();                             //선택된 piece 넘버
-        if (pieceIndex >= player.getPieceListSize()) {
+        if (pieceIndex >= legacyPlayer.getPieceListSize()) {
             System.out.println("Invalid Piece Number");
         }
 
         return pieceIndex;
     }
 
-    private int chooseMoveIndex(Player player) {
-        System.out.println("player :" + player.getTeamIndex());
+    private int chooseMoveIndex(LegacyPlayer legacyPlayer) {
+        System.out.println("player :" + legacyPlayer.getTeamIndex());
         for(int i = 0; i < pendingMoves.size(); i++) {
             System.out.println(i + " : " + pendingMoves.get(i).toString());
         }
@@ -170,8 +87,8 @@ public class GameManager implements GameEndSubject {
         return result;
     }
 
-    private int chooseDestination(Player player, int pieceIndex, int moveStep) {
-        int piecePosition = player.getPiecePosition(pieceIndex);
+    private int chooseDestination(LegacyPlayer legacyPlayer, int pieceIndex, int moveStep) {
+        int piecePosition = legacyPlayer.getPiecePosition(pieceIndex);
 
         System.out.println("moveable position list, now position : " + piecePosition);
         List<Integer> moveablePosition = board.getNextPosition(piecePosition, moveStep);
@@ -186,19 +103,19 @@ public class GameManager implements GameEndSubject {
     }
 
     private boolean isPlayerWinner() {
-        Player player = players[nowTurnPlayerID];
-        return player.getRemainPieceNumber() == 0
-                && player.getPieceListSize() == 0;
+        LegacyPlayer legacyPlayer = legacyPlayers[nowTurnPlayerID];
+        return legacyPlayer.getRemainPieceNumber() == 0
+                && legacyPlayer.getPieceListSize() == 0;
         // 남아 있는 말 수 없고, 활동중인 말 수 없으면 승리
     }
 
     private void printPlayerPiece(int playerId) {
-        Player player = players[playerId];
-        int pieceListSize = player.getPieceListSize();
-        System.out.println("remain piece number : " + player.getRemainPieceNumber());
+        LegacyPlayer legacyPlayer = legacyPlayers[playerId];
+        int pieceListSize = legacyPlayer.getPieceListSize();
+        System.out.println("remain piece number : " + legacyPlayer.getRemainPieceNumber());
         System.out.println("active piece list : ");
         for (int i = 0; i < pieceListSize; i++) {
-            System.out.println(i + " : position : " + player.getPiece(i).getPosition() + "  stack : " + player.getPiece(i).getStacked());
+            System.out.println(i + " : position : " + legacyPlayer.getPiece(i).getPosition() + "  stack : " + legacyPlayer.getPiece(i).getStacked());
         }
     }
 
@@ -226,7 +143,6 @@ public class GameManager implements GameEndSubject {
 
         init();
         resetTurn();
-        startTerminalGame();
     }
     public void endScene() {    //게임 종료
         System.exit(0);
@@ -265,8 +181,8 @@ public class GameManager implements GameEndSubject {
     }
     public List<Piece> getAllPieces() {
         List<Piece> pieceList = new ArrayList<>();
-        for(int i = 0; i < players.length; i++) {
-            pieceList.addAll(players[i].getPieceList());
+        for(int i = 0; i < legacyPlayers.length; i++) {
+            pieceList.addAll(legacyPlayers[i].getPieceList());
         }
 
         return pieceList;
@@ -280,8 +196,8 @@ public class GameManager implements GameEndSubject {
         return board.getNextPosition(currentPosition, moveStep);
     }
 
-    public Player[] getPlayers() {
-        return players;
+    public LegacyPlayer[] getPlayers() {
+        return legacyPlayers;
     }
 
     public int getRemainActionNumber() {
@@ -290,10 +206,10 @@ public class GameManager implements GameEndSubject {
 
     public void movePiece(int currentPosition, int destinationPosition) {
         Piece currentPiece = findPiece(currentPosition);
-        int idx = players[currentPosition].getPieceList().indexOf(currentPiece);
-        Player player = players[currentPosition];
+        int idx = legacyPlayers[currentPosition].getPieceList().indexOf(currentPiece);
+        LegacyPlayer legacyPlayer = legacyPlayers[currentPosition];
 
-        moveAction(player, idx, destinationPosition);
+        moveAction(legacyPlayer, idx, destinationPosition);
         //이동 후 턴 넘기기 확인
         //남아 있는 이동 수가 없으면 턴 종료
         if (isTurnEnd()) {
@@ -302,9 +218,9 @@ public class GameManager implements GameEndSubject {
     }
 
     public void moveNewPiece(int destinationPosition) {
-        Player player = players[nowTurnPlayerID];
-        player.initNewPiece();
-        moveAction(player, player.getPieceListSize() - 1, destinationPosition);     //맨 마지막에 add 되기에 idx고정값
+        LegacyPlayer legacyPlayer = legacyPlayers[nowTurnPlayerID];
+        legacyPlayer.initNewPiece();
+        moveAction(legacyPlayer, legacyPlayer.getPieceListSize() - 1, destinationPosition);     //맨 마지막에 add 되기에 idx고정값
         //이동 후 턴 넘기기 확인
         //남아 있는 이동 수가 없으면 턴 종료
         System.out.println(pendingMoves.size());
@@ -318,8 +234,8 @@ public class GameManager implements GameEndSubject {
         pendingMoves.remove(YutResult.fromSteps(steps));
     }
 
-    public void initNewPiece(Player player) {
-        player.initNewPiece();
+    public void initNewPiece(LegacyPlayer legacyPlayer) {
+        legacyPlayer.initNewPiece();
     }
 
     @Override
@@ -375,21 +291,21 @@ public class GameManager implements GameEndSubject {
     }
     //이동 희망시 일반 이동, 업기, 잡기 행동
 
-    private void moveAction(Player player, int idx, int position) {
+    private void moveAction(LegacyPlayer legacyPlayer, int idx, int position) {
         List<Piece> pieceList = new ArrayList<>();
 
         for(int i = 0; i < gameSetting.playerNumber; i++) {
-            pieceList.addAll(players[i].getPieceList());
+            pieceList.addAll(legacyPlayers[i].getPieceList());
         }
         for(Piece piece : pieceList) {
             if(board.isSamePosition(position, piece.getPosition())) {
                 if(piece.getStacked() == nowTurnPlayerID) {     //업기
-                    player.stackPiece(piece);
-                    player.disablePiece(idx);   //업힌말은 게임에서 제거
+                    legacyPlayer.stackPiece(piece);
+                    legacyPlayer.disablePiece(idx);   //업힌말은 게임에서 제거
                 }
                 else {
-                    players[piece.getOwnerID()].removePiece(piece);
-                    player.movePiece(idx, position);    // 잡고 이동
+                    legacyPlayers[piece.getOwnerID()].removePiece(piece);
+                    legacyPlayer.movePiece(idx, position);    // 잡고 이동
                     addAction();                        //추가 턴
                 }
 
@@ -397,14 +313,14 @@ public class GameManager implements GameEndSubject {
             }
         }
         if (position == -2) {                                               //완주
-            player.completePiece(player.getPiece(idx));        //선택한 피스 스택 수 만큼 완주 스택 증가
+            legacyPlayer.completePiece(legacyPlayer.getPiece(idx));        //선택한 피스 스택 수 만큼 완주 스택 증가
             if(isPlayerWinner()){
-                finishScene(player.getTeamIndex());
+                finishScene(legacyPlayer.getTeamIndex());
             };
             return;                                             //말 내리고 이동 x
 
         }
-        player.movePiece(idx, position);    //말이 없으니까 그냥 이동
+        legacyPlayer.movePiece(idx, position);    //말이 없으니까 그냥 이동
     }
     private boolean isTurnEnd() {
         return pendingMoves.isEmpty() && remainActionNumber == 0;
@@ -418,7 +334,7 @@ public class GameManager implements GameEndSubject {
     //움직일 수 없는 말에서 백도 체크
 
     private boolean isCannotMove(){
-        if(remainActionNumber == 0 && players[nowTurnPlayerID].getPieceListSize() == 0 && !pendingMoves.isEmpty()) {   //액션 x 말 x pendingMove 1이상
+        if(remainActionNumber == 0 && legacyPlayers[nowTurnPlayerID].getPieceListSize() == 0 && !pendingMoves.isEmpty()) {   //액션 x 말 x pendingMove 1이상
             for(YutResult yutResult : pendingMoves) {
                 if(yutResult != YutResult.BACK_DO) {
                     return false;

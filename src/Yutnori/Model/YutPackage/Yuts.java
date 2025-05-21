@@ -21,7 +21,6 @@ public class Yuts {
     }
 
 
-
     //#region Getter, setter
 
     public boolean getIsFaceUp(int index) {

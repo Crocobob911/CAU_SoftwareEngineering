@@ -1,15 +1,17 @@
-package Yutnori.Model;
+package Yutnori.Model.YutPackage.Legacy;
+
+import Yutnori.Model.Piece;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Player {
+public class LegacyPlayer {
     private final int teamIndex;
     private final List<Piece> pieceList;
     private int remainPieceNumber;
     private int completedPieceNumber;
 
-    public Player(int teamIndex, int remainPieceNumber) {
+    public LegacyPlayer(int teamIndex, int remainPieceNumber) {
         this.teamIndex = teamIndex;
         this.pieceList = new ArrayList<Piece>();
         this.remainPieceNumber = remainPieceNumber;
