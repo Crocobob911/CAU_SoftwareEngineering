@@ -9,11 +9,11 @@ import java.util.List;
 // 윷놀이 게임 진행에 대한 Controller
 // 윷을 던지고,
 // Board 위의 Piece들을 조정하는 controller
-public class GameController {
+public class GameSceneController {
 
     private GameManager gameManager;
 
-    public GameController(GameManager gameManager) {
+    public GameSceneController(GameManager gameManager) {
         this.gameManager = gameManager;
     }
 

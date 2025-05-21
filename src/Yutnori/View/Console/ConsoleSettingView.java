@@ -4,17 +4,18 @@ import Yutnori.Model.GameSetting;
 import Yutnori.View.GameSettingView;
 
 import java.util.Scanner;
+import java.util.function.Consumer;
 
 public class ConsoleSettingView implements GameSettingView {
     // 게임 설정을 위한 View 클래스
     // 이 클래스는 콘솔 기반에서 게임 설정을 위한 UI를 제공하는 역할을 합니다.
     // 플레이어 수, 말 수, 보드 타입 등을 설정할 수 있습니다.
 
-    int playerCount;
-    int pieceCount;
-    int boardType;
+    private int playerCount;
+    private int pieceCount;
+    private int boardType;
 
-    Scanner input = new Scanner(System.in);
+    private Scanner input = new Scanner(System.in);
 
     // 생성자
     public ConsoleSettingView() {
@@ -29,9 +30,8 @@ public class ConsoleSettingView implements GameSettingView {
 
     @Override
     public void displayGameSettingOptions() {
-        System.out.println("게임 설정 옵션을 선택하세요:");
-        //게임 세팅 진행
-        
+        System.out.println("===== 게임 설정 =====");
+        System.out.println("플레이어 수, 말 수, 보드 타입을 입력하세요.");        //게임 세팅 진행
     }
     
     @Override
@@ -40,6 +40,20 @@ public class ConsoleSettingView implements GameSettingView {
         setPlayerCount();
         setPieceCount();
         setBoardType();
+    }
+
+    @Override
+    public void OnSettingComplete(Consumer<GameSetting> callback) {
+
+    }
+
+    
+    public void OnSettingComplete() {
+        // 게임 설정 완료 시 호출되는 메서드
+        System.out.println("게임 설정이 완료되었습니다.");
+        System.out.println("플레이어 수: " + playerCount);
+        System.out.println("말 수: " + pieceCount);
+        System.out.println("보드 타입: " + boardType);
     }
     
     @Override
