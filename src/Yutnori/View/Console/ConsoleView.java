@@ -1,12 +1,12 @@
 package Yutnori.View.Console;
 
-import Yutnori.Model.GameSetting;
-import Yutnori.View.GameSettingView;
+import Yutnori.Model.Util.TripleInteger;
+import Yutnori.View.GameView;
 
 import java.util.Scanner;
 import java.util.function.Consumer;
 
-public class ConsoleSettingView implements GameSettingView {
+public class ConsoleView implements GameView {
     // 게임 설정을 위한 View 클래스
     // 이 클래스는 콘솔 기반에서 게임 설정을 위한 UI를 제공하는 역할을 합니다.
     // 플레이어 수, 말 수, 보드 타입 등을 설정할 수 있습니다.
@@ -15,10 +15,12 @@ public class ConsoleSettingView implements GameSettingView {
     private int pieceCount;
     private int boardType;
 
+    private Consumer<TripleInteger> callback;
+
     private Scanner input = new Scanner(System.in);
 
     // 생성자
-    public ConsoleSettingView() {
+    public ConsoleView() {
         // 초기화 작업을 수행합니다.
         this.playerCount = 0;
         this.pieceCount = 0;
@@ -29,38 +31,30 @@ public class ConsoleSettingView implements GameSettingView {
 
 
     @Override
-    public void displayGameSettingOptions() {
+    public void initSetting() {
         System.out.println("===== 게임 설정 =====");
         System.out.println("플레이어 수, 말 수, 보드 타입을 입력하세요.");        //게임 세팅 진행
     }
     
     @Override
-    public void setupGame() {
+    public void startSetting() {
         // 게임 설정을 위한 메서드 진행
         setPlayerCount();
         setPieceCount();
         setBoardType();
+
+        // 설정 완료 후, 설정 완료 메서드를 호출합니다.
+        if(callback != null) {
+            callback.accept(new TripleInteger(playerCount, pieceCount, boardType));
+        }
     }
 
     @Override
-    public void OnSettingComplete(Consumer<GameSetting> callback) {
-        
+    public void OnSettingComplete(Consumer<TripleInteger> callback) {
+        this.callback = callback;
     }
 
-    public void OnSettingComplete() {
-        // 게임 설정 완료 시 호출되는 메서드
-        System.out.println("게임 설정이 완료되었습니다.");
-        System.out.println("플레이어 수: " + playerCount);
-        System.out.println("말 수: " + pieceCount);
-        System.out.println("보드 타입: " + boardType);
-    }
 
-    
-    @Override
-    public GameSetting getGameSetting() {
-        // 게임 설정을 리턴하는 메서드
-        return new GameSetting(playerCount, pieceCount, boardType);
-    }
 
     private void setPlayerCount() {
         System.out.print("플레이어 수를 입력하세요 (2-4): ");
