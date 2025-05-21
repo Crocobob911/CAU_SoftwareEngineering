@@ -17,19 +17,23 @@ public class Yuts {
         
         if (steps == 1 && isFaceUp[0]) {steps = -1;} //백도 체크
 
-        return getYutResult(steps);
+        return YutResult.fromSteps(steps);
     }
 
-    private YutResult getYutResult(int steps) {
-        YutResult yutResult;
-        switch (steps) {
-            case 1: yutResult = YutResult.DO; break;
-            case 2: yutResult = YutResult.GAE; break;
-            case 3: yutResult = YutResult.GEOL; break;
-            case 4: yutResult = YutResult.YUT; break;
-            case 5: yutResult = YutResult.MO; break;
-            default: yutResult = YutResult.BACK_DO; break;
+
+
+    //#region Getter, setter
+
+    public boolean getIsFaceUp(int index) {
+        if (index < 0 || index >= YUT_NUMBER) {
+            throw new IndexOutOfBoundsException("Index out of bounds: " + index);
         }
-        return yutResult;
+        return isFaceUp[index];
     }
+
+    public boolean[] getIsFaceUp() {
+        return isFaceUp;
+    }
+
+    //#endregion
 }
