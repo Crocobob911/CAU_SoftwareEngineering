@@ -1,5 +1,7 @@
 package Yutnori.View;
 
+import Yutnori.Model.GameSetting;
+
 public interface GameSettingView {
     // 게임 설정을 위한 View 클래스
     // 이 클래스는 게임 설정을 위한 UI를 제공하는 역할을 합니다.
@@ -7,5 +9,7 @@ public interface GameSettingView {
 
     public abstract void displayGameSettingOptions(); // 게임 설정 옵션을 표시하는 메서드
 
-    public abstract int[] getGameSetting(); // 게임 설정을 입력받는 메서드
+    public abstract void setupGame(); // 게임 설정을 저장하는 메서드
+
+    public abstract GameSetting getGameSetting(); // 게임 설정을 입력받는 메서드
 }

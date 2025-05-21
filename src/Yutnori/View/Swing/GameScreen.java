@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Yutnori.Controller.GameController;
-import Yutnori.Model.GameEndObserver;
+import Yutnori.Model.Observer.GameEndObserver;
 import Yutnori.Model.Piece;
 import Yutnori.Model.Player;
 import Yutnori.Model.YutPackage.YutResult;

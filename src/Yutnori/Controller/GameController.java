@@ -1,8 +1,8 @@
 package Yutnori.Controller;
 
 import Yutnori.Model.*;
+import Yutnori.Model.Observer.GameEndObserver;
 import Yutnori.Model.YutPackage.YutResult;
-import Yutnori.Model.YutPackage.Yuts;
 
 import java.util.List;
 

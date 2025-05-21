@@ -1,4 +1,4 @@
-package Yutnori.Model;
+package Yutnori.Model.Observer;
 
 
 public interface GameEndSubject {

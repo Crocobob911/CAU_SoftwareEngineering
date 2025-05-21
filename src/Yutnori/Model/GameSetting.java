@@ -11,8 +11,6 @@ public class GameSetting {
         this.boardType = boardType;
     }
 
-
-
     //for debug, testing
     public static GameSetting getTestBoard() {
         return new GameSetting(2,3,4);

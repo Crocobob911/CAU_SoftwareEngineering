@@ -1,5 +1,6 @@
 package Yutnori.View.Console;
 
+import Yutnori.Model.GameSetting;
 import Yutnori.View.GameSettingView;
 
 import java.util.Scanner;
@@ -30,15 +31,21 @@ public class ConsoleSettingView implements GameSettingView {
     public void displayGameSettingOptions() {
         System.out.println("게임 설정 옵션을 선택하세요:");
         //게임 세팅 진행
+        
+    }
+    
+    @Override
+    public void setupGame() {
+        // 게임 설정을 위한 메서드 진행
         setPlayerCount();
         setPieceCount();
         setBoardType();
     }
     
     @Override
-    public int[] getGameSetting() {
+    public GameSetting getGameSetting() {
         // 게임 설정을 리턴하는 메서드
-        return new int[]{playerCount, pieceCount, boardType};
+        return new GameSetting(playerCount, pieceCount, boardType);
     }
 
     private void setPlayerCount() {
@@ -60,12 +67,11 @@ public class ConsoleSettingView implements GameSettingView {
     }
 
     private void setBoardType() {
-        System.out.print("보드 타입을 선택하세요 (1: 기본 사각형, 2: 오각형 변형, 3: 육각형 변형): ");
+        System.out.print("보드 타입을 선택하세요 (4: 기본 사각형, 5: 오각형 변형, 6: 육각형 변형): ");
         boardType = input.nextInt();
-        if (boardType < 1 || boardType > 3) {
-            System.out.println("잘못된 입력입니다. 1-3 사이의 숫자를 입력하세요.");
+        if (boardType < 4 || boardType > 6) {
+            System.out.println("잘못된 입력입니다. 4-6 사이의 숫자를 입력하세요.");
             setBoardType();
         }
-
     }
 }

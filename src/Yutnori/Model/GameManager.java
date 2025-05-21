@@ -1,5 +1,7 @@
 package Yutnori.Model;
 
+import Yutnori.Model.Observer.GameEndObserver;
+import Yutnori.Model.Observer.GameEndSubject;
 import Yutnori.Model.YutPackage.YutResult;
 import Yutnori.Model.YutPackage.Yuts;
 

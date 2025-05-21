@@ -1,12 +1,19 @@
 package Yutnori.Model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Piece {
-    private int ownerID;
+    private final int ownerID;
     private int position;
     private int stacked;
 
+    private final List<Integer> path;
+
 
     public Piece(int ownerID) {
+        path = new ArrayList<>();
+
         this.ownerID = ownerID;
         this.position = 0;
         this.stacked = 0;
