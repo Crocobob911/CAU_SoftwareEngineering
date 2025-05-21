@@ -43,6 +43,10 @@ public class ConsoleSettingView implements GameSettingView {
     }
 
     @Override
+    public void OnSettingComplete(Consumer<GameSetting> callback) {
+        
+    }
+
     public void OnSettingComplete() {
         // 게임 설정 완료 시 호출되는 메서드
         System.out.println("게임 설정이 완료되었습니다.");
@@ -50,14 +54,7 @@ public class ConsoleSettingView implements GameSettingView {
         System.out.println("말 수: " + pieceCount);
         System.out.println("보드 타입: " + boardType);
     }
-    
-    public void OnSettingComplete() {
-        // 게임 설정 완료 시 호출되는 메서드
-        System.out.println("게임 설정이 완료되었습니다.");
-        System.out.println("플레이어 수: " + playerCount);
-        System.out.println("말 수: " + pieceCount);
-        System.out.println("보드 타입: " + boardType);
-    }
+
     
     @Override
     public GameSetting getGameSetting() {
