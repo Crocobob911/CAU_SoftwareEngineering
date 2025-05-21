@@ -1,4 +1,4 @@
-package Yutnori.View;
+package Yutnori.View.Swing;
 
 import java.awt.*;
 import java.util.HashMap;

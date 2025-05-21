@@ -3,6 +3,7 @@ package Yutnori;
 import Yutnori.Controller.GameController;
 import Yutnori.Controller.GameStartController;
 import Yutnori.Model.GameManager;
+import Yutnori.View.GameSettingView;
 
 public class StartClass {
     public static void main(String[] args) {
@@ -10,7 +11,8 @@ public class StartClass {
         int playerNumber = 0;
         int pieceNumber = 0;
         int boardType = 0;
-        // View 측에서 위의 값들을 초기화해줘야함.
+        // 게임 설정을 위한 View 클래스
+        GameSettingView gameSettingView = null;
 
         // 1. GameStartController 생성
         GameStartController startController = new GameStartController();
