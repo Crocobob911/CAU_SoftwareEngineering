@@ -2,8 +2,6 @@ package Yutnori.Controller;
 
 import Yutnori.Model.GameModel;
 import Yutnori.Model.GameSetting;
-import Yutnori.Model.Piece;
-import Yutnori.Model.YutPackage.YutResult;
 import Yutnori.Model.YutPackage.Yut;
 import Yutnori.View.Console.ConsoleView;
 import Yutnori.View.GameView;
@@ -60,24 +58,48 @@ public class GameController {
         // 현재 플레이어의 턴을 처리하는 메서드
         // 플레이어의 액션을 처리하는 메서드
         // pieceAction은 플레이어가 선택한 포지션을 나타냅니다.
-        gameView.waitingAction(this::waitForSelectPosition, this::yutAction);       //readme : 자바의 람다의 메서드 참조 이용
+        gameView.waitingAction(this::waitForSelectYut, this::yutAction);       //readme : 자바의 람다의 메서드 참조 이용
     }
 
-    // 플레이어가 선택한 말이 어디로 갈지 입력을 대기하는 메서드
-    private void waitForSelectPosition(int piecePosition) {
+    // 플레이어가 선택한 말이 어떤 윷을 사용할지 선택하는 메서드
+    private void waitForSelectYut(int piecePosition) {
         // 플레이어가 선택한 포지션을 처리하는 메서드
         // piecePosition을 기반으로 피스를 이동시키는 메서드
+        if(piecePosition == -1) {
+            gameModel.initNewPiece();
+        }
+        gameModel.setSelectedPiecePosition(piecePosition);
+        gameView.waitingSelectYutStep(this::waitForSelectPosition);
 
     }
+
+    // 플레이어가 선택한 윷을 기반으로 이동 가능한 위치를 처리하는 메서드
+    private void waitForSelectPosition(int yutIndex) {
+        // 플레이어가 선택한 윷을 기반으로 이동 가능한 위치를 처리하는 메서드
+        // yutStep을 기반으로 이동 가능한 위치를 처리하는 메서드
+        gameModel.findMovablePositions(yutIndex);
+        gameView.waitingSelectPosition(this::movePiece);
+    }
+
+
 
     // yutAction 메서드 - 주어진 값에 따라 지정 윷 또는 랜덤 윷을 모델에 추가 함
     private void yutAction(int yutStep) {
         // 윷놀이 결과를 처리하는 메서드
-        if (!YutResult.contains(yutStep)) {     //random 윷놀이 결과를 처리하는 메서드
+        if (!Yut.isContains(yutStep)) {     //random 윷놀이 결과를 처리하는 메서드
             yutStep = Yut.getYutResult();
         }
         // 조건에 안 걸리면 yutStep을 그대로 사용 -> 미리 지정한 값을 그대로 자겨옴
         gameModel.addYutResult(yutStep);
+
+        // 액션 후 처리
+        handleAfterAction();
+    }
+
+    private void movePiece(int positionIndex) {
+        // 플레이어가 선택한 포지션을 기반으로 피스를 이동시키는 메서드
+        // piecePosition을 기반으로 피스를 이동시키는 메서드
+        gameModel.movePieceByIndex(positionIndex);
 
         // 액션 후 처리
         handleAfterAction();

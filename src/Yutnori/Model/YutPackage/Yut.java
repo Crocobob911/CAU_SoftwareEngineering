@@ -25,4 +25,11 @@ public class Yut {
         return result;
     }
 
+    public static boolean isContains(int yutResult) {
+        return yutResult == -1 || (yutResult >= 1 && yutResult <= 5);
+    }
+
+    public static boolean isBonus(int yutResult) {
+        return yutResult == 4 || yutResult == 5;
+    }
 }
