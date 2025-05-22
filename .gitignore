@@ -21,3 +21,6 @@ target/
 # OS 임시 파일 무시
 Thumbs.db
 ehthumbs.db
+
+# workspace 설정 파일 무시
+.idea/workspace.xml
