@@ -19,4 +19,7 @@ public interface GameView extends GameModelObserver {
     void startScene(GameSetting gameSetting); // 게임 씬 초기화 메서드
     // 플레이어의 액션을 기다리는 메서드 : action 은 pieceActionCallback, YutActionCallback 두가지로 나뉨
     void waitingAction(Consumer<Integer> pieceActionCallback, Consumer<Integer> YutActionCallback);
+    // 플레이어의 액션을 기다리는 메서드 : 위에 액션에서 pieceActionCallback 단계 이후 어디로 갈 것인지 선택 대기
+    void waitingSelectYutStep(Consumer<Integer> moveActionCallback); // Yut 액션을 기다리는 메서드
+
 }

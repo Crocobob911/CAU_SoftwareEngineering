@@ -13,10 +13,10 @@ public class GameModel {
     private Board board;
 
     // 플레이어가 남은 말 수를 저장하는 배열 -> observer -> remaining pieces info
-    private int[] playerPiecesLeft;
+    private int[] remainingPieces;
 
     // 현재 플레이어 턴, 현재 턴의 액션 수 -> observer -> now player info
-    private int currentPlayerID = 0;
+    private int nowPlayerID = 0;
     private int rollCount = 0;
     private List<Integer> yutResult = new ArrayList<>(); // yutResult 를 저장하는 리스트 -1, 1, 2, 3, 4, 5
 
@@ -24,14 +24,14 @@ public class GameModel {
     //게임 설정 - gameSetting 을 기반으로 초기화, startGame 이전에 controller 에서 호출
     public void startModel(GameSetting gameSetting) {
         this.gameSetting = gameSetting;
-        this.playerPiecesLeft = new int[gameSetting.playerNumber];
+        this.remainingPieces = new int[gameSetting.playerNumber];
         for (int i = 0; i < gameSetting.playerNumber; i++) {
-            playerPiecesLeft[i] = gameSetting.pieceNumber;
+            remainingPieces[i] = gameSetting.pieceNumber;
         }
         this.board = new Board(gameSetting.boardType);
 
         // 게임 플레이어 관련 초기화
-        currentPlayerID = 0;
+        nowPlayerID = 0;
         rollCount = 1;
     }
 
@@ -40,15 +40,20 @@ public class GameModel {
     // 턴 전환 메서드, isTurnEnd() 메서드로 턴 종료 여부 확인후 호출할 것
     public void nextTurn() {
         // 다음 플레이어 턴으로 넘어감
-        currentPlayerID = (currentPlayerID + 1) % gameSetting.playerNumber;
+        nowPlayerID = (nowPlayerID + 1) % gameSetting.playerNumber;
         rollCount = 1;
 
-        notifyObservers(ModelChangeType.NOW_PLAYER_INFO, currentPlayerID);
+        notifyObservers(ModelChangeType.NOW_PLAYER_INFO, nowPlayerID);
     }
 
-    // 턴 종료 여부 확인 메서드
+    // 턴 종료 여부 확인 메서드 - 남은 액션이 없고, 윷 결과가 없을 때
     public boolean isTurnEnd() {
         return rollCount <= 0 && yutResult.isEmpty();
+    }
+
+    // 게임 종료 여부 확인 메서드 - 남은 말 없고, 보드에 말이 없을 때
+    public boolean isGameEnd() {
+        return remainingPieces[nowPlayerID] <= 0 && !isPlayerPieceInBoard(nowPlayerID);
     }
 
     // 플레이어의 액션을 처리하는 메서드
@@ -74,7 +79,7 @@ public class GameModel {
     public void initPiece(int playerID) {
         Piece piece = new Piece(playerID);
         pieces.add(piece);
-        playerPiecesLeft[playerID]--;
+        remainingPieces[playerID]--;
 
         // 플레이어가 남은 말 수를 줄이고, 게임 모델에 알림, deep copy 진행을 통한 model 오브젝트 보호 -> deep copy 비용이 발생하지만, 소규모 프로젝트를 감안
         // deep copy를 통해 pieces 리스트를 보호
@@ -94,7 +99,23 @@ public class GameModel {
         return movablePositions.stream().mapToInt(i -> i).toArray();
     }
 
+    public void endGame() {
+        // 게임 종료 처리
+        System.out.println("model : 게임이 종료되었습니다.");
+        notifyObservers(ModelChangeType.GAME_END, null);
+    }
 
+    //#region private 메서드
+    private boolean isPlayerPieceInBoard(int playerID) {
+        for (Piece piece : pieces) {
+            if (piece.getOwnerID() == playerID) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //#endregion
 
 
 

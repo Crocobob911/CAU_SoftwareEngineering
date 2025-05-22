@@ -17,10 +17,18 @@ public class ConsoleView implements GameView {
     private Consumer<TripleInteger> callback;
 
     private Scanner input = new Scanner(System.in);
-    // 생성자
-    public ConsoleView() {
 
-    }
+    //#region 인스턴스 변수
+    private int nowPlayerID; // 현재 플레이어 ID
+    private int rollCount; // 남은 말 수
+    private int[] remainingPieces; // 남은 말 수
+    private Piece[] boardPieces; // 보드에 있는 말 정보
+    private int[] yutResult; // 사용가능한 윷 결과
+
+    private int[] pieceMoveableInfo; // 이동 가능한 말 정보 -> 주로 말 이동 시 사용 평상시엔 쓰이지 않는다.
+
+
+    //#endregion
 
     // 게임 설정 옵션을 표시하는 메서드
 
@@ -55,6 +63,8 @@ public class ConsoleView implements GameView {
                 updatePieceMoveableInfo(pieceMoveableInfo);
                 break;
             case GAME_END:
+                updateGameEnd(); // 게임 종료 시에 사용
+                break;
 
             default:
                 System.out.println("알 수 없는 업데이트 타입입니다.");
@@ -108,7 +118,7 @@ public class ConsoleView implements GameView {
     }
 
     private void updateGameEnd() {
-        System.out.println("게임이 종료되었습니다.");
+        System.out.println("view : 게임이 종료되었습니다.");
     }
     //#endregion
 
@@ -207,6 +217,13 @@ public class ConsoleView implements GameView {
         }
     }
 
+    @Override
+    public void waitingSelectYutStep(Consumer<Integer> moveActionCallback) {
+        // 플레이어의 액션을 기다리는 메서드 : 위에 액션에서 pieceActionCallback 단계 이후 어디로 갈 것인지 선택 대기
+        System.out.print("이동할 위치를 선택하세요: ");
+        int movePosition = input.nextInt();
+        moveActionCallback.accept(movePosition);
+    }
     //#endregion
 }
 

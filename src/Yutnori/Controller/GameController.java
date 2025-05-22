@@ -67,7 +67,6 @@ public class GameController {
     private void waitForSelectPosition(int piecePosition) {
         // 플레이어가 선택한 포지션을 처리하는 메서드
         // piecePosition을 기반으로 피스를 이동시키는 메서드
-        Piece piece = gameModel.getPiece(piecePosition);
 
     }
 
@@ -79,10 +78,21 @@ public class GameController {
         }
         // 조건에 안 걸리면 yutStep을 그대로 사용 -> 미리 지정한 값을 그대로 자겨옴
         gameModel.addYutResult(yutStep);
+
+        // 액션 후 처리
+        handleAfterAction();
     }
 
     private void handleAfterAction() {  
         // 액션 후 처리하는 메서드
+
+        // 게임 종료 여부 확인
+        if (gameModel.isGameEnd()) {
+            gameModel.endGame();
+            endGame();
+            return;
+        }
+
         // 턴 종료 여부 확인
         if (gameModel.isTurnEnd()) {
             gameModel.nextTurn();
@@ -90,5 +100,11 @@ public class GameController {
 
         // 다음 액션 처리
         waitingAction();
+    }
+
+    private void endGame() {
+        // 게임 종료 처리하는 메서드
+        System.out.println("controller : 게임이 종료되었습니다.");
+        System.exit(0);
     }
 }
