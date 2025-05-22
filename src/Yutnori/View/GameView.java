@@ -2,6 +2,7 @@ package Yutnori.View;
 
 import Yutnori.Model.GameSetting;
 import Yutnori.Model.Observer.GameModelObserver;
+import Yutnori.Model.Piece;
 import Yutnori.Model.Util.TripleInteger;
 
 import java.util.function.Consumer;
@@ -16,5 +17,6 @@ public interface GameView extends GameModelObserver {
 
     //게임 실행을 위한 메서드
     void startScene(GameSetting gameSetting); // 게임 씬 초기화 메서드
-
+    // 플레이어의 액션을 기다리는 메서드 : action 은 pieceActionCallback, YutActionCallback 두가지로 나뉨
+    void waitingAction(Consumer<Integer> pieceActionCallback, Consumer<Integer> YutActionCallback);
 }

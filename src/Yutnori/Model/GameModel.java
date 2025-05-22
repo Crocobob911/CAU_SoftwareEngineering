@@ -3,6 +3,7 @@ package Yutnori.Model;
 import Yutnori.Model.Observer.GameModelObserver;
 import java.util.ArrayList;
 import java.util.List;
+
 import Yutnori.Model.Observer.ModelChangeType;
 
 public class GameModel {
@@ -16,18 +17,46 @@ public class GameModel {
 
     // 현재 플레이어 턴, 현재 턴의 액션 수 -> observer -> now player info
     private int currentPlayerID = 0;
-    private int actionCount = 0;
+    private int rollCount = 0;
+    private List<Integer> yutResult = new ArrayList<>(); // yutResult 를 저장하는 리스트 -1, 1, 2, 3, 4, 5
 
 
-
-    //게임 설정 - gameSetting 을 기반으로 초기화
-    public void initScene(GameSetting gameSetting) {
+    //게임 설정 - gameSetting 을 기반으로 초기화, startGame 이전에 controller 에서 호출
+    public void startModel(GameSetting gameSetting) {
         this.gameSetting = gameSetting;
         this.playerPiecesLeft = new int[gameSetting.playerNumber];
         for (int i = 0; i < gameSetting.playerNumber; i++) {
             playerPiecesLeft[i] = gameSetting.pieceNumber;
         }
         this.board = new Board(gameSetting.boardType);
+
+        // 게임 플레이어 관련 초기화
+        currentPlayerID = 0;
+        rollCount = 1;
+    }
+
+
+
+    // 턴 전환 메서드, isTurnEnd() 메서드로 턴 종료 여부 확인후 호출할 것
+    public void nextTurn() {
+        // 다음 플레이어 턴으로 넘어감
+        currentPlayerID = (currentPlayerID + 1) % gameSetting.playerNumber;
+        rollCount = 1;
+
+        notifyObservers(ModelChangeType.NOW_PLAYER_INFO, currentPlayerID);
+    }
+
+    // 턴 종료 여부 확인 메서드
+    public boolean isTurnEnd() {
+        return rollCount <= 0 && yutResult.isEmpty();
+    }
+
+    // 플레이어의 액션을 처리하는 메서드
+    public void addYutResult(int result) {
+        yutResult.add(result);
+        rollCount--;
+
+        notifyObservers(ModelChangeType.YUT_RESULT, yutResult.stream().mapToInt(Integer::intValue).toArray());      //list to int[]
     }
 
     //포지션을 기반으로 피스를 찾음 -> 윷놀이에서 포지션 한 곳에 하나의 피스만 존재
@@ -55,6 +84,17 @@ public class GameModel {
         }
         notifyObservers(ModelChangeType.REMAINING_PIECES_INFO, piecesCopy); // 말 하나가 변경되었으니 게임 인포로 알림
     }
+
+    public int[] getMovablePositions(Piece piece, int step) {
+        return getMovablePositions(piece.getPosition() , step);
+    }
+
+    public int[] getMovablePositions(int piecePosition, int step) {
+        List<Integer> movablePositions = board.getNextPosition(piecePosition, step);
+        return movablePositions.stream().mapToInt(i -> i).toArray();
+    }
+
+
 
 
 

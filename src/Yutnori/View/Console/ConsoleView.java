@@ -46,10 +46,15 @@ public class ConsoleView implements GameView {
                 Piece[] boardPieces = (Piece[]) value; // 보드 정보 -> 주로 piece 정보
                 updateBoardPieces(boardPieces);
                 break;
-            case YUTRESULT:
-                updateYutResult();
+            case YUT_RESULT:
+                int[] yutResult = (int[]) value;       // 윷을 던질 때 및 소모 시에 사용
+                updateYutResult(yutResult); // 윷을 던질 때에 주로 사용
                 break;
             case PIECE_MOVEABLE_INFO:
+                int[] pieceMoveableInfo = (int[]) value; // 말 이동 가능 정보 -> 주로 말 이동 시 사용
+                updatePieceMoveableInfo(pieceMoveableInfo);
+                break;
+            case GAME_END:
 
             default:
                 System.out.println("알 수 없는 업데이트 타입입니다.");
@@ -57,7 +62,7 @@ public class ConsoleView implements GameView {
         }
     }
 
-    // update 개별 메서드
+    //#region update 개별 메서드
     private void updateNowPlayerInfo(int[] playerInfo) {
         System.out.println("현재 플레이어: " + playerInfo[0]);
         System.out.println("남은 액션 수: " + playerInfo[1]);
@@ -84,15 +89,32 @@ public class ConsoleView implements GameView {
         System.out.println("남은 말 수가 업데이트되었습니다.");
     }
 
-    private void updateYutResult() {
+
+    private void updateYutResult(int[] yutResult) {
+        System.out.println("현재 윷 결과: ");
+        for (int i = 0; i < yutResult.length; i++) {
+            System.out.println(i + ": " + yutResult[i]);
+        }
+        System.out.println("윷 결과가 업데이트되었습니다.");
+    }
+
+    private void updatePieceMoveableInfo(int[] pieceMoveableInfo) {
+        System.out.println("이동 가능한 말 정보: ");
+        for (int i = 0; i < pieceMoveableInfo.length; i++) {
+            System.out.println(i + ": " + pieceMoveableInfo[i]);
+        }
+        System.out.println("이동 가능한 말 정보가 업데이트되었습니다.");
 
     }
 
-    private void updatePieceMoveableInfo() {
-
+    private void updateGameEnd() {
+        System.out.println("게임이 종료되었습니다.");
     }
     //#endregion
 
+    //#endregion
+
+    //#region 게임 설정을 위한 override 메서드
     @Override
     public void initSetting() {
         System.out.println("===== 게임 설정 =====");
@@ -126,8 +148,9 @@ public class ConsoleView implements GameView {
         System.out.println("보드 타입: " + gameSetting.boardType);
 
     }
+    //#endregion
 
-    //#region 게임 설정을 위한 메서드
+    //#region 게임 설정을 위한 private 메서드
     private int setPlayerCount() {
         System.out.print("플레이어 수를 입력하세요 (2-4): ");
         int playerCount = input.nextInt();
@@ -159,5 +182,31 @@ public class ConsoleView implements GameView {
     }
     //#endregion
 
+    //#region 게임 실행을 위한 override 메서드
+    @Override
+    public void waitingAction(Consumer<Integer> pieceActionCallback, Consumer<Integer> YutActionCallback) {
+        // 플레이어의 액션을 기다리는 메서드 : action 은 pieceActionCallback, YutActionCallback 두가지로 나뉨
+        System.out.println("액션을 선택하세요.");
+        System.out.println("1. 말 이동");
+        System.out.println("2. 윷 던지기");
+
+        int action = input.nextInt();
+        if (action == 1) {
+            System.out.print("이동할 말을 선택하세요: position 에 없는 말을 선택할 시 오류가 발생합니다.");
+            int pieceID = input.nextInt();
+            pieceActionCallback.accept(pieceID);
+        }
+        else if (action == 2) {
+            System.out.println("어떤 방법으로 윷을 던질 지 선택하세요 : -1 : 백도 / 1 : 도 / 2 : 걸 / 3 : 윷 / 4 : 모 / 그 외는 랜덤윷 던지기를 수행합니다.");
+            int yutType = input.nextInt();
+            YutActionCallback.accept(yutType);      //지정 윷, 랜덤 윷 실 처리는 controller 에서 진행합니다.
+        }
+        else {
+            System.out.println("잘못된 입력입니다. 다시 시도하세요.");
+            waitingAction(pieceActionCallback, YutActionCallback);
+        }
+    }
+
+    //#endregion
 }
 

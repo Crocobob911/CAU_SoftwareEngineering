@@ -13,7 +13,7 @@ public class GameSetting {
 
     @Override
     public String toString() {
-        return "GameSetting{" +
+        return  "GameSetting{" +
                 "playerNumber=" + playerNumber +
                 ", pieceNumber=" + pieceNumber +
                 ", boardType=" + boardType +

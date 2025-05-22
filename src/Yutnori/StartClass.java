@@ -11,8 +11,9 @@ public class StartClass {
         GameView gameView = new ConsoleView();                  //view 생성
         GameModel gameModel = new GameModel();                  //model 생성
         gameModel.registerObserver(gameView);
-        GameController gameController = new GameController();
-        gameController.startSetting();
+        GameController gameController = new GameController(gameModel, gameView);
+
+        gameController.startProgram();
 
 
     }

@@ -14,7 +14,7 @@ public enum YutResult {
         this.steps = steps;
     }
     public int getSteps() {return steps;}
-    public boolean isBouns() {
+    public boolean isBonus() {
         return steps == 4 || steps == 5;
     }
 
@@ -25,5 +25,14 @@ public enum YutResult {
             }
         }
         throw new IllegalArgumentException("Invalid steps: " + steps);
+    }
+
+    public static boolean contains(int steps) {
+        for (YutResult result : values()) {
+            if (result.steps == steps) {
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -1,6 +1,10 @@
 package Yutnori.Controller;
 
+import Yutnori.Model.GameModel;
 import Yutnori.Model.GameSetting;
+import Yutnori.Model.Piece;
+import Yutnori.Model.YutPackage.YutResult;
+import Yutnori.Model.YutPackage.Yut;
 import Yutnori.View.Console.ConsoleView;
 import Yutnori.View.GameView;
 
@@ -8,14 +12,29 @@ public class GameController {
     // 게임 설정을 위한 View 클래스
     GameSetting gameSetting;
 
+    //연결된 model과 view
+    private final GameView gameView;
+    private final GameModel gameModel;
+
+    //생성자
+    public GameController(GameModel gameModel, GameView gameView) {
+        this.gameModel = gameModel;
+        this.gameView = gameView;
+    }
 
     // 순서 주의 사항 -> onSettingComplete 메서드에서 gameSetting을 초기화 한후 startSetting을 호출해 데이터를 받아야 합니다.
-    public void startSetting() {
+    public void startProgram() {
+        setGameSetting();
+    }
+
+    // 게임 설정을 위한 메서드
+    public void setGameSetting() {
         //test : console 환경에서 setting을 진행합니다.
         GameView gameSettingView = new ConsoleView();     //test : 콘솔 환경에서 설정을 진행합니다.
 
         gameSettingView.initSetting();
 
+        // 게임 설정 완료 시 호출할 콜백을 등록하는 메서드
         gameSettingView.OnSettingComplete(values -> {
             gameSetting = new GameSetting(values.first, values.second, values.third);
             System.out.println("게임 설정 완료 : " + gameSetting.toString());
@@ -27,6 +46,49 @@ public class GameController {
     }
 
     private void startGame() {
+        // 게임 모델 초기화
+        gameModel.startModel(gameSetting);
 
+        // 게임 씬 초기화
+        gameView.startScene(gameSetting);
+
+        // 게임 실행을 위한 메서드
+        waitingAction();
+    }
+
+    private void waitingAction() {
+        // 현재 플레이어의 턴을 처리하는 메서드
+        // 플레이어의 액션을 처리하는 메서드
+        // pieceAction은 플레이어가 선택한 포지션을 나타냅니다.
+        gameView.waitingAction(this::waitForSelectPosition, this::yutAction);       //readme : 자바의 람다의 메서드 참조 이용
+    }
+
+    // 플레이어가 선택한 말이 어디로 갈지 입력을 대기하는 메서드
+    private void waitForSelectPosition(int piecePosition) {
+        // 플레이어가 선택한 포지션을 처리하는 메서드
+        // piecePosition을 기반으로 피스를 이동시키는 메서드
+        Piece piece = gameModel.getPiece(piecePosition);
+
+    }
+
+    // yutAction 메서드 - 주어진 값에 따라 지정 윷 또는 랜덤 윷을 모델에 추가 함
+    private void yutAction(int yutStep) {
+        // 윷놀이 결과를 처리하는 메서드
+        if (!YutResult.contains(yutStep)) {     //random 윷놀이 결과를 처리하는 메서드
+            yutStep = Yut.getYutResult();
+        }
+        // 조건에 안 걸리면 yutStep을 그대로 사용 -> 미리 지정한 값을 그대로 자겨옴
+        gameModel.addYutResult(yutStep);
+    }
+
+    private void handleAfterAction() {  
+        // 액션 후 처리하는 메서드
+        // 턴 종료 여부 확인
+        if (gameModel.isTurnEnd()) {
+            gameModel.nextTurn();
+        }
+
+        // 다음 액션 처리
+        waitingAction();
     }
 }
