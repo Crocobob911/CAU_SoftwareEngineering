@@ -2,6 +2,7 @@ package Yutnori.View.Console;
 
 import Yutnori.Model.GameSetting;
 import Yutnori.Model.Observer.ModelChangeType;
+import Yutnori.Model.Piece;
 import Yutnori.Model.Util.TripleInteger;
 import Yutnori.View.GameView;
 
@@ -22,14 +23,75 @@ public class ConsoleView implements GameView {
     }
 
     // 게임 설정 옵션을 표시하는 메서드
+
+    //#region model -> view 간 옵저버 패턴
     @Override
-    public void onUpdate(ModelChangeType type) {
+    public void onUpdate(ModelChangeType type, Object value) {
         // 게임 모델의 상태가 변경되었을 때 호출되는 메서드입니다.
         // 이 메서드는 게임 모델의 상태에 따라 UI를 업데이트하는 역할을 합니다.
         // 예를 들어, 플레이어의 턴이 변경되거나 게임이 종료될 때 UI를 업데이트할 수 있습니다.
         System.out.println("게임 모델이 업데이트되었습니다. 타입: " + type);
 
+        // 왜 싹다 배열인가요? deep copy를 통해서 모델을 보호하기 위해서입니다. 즉 딱히 List 필요가 없어요
+        switch (type) {
+            case REMAINING_PIECES_INFO:
+                int[] pieces = (int[]) value;
+                updateRemainingPieces(pieces);
+                break;
+            case NOW_PLAYER_INFO:
+                int[] playerInfo = (int[]) value;       // 현재 플레이어 정보 : playerID, 남은 액션 || array size 2
+                updateNowPlayerInfo(playerInfo);
+                break;
+            case BOARD_PIECES_INFO:
+                Piece[] boardPieces = (Piece[]) value; // 보드 정보 -> 주로 piece 정보
+                updateBoardPieces(boardPieces);
+                break;
+            case YUTRESULT:
+                updateYutResult();
+                break;
+            case PIECE_MOVEABLE_INFO:
+
+            default:
+                System.out.println("알 수 없는 업데이트 타입입니다.");
+                break;
+        }
     }
+
+    // update 개별 메서드
+    private void updateNowPlayerInfo(int[] playerInfo) {
+        System.out.println("현재 플레이어: " + playerInfo[0]);
+        System.out.println("남은 액션 수: " + playerInfo[1]);
+        System.out.println("현재 플레이어 정보가 업데이트되었습니다.");
+    }
+
+    private void updateBoardPieces(Piece[] boardPieces) {
+        System.out.println("보드에 있는 말 정보: ");
+        for (Piece piece : boardPieces) {
+            System.out.println("플레이어 " + piece.getOwnerID() + "의 말 위치: " + piece.getPosition());
+            if (piece.getStacked() > 0) {
+                System.out.println("스택된 말 수: " + piece.getStacked());
+            }
+        }
+        System.out.println("보드 정보가 업데이트되었습니다.");
+    }
+
+    // 남은 말 수를 업데이트하는 메서드
+    private void updateRemainingPieces(int[] remainingPieces) {
+        System.out.println("남은 말 수: ");
+        for (int i = 0; i < remainingPieces.length; i++) {
+            System.out.println("플레이어 " + (i) + ": " + remainingPieces[i] + "개");
+        }
+        System.out.println("남은 말 수가 업데이트되었습니다.");
+    }
+
+    private void updateYutResult() {
+
+    }
+
+    private void updatePieceMoveableInfo() {
+
+    }
+    //#endregion
 
     @Override
     public void initSetting() {

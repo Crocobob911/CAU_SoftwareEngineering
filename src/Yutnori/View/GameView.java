@@ -17,5 +17,4 @@ public interface GameView extends GameModelObserver {
     //게임 실행을 위한 메서드
     void startScene(GameSetting gameSetting); // 게임 씬 초기화 메서드
 
-
 }
