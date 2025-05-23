@@ -2,7 +2,7 @@ package Yutnori.Model;
 
 import org.junit.Test;
 
-public class GameSettingTest {
+public class GameSettingTest{
 
     @Test
     public void MakeGameSetting(){
