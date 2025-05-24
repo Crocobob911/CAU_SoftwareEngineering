@@ -3,8 +3,8 @@ package Yutnori.Controller;
 import Yutnori.Model.GameModel;
 import Yutnori.Model.GameSetting;
 import Yutnori.Model.YutPackage.Yut;
-import Yutnori.View.Console.ConsoleView;
-import Yutnori.View.GameView;
+import Yutnori.View.yoonis.Console.ConsoleView;
+import Yutnori.View.yoonis.GameView;
 
 public class GameController {
     // 게임 설정을 위한 View 클래스

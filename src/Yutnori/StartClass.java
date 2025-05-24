@@ -2,20 +2,24 @@ package Yutnori;
 
 import Yutnori.Controller.GameController;
 import Yutnori.Model.GameModel;
-import Yutnori.View.Console.ConsoleView;
-import Yutnori.View.GameView;
+import Yutnori.View.MainFrame;
+import Yutnori.View.MainFrame_Swing;
+import Yutnori.View.yoonis.Console.ConsoleView;
+import Yutnori.View.yoonis.GameView;
 
 public class StartClass {
     public static void main(String[] args) {
 
-        GameView gameView = new ConsoleView();                  //view 생성
-        GameModel gameModel = new GameModel();                  //model 생성
-        gameModel.registerObserver(gameView);
-        GameController gameController = new GameController(gameModel, gameView);
+        MainFrame frame = new MainFrame_Swing();
+        frame.StartProgram();
 
-        gameController.startProgram();
-
+//
+//        GameView gameView = new ConsoleView();                  //view 생성
+//        GameModel gameModel = new GameModel();                  //model 생성
+//        gameModel.registerObserver(gameView);
+//        GameController gameController = new GameController(gameModel, gameView);
+//
+//        gameController.startProgram();
 
     }
-
 }

@@ -1,8 +1,7 @@
-package Yutnori.View;
+package Yutnori.View.yoonis;
 
 import Yutnori.Model.GameSetting;
 import Yutnori.Model.Observer.GameModelObserver;
-import Yutnori.Model.Piece;
 import Yutnori.Model.Util.TripleInteger;
 
 import java.util.function.Consumer;
