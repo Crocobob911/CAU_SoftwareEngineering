@@ -86,7 +86,7 @@ public class GameModel {
                 return piece;
             }
         }
-        System.out.println("Piece " + piecePosition + " not found");
+        System.out.println("Piece in position : " + piecePosition + " not found");
         return null;
     }
 
@@ -105,16 +105,63 @@ public class GameModel {
     }
 
     // 주어진 플레이어의 말을 이동함, 이동 후 보드에 있는 피스 정보도 업데이트
-    public void movePieceByIndex(int piecePosition) {
+    public void movePieceByIndex(int positionIndex) {
         // 윷 소모
-        yutResult.remove(piecePosition);
-        System.out.println("아직 구현 안됨");
+        yutResult.remove(positionIndex);
+        // 이동 - 세팅
+        Piece selectedPiece = getPiece(selectedPiecePosition);
+        int destPosition = movablePositions.get(positionIndex);
+
+        if (selectedPiece == null) {
+            System.out.println("선택된 피스가 없습니다. -> 버그임");
+            return;
+        }
+
+        if(destPosition == -2) { // 골인
+            pieces.remove(selectedPiece); // 보드에서 피스를 제거
+            notifyObservers(ModelChangeType.REMAINING_PIECES_INFO, remainingPieces); // 남은 말 수를 알림
+
+            notifyObservers(ModelChangeType.BOARD_PIECES_INFO, pieces.toArray(new Piece[0])); // 보드에 있는 피스 정보를 알림
+
+            return; // 골인 처리 후 종료
+        }
+
+        Piece pieceOnPosition = getPiece(destPosition); // 이동할 위치에 있는 피스 찾기
+        if (pieceOnPosition == null) { // 이동할 위치에 피스가 없다면
+            selectedPiece.setPosition(destPosition); // 피스 위치 업데이트
+        }
+        else
+        { // 이동할 위치에 피스가 있다면
+            if (pieceOnPosition.getOwnerID() == nowPlayerID) { // 같은 플레이어의 피스라면
+                pieceOnPosition.addStack(); // 스택 증가
+                selectedPiece.setPosition(destPosition); // 피스 위치 업데이트
+            }
+            else { // 다른 플레이어의 피스라면
+                pieces.remove(pieceOnPosition); // 상대방의 피스를 제거
+                remainingPieces[pieceOnPosition.getOwnerID()] += pieceOnPosition.getStacked(); // 상대방의 말 수 증가
+                selectedPiece.setPosition(destPosition); // 피스 위치 업데이트
+
+                // 상대방의 피스가 제거되었으니, 남은 말 수를 알림
+                int[] remainingPiecesCopy = new int[remainingPieces.length];
+                System.arraycopy(remainingPieces, 0, remainingPiecesCopy, 0, remainingPieces.length);
+                notifyObservers(ModelChangeType.REMAINING_PIECES_INFO, remainingPiecesCopy); // 남은 말 수를 알림
+            }
+        }
+
+
+        // notify
+        notifyObservers(ModelChangeType.BOARD_PIECES_INFO, pieces.toArray(new Piece[0])); // 보드에 있는 피스 정보를 알림
     }
 
     // 선택된 말에서 갈 수 있는 위치를 찾습니다
     public void findMovablePositions(int yutIndex) {
         int step = yutResult.get(yutIndex);
-        movablePositions = board.getNextPosition(selectedPiecePosition, step);
+        if (false) {   //백도
+            // todo : 백도 구현
+        }
+        else {
+            movablePositions = board.getNextPosition(selectedPiecePosition, step);
+        }
         notifyObservers(ModelChangeType.MOVEABLE_POSITION_INFO, movablePositions.stream().mapToInt(i -> i).toArray());
     }
 
