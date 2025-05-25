@@ -18,16 +18,16 @@ public class Board {
 
 
         if (line < boardType - 2 && index == 4) { //외부 분할 지점
-            System.out.println("outside div");
+            System.out.println("모델 - board : outside div");
             result.add(positionCalculation((line + boardType) * 10 + index + step - 5));
         }
         else if (line >= boardType && line < 2 * boardType - 2 && index == 2) { //내부 분할 지점
-            System.out.println("inside div");
+            System.out.println("모델 - board : inside div");
             result.add(positionCalculation((2 * boardType - 1) * 10 + index + step - 3));
         }
 
         //일반 경로
-        System.out.println("normal path");
+        System.out.println("모델 - board : normal path");
         result.add(positionCalculation(from + step));
 
 
@@ -38,7 +38,7 @@ public class Board {
         int line = position / 10;
         int index = position % 10;
 
-        System.out.println("pos calculation : " + position);
+        System.out.println("모델 - board : pos calculation : " + position);
 
         if (line < boardType) { //외부
             if (index <= 4) {   //인덱스 허용 범위 안

@@ -86,7 +86,7 @@ public class GameModel {
                 return piece;
             }
         }
-        System.out.println("Piece in position : " + piecePosition + " not found");
+        System.out.println("모델 : Piece in position : " + piecePosition + " not found");
         return null;
     }
 
@@ -108,12 +108,15 @@ public class GameModel {
     public void movePieceByIndex(int positionIndex) {
         // 윷 소모
         yutResult.remove(positionIndex);
+
+        notifyObservers(ModelChangeType.YUT_RESULT, yutResult.stream().mapToInt(Integer::intValue).toArray());
+
         // 이동 - 세팅
         Piece selectedPiece = getPiece(selectedPiecePosition);
         int destPosition = movablePositions.get(positionIndex);
 
         if (selectedPiece == null) {
-            System.out.println("선택된 피스가 없습니다. -> 버그임");
+            System.out.println("모델 : 선택된 피스가 없습니다. -> 버그임");
             return;
         }
 
@@ -128,15 +131,18 @@ public class GameModel {
 
         Piece pieceOnPosition = getPiece(destPosition); // 이동할 위치에 있는 피스 찾기
         if (pieceOnPosition == null) { // 이동할 위치에 피스가 없다면
+            System.out.println("모델 : 이동할 위치에 피스가 없으므로 피스를 이동합니다. ");
             selectedPiece.setPosition(destPosition); // 피스 위치 업데이트
         }
         else
         { // 이동할 위치에 피스가 있다면
             if (pieceOnPosition.getOwnerID() == nowPlayerID) { // 같은 플레이어의 피스라면
+                System.out.println("모델 : 같은 플레이어의 피스가 있어 스택을 증가시킵니다. ");
                 pieceOnPosition.addStack(); // 스택 증가
                 selectedPiece.setPosition(destPosition); // 피스 위치 업데이트
             }
             else { // 다른 플레이어의 피스라면
+                System.out.println("모델 : 다른 플레이어의 피스가 있어 제거하고 추가 턴을 얻습니다. ");
                 pieces.remove(pieceOnPosition); // 상대방의 피스를 제거
                 remainingPieces[pieceOnPosition.getOwnerID()] += pieceOnPosition.getStacked(); // 상대방의 말 수 증가
                 selectedPiece.setPosition(destPosition); // 피스 위치 업데이트
@@ -145,6 +151,10 @@ public class GameModel {
                 int[] remainingPiecesCopy = new int[remainingPieces.length];
                 System.arraycopy(remainingPieces, 0, remainingPiecesCopy, 0, remainingPieces.length);
                 notifyObservers(ModelChangeType.REMAINING_PIECES_INFO, remainingPiecesCopy); // 남은 말 수를 알림
+
+                // 추가 턴을 얻음
+                remainRollCount++;
+                notifyObservers(ModelChangeType.NOW_PLAYER_INFO, getPlayerInfo()); // 남은 액션 수를 알림
             }
         }
 
@@ -167,7 +177,7 @@ public class GameModel {
 
     public void endGame() {
         // 게임 종료 처리
-        System.out.println("model : 게임이 종료되었습니다.");
+        System.out.println("모델 : 게임이 종료되었습니다.");
         notifyObservers(ModelChangeType.GAME_END, null);
     }
 
