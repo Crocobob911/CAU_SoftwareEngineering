@@ -91,10 +91,10 @@ public class Board {
         return false;
     }
 
-    //TODO :점검 필요 -> 수정 필요
+    //TODO :점검 필요
     //return 0 : normal, 1 : center, 2 : mergePoint, 3 : endpoint
     private int specificPoint(int pos) {
-        if (pos < 0 && pos == (boardType - 1) * 10 + 4 && pos == (2 * boardType - 1) * 10 + 2) {
+        if (pos == -1 || pos == (boardType - 1) * 10 + 4 || pos == (2 * boardType - 1) * 10 + 2) {
             return 3;
         }
         if (pos == (boardType - 2) * 10 + 4 || pos == (2 * boardType - 2) * 10 + 2) {

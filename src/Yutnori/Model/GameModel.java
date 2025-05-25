@@ -106,10 +106,6 @@ public class GameModel {
 
     // 주어진 플레이어의 말을 이동함, 이동 후 보드에 있는 피스 정보도 업데이트
     public void movePieceByIndex(int positionIndex) {
-        // 윷 소모
-        yutResult.remove(positionIndex);
-
-        notifyObservers(ModelChangeType.YUT_RESULT, yutResult.stream().mapToInt(Integer::intValue).toArray());
 
         // 이동 - 세팅
         Piece selectedPiece = getPiece(selectedPiecePosition);
@@ -129,7 +125,14 @@ public class GameModel {
             return; // 골인 처리 후 종료
         }
 
-        Piece pieceOnPosition = getPiece(destPosition); // 이동할 위치에 있는 피스 찾기
+        Piece pieceOnPosition = null; // 이동할 위치에 있는 피스 찾기
+
+        for (Piece piece : pieces) {
+            if (board.isSamePosition(piece.getPosition(), destPosition)) { // 이동할 위치에 피스가 있는지 확인
+                pieceOnPosition = piece;
+            }
+        }
+
         if (pieceOnPosition == null) { // 이동할 위치에 피스가 없다면
             System.out.println("모델 : 이동할 위치에 피스가 없으므로 피스를 이동합니다. ");
             selectedPiece.setPosition(destPosition); // 피스 위치 업데이트
@@ -144,7 +147,7 @@ public class GameModel {
             else { // 다른 플레이어의 피스라면
                 System.out.println("모델 : 다른 플레이어의 피스가 있어 제거하고 추가 턴을 얻습니다. ");
                 pieces.remove(pieceOnPosition); // 상대방의 피스를 제거
-                remainingPieces[pieceOnPosition.getOwnerID()] += pieceOnPosition.getStacked(); // 상대방의 말 수 증가
+                remainingPieces[pieceOnPosition.getOwnerID()] += pieceOnPosition.getStacked() + 1; // 상대방의 말 수 증가
                 selectedPiece.setPosition(destPosition); // 피스 위치 업데이트
 
                 // 상대방의 피스가 제거되었으니, 남은 말 수를 알림
@@ -166,6 +169,12 @@ public class GameModel {
     // 선택된 말에서 갈 수 있는 위치를 찾습니다
     public void findMovablePositions(int yutIndex) {
         int step = yutResult.get(yutIndex);
+
+        //윷 소모
+        yutResult.remove(yutIndex);
+        notifyObservers(ModelChangeType.YUT_RESULT, yutResult.stream().mapToInt(Integer::intValue).toArray()); // 윷 결과를 알림
+
+
         if (false) {   //백도
             // todo : 백도 구현
         }

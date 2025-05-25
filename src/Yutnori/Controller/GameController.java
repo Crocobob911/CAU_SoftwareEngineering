@@ -77,7 +77,7 @@ public class GameController {
     private void waitForSelectPosition(int yutIndex) {
         // 플레이어가 선택한 윷을 기반으로 이동 가능한 위치를 처리하는 메서드
         // yutStep을 기반으로 이동 가능한 위치를 처리하는 메서드
-        gameModel.findMovablePositions(yutIndex);
+        gameModel.findMovablePositions(yutIndex);       //여기서 윷 소모도 진행합니다
         gameView.waitingSelectPosition(this::movePiece);
     }
 

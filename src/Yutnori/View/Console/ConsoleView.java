@@ -226,14 +226,14 @@ public class ConsoleView implements GameView {
             }
             for (Piece piece : boardPieces) {
                 if (piece.getOwnerID() == nowPlayerID) {
-                    System.out.println(piece.getPosition() + ": " + "말이 있습니다.");
+                    System.out.println(piece.getPosition() + "위치에 " + "말이 있습니다.");
                     if(piece.getStacked() > 0) {
                         System.out.println("    스택된 말 수: " + piece.getStacked());
                     }
                 }
             }
-            int pieceIndex = input.nextInt();
-            selectYutCallback.accept(pieceIndex);
+            int piecePosition = input.nextInt();
+            selectYutCallback.accept(piecePosition);
         }
         else if (action == 2) {
             System.out.println("어떤 방법으로 윷을 던질 지 선택하세요 : -1 : 백도 / 1 : 도 / 2 : 개 / 3 : 걸 / 4 : 윷 / 5 : 모 / 그 외는 랜덤윷 던지기를 수행합니다.");
