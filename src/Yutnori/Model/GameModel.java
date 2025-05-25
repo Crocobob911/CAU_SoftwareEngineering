@@ -111,11 +111,6 @@ public class GameModel {
         Piece selectedPiece = getPiece(selectedPiecePosition);
         int destPosition = movablePositions.get(positionIndex);
 
-        if (selectedPiece == null) {
-            System.out.println("모델 : 선택된 피스가 없습니다. -> 버그임");
-            return;
-        }
-
         if(destPosition == -2) { // 골인
             pieces.remove(selectedPiece); // 보드에서 피스를 제거
             notifyObservers(ModelChangeType.REMAINING_PIECES_INFO, remainingPieces); // 남은 말 수를 알림
