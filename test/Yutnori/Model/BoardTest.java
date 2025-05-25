@@ -13,15 +13,19 @@ public class BoardTest {
     public void boardMoveTest() {
         // given
         Board board = new Board(4);
-        int from = 42;
+        int from = 4;
         int step = 5;
 
         // when
-        List<Integer> result = board.getNextPosition(from, step);
+        List<List<Integer>> result = board.getNextPosition(from, step);
 
         // then
-        for (int pos : result) {
-            System.out.println("Result Position: " + pos);
+        for(List<Integer> path : result) {
+            System.out.println("경로");
+            for (Integer position : path) {
+                System.out.println("Position: " + position);
+            }
+
         }
 
     }
