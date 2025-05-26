@@ -1,5 +1,9 @@
 package Yutnori.View;
 
+import Yutnori.Controller.GameController;
+import Yutnori.Model.GameModel;
+import Yutnori.Model.GameSetting;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -36,16 +40,14 @@ public class MainFrame_Swing extends JFrame implements MainFrame {
             case "육각형" -> 6;
             default -> 4;
         };
+        GameSetting gameSetting = new GameSetting(players, horses, boardTypeInt);
 
-//        // Controller 생성
-//        gameStartController = new GameStartController();
-//        gameManager = gameStartController.InitGameManager(players, horses, boardTypeInt);
-//        gameController = new GameController(gameManager);
-//        // 게임 시작
-//        gameStartController.StartGame();
+        GameModel model = new GameModel();
+        GameController controller = new GameController(model);
+        controller.gameStart(gameSetting);
 
         // GameScreen으로 전환
-        GameScreen_Swing gameScreen = new GameScreen_Swing(players, horses, boardType, this);
+        GameScreen_Swing gameScreen = new GameScreen_Swing(controller, players, horses, boardType, this);
         setContentPane(gameScreen);
         revalidate();
         repaint();

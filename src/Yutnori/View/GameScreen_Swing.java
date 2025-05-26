@@ -1,5 +1,6 @@
 package Yutnori.View;
 
+import Yutnori.Controller.GameController;
 import Yutnori.Model.Observer.GameModelObserver;
 import Yutnori.Model.Observer.ModelChangeType;
 
@@ -9,22 +10,27 @@ import java.awt.*;
 public class GameScreen_Swing extends JPanel implements GameModelObserver {
 
     private MainFrame_Swing frame;
+    private GameController controller;
+
+    private int[] yutResults;
+
 
     private JLayeredPane layeredPane;
 
     private JLabel yutResultLabel;
     private JLabel[] playerInfoLabels;
-    private JPanel pendingMovesPanel;
+    private JPanel yutResultPanel;
     private JComboBox yutComboBox;
 
     private BoardIndex boardIndex;
     private JLabel[][] horseLabels;
 
-    public GameScreen_Swing(int playerNum, int horseNum, String boardType, MainFrame_Swing frame) {
+    public GameScreen_Swing(GameController controller, int playerNum, int horseNum, String boardType, MainFrame_Swing frame) {
         this.frame = frame;
+        this.controller = controller;
+
         boardIndex = new BoardIndex(boardType);
         horseLabels = new JLabel[playerNum][horseNum];
-
 
         setLayout(null);
         setPreferredSize(new Dimension(1200, 750));
@@ -88,10 +94,10 @@ public class GameScreen_Swing extends JPanel implements GameModelObserver {
         }
 
         // created Pending Moves Panel
-        pendingMovesPanel = new JPanel();
-        pendingMovesPanel.setLayout(new FlowLayout());
-        pendingMovesPanel.setBounds(30, 650, 500, 50);
-        layeredPane.add(pendingMovesPanel, Integer.valueOf(2));
+        yutResultPanel = new JPanel();
+        yutResultPanel.setLayout(new FlowLayout());
+        yutResultPanel.setBounds(30, 650, 500, 50);
+        layeredPane.add(yutResultPanel, Integer.valueOf(2));
 
         // create New piece Button
         JButton createNewPieceButton = new JButton("새 말 생성");
@@ -101,11 +107,33 @@ public class GameScreen_Swing extends JPanel implements GameModelObserver {
 
         add(layeredPane);
 
+        controller.addMeModelObserver(this);
         updatePiecesOnBoard();
         updatePlayerInfos();
     }
 
-    private void throwYut() {}
+    private void throwYut() {
+        controller.throwYut();
+    }
+
+    private void updateYutResult(int[] yutResults) {
+        this.yutResults = yutResults;
+
+        // update YutResult Panel Display
+        yutResultPanel.removeAll();
+        for(int result : yutResults) {
+            String yutResultString = convertYutIntToString(result);
+
+            JButton button = new JButton(yutResultString);
+            button.addActionListener(e -> {
+                JOptionPane.showMessageDialog(this, "선택됨 : " + yutResultString);
+            });
+            yutResultPanel.add(button);
+        }
+
+        yutResultPanel.revalidate();
+        yutResultPanel.repaint();
+    }
 
     private void createNewPiece() {}
 
@@ -115,5 +143,21 @@ public class GameScreen_Swing extends JPanel implements GameModelObserver {
 
     @Override
     public void onUpdate(ModelChangeType type, Object value) {
+        switch (type){
+            case YUT_RESULT -> updateYutResult((int[])value);
+            default -> System.out.println("알 수 없는 업데이트 타입입니다.");
+        }
+    };
+
+    private String convertYutIntToString(int yutResultNum) {
+        return switch (yutResultNum) {
+            case 1 -> "도";
+            case 2 -> "개";
+            case 3 -> "걸";
+            case 4 -> "윷";
+            case 5 -> "모";
+            case -1 -> "백도";
+            default -> "";
+        };
     }
 }

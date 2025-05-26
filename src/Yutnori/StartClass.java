@@ -1,11 +1,7 @@
 package Yutnori;
 
-import Yutnori.Controller.GameController;
-import Yutnori.Model.GameModel;
 import Yutnori.View.MainFrame;
 import Yutnori.View.MainFrame_Swing;
-import Yutnori.View.yoonis.Console.ConsoleView;
-import Yutnori.View.yoonis.GameView;
 
 public class StartClass {
     public static void main(String[] args) {
