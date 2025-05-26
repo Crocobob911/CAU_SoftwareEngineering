@@ -6,6 +6,7 @@ import Yutnori.Model.Observer.ModelChangeType;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Optional;
 
 public class GameScreen_Swing extends JPanel implements GameModelObserver {
 
@@ -13,7 +14,7 @@ public class GameScreen_Swing extends JPanel implements GameModelObserver {
     private GameController controller;
 
     private int[] yutResults;
-
+    private Optional<Integer> selectedYutResult;
 
     private JLayeredPane layeredPane;
 
@@ -28,6 +29,7 @@ public class GameScreen_Swing extends JPanel implements GameModelObserver {
     public GameScreen_Swing(GameController controller, int playerNum, int horseNum, String boardType, MainFrame_Swing frame) {
         this.frame = frame;
         this.controller = controller;
+        selectedYutResult = Optional.empty();
 
         boardIndex = new BoardIndex(boardType);
         horseLabels = new JLabel[playerNum][horseNum];
@@ -113,7 +115,13 @@ public class GameScreen_Swing extends JPanel implements GameModelObserver {
     }
 
     private void throwYut() {
-        controller.throwYut();
+        String selectedYut = (String) yutComboBox.getSelectedItem();
+        if(selectedYut.equals("없음")) {
+            controller.throwYut();
+        }
+        else{
+            controller.throwYut(convertYutStringToInt(selectedYut));
+        }
     }
 
     private void updateYutResult(int[] yutResults) {
@@ -126,6 +134,7 @@ public class GameScreen_Swing extends JPanel implements GameModelObserver {
 
             JButton button = new JButton(yutResultString);
             button.addActionListener(e -> {
+                selectedYutResult = Optional.of(result);
                 JOptionPane.showMessageDialog(this, "선택됨 : " + yutResultString);
             });
             yutResultPanel.add(button);
@@ -135,7 +144,27 @@ public class GameScreen_Swing extends JPanel implements GameModelObserver {
         yutResultPanel.repaint();
     }
 
-    private void createNewPiece() {}
+    private void createNewPiece() {
+        if(selectedYutResult.isEmpty())
+            JOptionPane.showMessageDialog(this, "먼저 사용할 윷 결과를 선택하세요.");
+
+        showMoveCandidate(-3, selectedYutResult.get());
+    }
+
+    private void showMoveCandidate(int currentPosition, int yutResult) {
+        clearActiveMoveButtons();
+
+//        List<Integer> positions = controller.
+    }
+
+    private void clearActiveMoveButtons() {
+//        for (JButton btn : activeMoveButtons) {
+//            layeredPane.remove(btn);
+//        }
+//        activeMoveButtons.clear();
+//        layeredPane.revalidate();
+//        layeredPane.repaint();
+    }
 
     private void updatePiecesOnBoard() {
     }
@@ -158,6 +187,18 @@ public class GameScreen_Swing extends JPanel implements GameModelObserver {
             case 5 -> "모";
             case -1 -> "백도";
             default -> "";
+        };
+    }
+
+    private int convertYutStringToInt(String yutResultString) {
+        return switch (yutResultString) {
+            case "도" -> 1;
+            case "개" -> 2;
+            case "걸" -> 3;
+            case "윷" -> 4;
+            case "모" -> 5;
+            case "백도" -> -1;
+            default -> 0;
         };
     }
 }
