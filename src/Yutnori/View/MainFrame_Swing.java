@@ -23,7 +23,7 @@ public class MainFrame_Swing extends JFrame implements MainFrame {
     }
 
     public void showStartScreen() {
-        StartScreen_Swing startScreen = new StartScreen_Swing();
+        StartScreen_Swing startScreen = new StartScreen_Swing(this);
         this.setContentPane(startScreen);
         revalidate();
         repaint();
@@ -45,15 +45,15 @@ public class MainFrame_Swing extends JFrame implements MainFrame {
 //        gameStartController.StartGame();
 
         // GameScreen으로 전환
-        GameScreen_Swing gameScreen = new GameScreen_Swing(players, horses, boardType, gameController, this);
+        GameScreen_Swing gameScreen = new GameScreen_Swing(players, horses, boardType, this);
         setContentPane(gameScreen);
         revalidate();
         repaint();
     }
 
     public void showEndScreen() {
-        EndScreen_Swing endScreen = new EndScreen_Swing(this, winnerTeam);
-        setContentPane(endScreen);
+//        EndScreen_Swing endScreen = new EndScreen_Swing(this, winnerTeam);
+//        setContentPane(endScreen);
         revalidate();
         repaint();
     }
