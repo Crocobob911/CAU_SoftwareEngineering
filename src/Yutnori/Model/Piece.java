@@ -1,15 +1,29 @@
 package Yutnori.Model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Piece {
-    private int ownerID;
+    private final int ownerID;
     private int position;
     private int stacked;
 
+    private final List<Integer> path;
+
 
     public Piece(int ownerID) {
+        path = new ArrayList<>();
+
         this.ownerID = ownerID;
-        this.position = 0;
+        this.position = -1; // 초기 위치는 -1
         this.stacked = 0;
+    }
+
+    public Piece(Piece other) {
+        this.ownerID = other.ownerID;
+        this.position = other.position;
+        this.stacked = other.stacked;
+        this.path = new ArrayList<>(other.path);        //이건 사실 쓸데가 없음
     }
 
     public int getOwnerID() {
@@ -27,5 +41,4 @@ public class Piece {
     public void addStack() {
         stacked++;
     }
-
 }

@@ -9,51 +9,12 @@ public class Board {
         this.boardType = boardType;
     }
 
+    //백도를 처리하지 않음!
     public List<Integer> getNextPosition(int from, int step) {
-        // 도백백 특수 처리 인덱스 -> from -음수는 도백 위치
+        // 외부에서 호출할 때는 백도 연산을 하지 않음 백도는 별도의 메서드를 호출합니다.
         List<Integer> result = new ArrayList<>();
         int line = from / 10;
         int index = from % 10;
-
-        if(from == -3) {
-            result.add(step);
-            return result;
-        }
-        else if (from == -1) {   //도 백도(idx = -1) 이후 뭐든 나오면 종료
-            result.add(-2);
-            return result;
-        }
-
-        if(step == -1) {        //백도만 별개 처리 , 도 백 백도 처리해야함
-            if(index != 0) {    //뒷공간이 있나?
-                result.add(from - 1);    //뒤로 이동
-            }
-            else {
-                //외부
-                if(line == 0) {             //도 백
-                    result.add(-1);       // -1 > 도 백 특수 위치
-                }
-                else if (line < boardType) {    //도백 제외 외부
-                    line--;
-                    index = 4;
-                    result.add(line * 10 + index);
-                }
-                else if(line < 2 * boardType - 2) {  //내부 - 초반 -> 외부로 리턴
-                    line -= 4;
-                    index = 4;
-                    result.add(line * 10 + index);
-                }
-                else {          //내부 - 후반
-                    line = 2 *  boardType - 3;
-                    index = 2;
-                    result.add(line * 10 + index);
-                }
-            }
-            
-            return result;
-            //빠른 탈출
-        }
-
 
 
         if (line < boardType - 2 && index == 4) { //외부 분할 지점
@@ -112,6 +73,7 @@ public class Board {
         }
     }
 
+    //TODO : 점검 필요
     public boolean isSamePosition(int posA, int posB) {
         if (posA == posB) {
             return true;
@@ -129,6 +91,7 @@ public class Board {
         return false;
     }
 
+    //TODO :점검 필요 -> 수정 필요
     //return 0 : normal, 1 : center, 2 : mergePoint, 3 : endpoint
     private int specificPoint(int pos) {
         if (pos < 0 && pos == (boardType - 1) * 10 + 4 && pos == (2 * boardType - 1) * 10 + 2) {

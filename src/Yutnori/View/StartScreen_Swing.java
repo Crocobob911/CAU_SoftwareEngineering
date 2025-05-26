@@ -5,13 +5,12 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
-public class StartScreen extends JPanel {
+public class StartScreen_Swing extends JPanel {
     private JComboBox<Integer> playerNum;
     private JComboBox<Integer> horseNum;
     private JComboBox<String> boardType;
 
-    public StartScreen(MainFrame mainFrame) {
+    public StartScreen_Swing(MainFrame_Swing frame) {
         setLayout(null);
         setPreferredSize(new Dimension(1200, 750));
 
@@ -47,7 +46,7 @@ public class StartScreen extends JPanel {
                 int players = (int) playerNum.getSelectedItem();
                 int horses = (int) horseNum.getSelectedItem();
                 String board = (String) boardType.getSelectedItem();
-                mainFrame.showGameScreen(players, horses, board);
+                frame.showGameScreen(players, horses, board);
             }
         });
 

@@ -13,8 +13,7 @@ public class BoardIndex {
     }
 
     private void initializeCoordinates(String boardType) {
-        if (boardType.equals("사각형")) {
-            indexToPoint.put(100, new Point(495, 500));  // 출발
+        if (boardType.equals("사각형")) {  // 출발
             indexToPoint.put(-1, new Point(495, 500));
             indexToPoint.put(0, new Point(495, 405));
             indexToPoint.put(1, new Point(495, 320));
