@@ -10,52 +10,74 @@ public class Board {
     }
 
     //백도를 처리하지 않음!
-    public List<Integer> getNextPosition(int from, int step) {
+    public List<List<Integer>> getNextPosition(int from, int step) {
         // 외부에서 호출할 때는 백도 연산을 하지 않음 백도는 별도의 메서드를 호출합니다.
-        List<Integer> result = new ArrayList<>();
+        List<List<Integer>> result = new ArrayList<>();
         int line = from / 10;
         int index = from % 10;
 
 
         if (line < boardType - 2 && index == 4) { //외부 분할 지점
-            System.out.println("outside div");
-            result.add(positionCalculation((line + boardType) * 10 + index + step - 5));
+            System.out.println("모델 - board : outside div");
+            List<Integer> pathList = new ArrayList<>();
+            result.add(positionCalculation(from,(line + boardType) * 10 + index + step - 5, pathList));
         }
         else if (line >= boardType && line < 2 * boardType - 2 && index == 2) { //내부 분할 지점
-            System.out.println("inside div");
-            result.add(positionCalculation((2 * boardType - 1) * 10 + index + step - 3));
+            System.out.println("모델 - board : inside div");
+            List<Integer> pathList = new ArrayList<>();
+            result.add(positionCalculation(from,(2 * boardType - 1) * 10 + index + step - 3, pathList));
         }
 
         //일반 경로
-        System.out.println("normal path");
-        result.add(positionCalculation(from + step));
+        System.out.println("모델 - board : normal path");
+        List<Integer> pathList = new ArrayList<>();
+        result.add(positionCalculation(from,from + step, pathList));
 
 
         return result;
     }
 
-    private int positionCalculation(int position) { // -2 > 골인
+    // -2 로 골인 처리가 나올경우 굳이 경로를 계산할 필요가 없다.
+    private List<Integer> positionCalculation(int start, int position, List<Integer> pathList) { // -2 > 골인 , start는 백도용 레코드
         int line = position / 10;
         int index = position % 10;
 
-        System.out.println("pos calculation : " + position);
 
         if (line < boardType) { //외부
             if (index <= 4) {   //인덱스 허용 범위 안
-                return position;
+                for(int i = start % 10; i <= index; i++) {
+                    pathList.add(line * 10 + i);
+                }
+
+                pathList.add(position);
+                return pathList;
             }
             else {
-                if (line == boardType - 1) { // 종료, 마지막 외부 라인
-                    return -2;
+                for(int i = start % 10; i <= 4; i++) {
+                    pathList.add(line * 10 + i);
                 }
-                return positionCalculation((line + 1) * 10 + index - 5);
+
+                if (line == boardType - 1) { // 종료, 마지막 외부 라인
+                    pathList.add(-2); // 골인
+                    return pathList;
+                }
+                return positionCalculation((line + 1) * 10,(line + 1) * 10 + index - 5, pathList);
             }
         }
         else { //내부
             if (index <= 2) {         //인덱스 허용 범위 안
-                return position;
+                for(int i = start % 10; i <= index; i++) {
+                    pathList.add(line * 10 + i);
+                }
+
+                pathList.add(position);
+                return pathList;
             }
             else {
+                for(int i = start % 10; i <= 2; i++) {
+                    pathList.add(line * 10 + i);
+                }
+
                 if (line == 2 * boardType - 3) {    //마지막 - 2 라인    // etc 마지막 라인은 중앙 -> 골인 라인
                     line = 2 * boardType - 1;       // 중앙 -> 골인 라인
                 }
@@ -63,17 +85,17 @@ public class Board {
                     line = boardType - 1;
                 }
                 else if (line == 2 * boardType - 1) {   //마지막 라인 -> 골인
-                    return -2;
+                    pathList.add(-2); // 골인
+                    return pathList;
                 }
                 else {      //그 외 마지막 - 1 라인으로 빠짐
                     line = 2 * boardType - 2;
                 }
-                return positionCalculation((line) * 10 + index - 3);
+                return positionCalculation((line + 1) * 10,(line) * 10 + index - 3, pathList);
             }
         }
     }
 
-    //TODO : 점검 필요
     public boolean isSamePosition(int posA, int posB) {
         if (posA == posB) {
             return true;
@@ -91,10 +113,9 @@ public class Board {
         return false;
     }
 
-    //TODO :점검 필요 -> 수정 필요
     //return 0 : normal, 1 : center, 2 : mergePoint, 3 : endpoint
     private int specificPoint(int pos) {
-        if (pos < 0 && pos == (boardType - 1) * 10 + 4 && pos == (2 * boardType - 1) * 10 + 2) {
+        if (pos == -1 || pos == (boardType - 1) * 10 + 4 || pos == (2 * boardType - 1) * 10 + 2) {
             return 3;
         }
         if (pos == (boardType - 2) * 10 + 4 || pos == (2 * boardType - 2) * 10 + 2) {

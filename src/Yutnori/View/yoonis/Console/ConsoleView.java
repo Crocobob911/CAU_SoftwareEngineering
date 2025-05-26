@@ -20,7 +20,7 @@ public class ConsoleView implements GameView {
 
     //#region 인스턴스 변수
     private int nowPlayerID; // 현재 플레이어 ID
-    private int rollCount; // 남은 말 수
+    private int rollCount; // 남은 행동 수
     private int[] remainingPieces; // 남은 말 수
     private Piece[] boardPieces; // 보드에 있는 말 정보
     private int[] yutResult; // 사용가능한 윷 결과
@@ -77,7 +77,7 @@ public class ConsoleView implements GameView {
         this.nowPlayerID = playerInfo[0]; // 현재 플레이어 ID
         this.rollCount = playerInfo[1]; // 남은 액션 수
 
-        System.out.println("현재 플레이어: " + playerInfo[0]);
+        System.out.println("\n\n현재 플레이어: " + playerInfo[0]);
         System.out.println("남은 액션 수: " + playerInfo[1]);
         System.out.println("현재 플레이어 정보가 업데이트되었습니다.");
     }
@@ -89,7 +89,7 @@ public class ConsoleView implements GameView {
         for (Piece piece : boardPieces) {
             System.out.println("플레이어 " + piece.getOwnerID() + "의 말 위치: " + piece.getPosition());
             if (piece.getStacked() > 0) {
-                System.out.println("스택된 말 수: " + piece.getStacked());
+                System.out.println("    스택된 말 수: " + piece.getStacked());
             }
         }
         System.out.println("보드 정보가 업데이트되었습니다.");
@@ -208,8 +208,15 @@ public class ConsoleView implements GameView {
     public void waitingAction(Consumer<Integer> selectYutCallback, Consumer<Integer> YutActionCallback) {
         // 플레이어의 액션을 기다리는 메서드 : action 은 selectYutCallback, YutActionCallback 두가지로 나뉨
         System.out.println("액션을 선택하세요.");
-        System.out.println("1. 말 이동");
-        System.out.println("2. 윷 던지기");
+
+
+        if(yutResult.length > 0) { // 윷 결과가 있다면
+            System.out.println("1. 말 이동");
+        }
+        if(rollCount > 0) {        // 남은 액션이 있어야만 윷을 던질 수 있음
+            System.out.println("2. 윷 던지기");
+        }
+
 
         int action = input.nextInt();
         if (action == 1) {
@@ -217,11 +224,16 @@ public class ConsoleView implements GameView {
             if(remainingPieces[nowPlayerID] > 0) {
                 System.out.println(-1 + ": " + "새로운 말이 나갑니다.");
             }
-            for (int i = 0; i < boardPieces.length; i++) {
-                System.out.println(i + ": " + boardPieces[i]);
+            for (Piece piece : boardPieces) {
+                if (piece.getOwnerID() == nowPlayerID) {
+                    System.out.println(piece.getPosition() + "위치에 " + "말이 있습니다.");
+                    if(piece.getStacked() > 0) {
+                        System.out.println("    스택된 말 수: " + piece.getStacked());
+                    }
+                }
             }
-            int pieceIndex = input.nextInt();
-            selectYutCallback.accept(pieceIndex);
+            int piecePosition = input.nextInt();
+            selectYutCallback.accept(piecePosition);
         }
         else if (action == 2) {
             System.out.println("어떤 방법으로 윷을 던질 지 선택하세요 : -1 : 백도 / 1 : 도 / 2 : 개 / 3 : 걸 / 4 : 윷 / 5 : 모 / 그 외는 랜덤윷 던지기를 수행합니다.");
