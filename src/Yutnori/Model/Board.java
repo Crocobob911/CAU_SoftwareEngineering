@@ -20,18 +20,20 @@ public class Board {
         if (line < boardType - 2 && index == 4) { //외부 분할 지점
             System.out.println("모델 - board : outside div");
             List<Integer> pathList = new ArrayList<>();
-            result.add(positionCalculation(from,(line + boardType) * 10 + index + step - 5, pathList));
+            int positionCounter = (boardType - 1) * 10 + index - 5;
+            result.add(positionCalculation(positionCounter + 1,(line + boardType) * 10 + index - 5 + step, pathList));
         }
         else if (line >= boardType && line < 2 * boardType - 2 && index == 2) { //내부 분할 지점
             System.out.println("모델 - board : inside div");
             List<Integer> pathList = new ArrayList<>();
-            result.add(positionCalculation(from,(2 * boardType - 1) * 10 + index + step - 3, pathList));
+            int positionCounter = (2 * boardType - 1) * 10 + index - 3;
+            result.add(positionCalculation(positionCounter + 1,(2 * boardType - 1) * 10 + index - 3 + step, pathList));
         }
 
         //일반 경로
         System.out.println("모델 - board : normal path");
         List<Integer> pathList = new ArrayList<>();
-        result.add(positionCalculation(from,from + step, pathList));
+        result.add(positionCalculation(from + 1,from + step, pathList));
 
 
         return result;
@@ -49,7 +51,7 @@ public class Board {
                     pathList.add(line * 10 + i);
                 }
 
-                pathList.add(position);
+                //pathList.add(position);
                 return pathList;
             }
             else {
@@ -70,7 +72,7 @@ public class Board {
                     pathList.add(line * 10 + i);
                 }
 
-                pathList.add(position);
+                //pathList.add(position);
                 return pathList;
             }
             else {

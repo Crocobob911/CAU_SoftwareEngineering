@@ -174,12 +174,14 @@ public class GameModel {
             // todo : 백도 구현
         }
         else {
-            List<Integer> temp = new ArrayList<>();
+            // 초기화
+            movablePositions.clear();
+
             for (List<Integer> list: board.getNextPosition(selectedPiecePosition, step)) {
-                temp.add(list.getLast());
+                movablePositions.add(list.getLast());
             }
             //movablePositions = board.getNextPosition(selectedPiecePosition, step);
-            movablePositions = temp;
+
 
         }
         notifyObservers(ModelChangeType.MOVEABLE_POSITION_INFO, movablePositions.stream().mapToInt(i -> i).toArray());
