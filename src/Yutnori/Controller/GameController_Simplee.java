@@ -81,8 +81,6 @@ public class GameController_Simplee {
         gameView.waitingSelectPosition(this::movePiece);
     }
 
-
-
     // yutAction 메서드 - 주어진 값에 따라 지정 윷 또는 랜덤 윷을 모델에 추가 함
     private void yutAction(int yutStep) {
         // 윷놀이 결과를 처리하는 메서드

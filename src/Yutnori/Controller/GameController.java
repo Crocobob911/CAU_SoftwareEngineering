@@ -5,6 +5,8 @@ import Yutnori.Model.GameSetting;
 import Yutnori.Model.Observer.GameModelObserver;
 import Yutnori.Model.YutPackage.Yut;
 
+import java.util.List;
+
 public class GameController {
     private GameModel model;
 
@@ -25,6 +27,11 @@ public class GameController {
         // TODO : 여기서 '더 던질 수 있느냐 없느냐' 체크해야함.
 
         model.addYutResult(yutResult);
+    }
+
+    public void calculateMovablePosition(int currentPosition, int yut) {
+        model.setSelectedPiecePosition(currentPosition);
+        model.findMovablePositions(yut);
     }
 
     public void addMeModelObserver(GameModelObserver observer) {

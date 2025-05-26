@@ -6,6 +6,7 @@ import Yutnori.Model.Observer.ModelChangeType;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Optional;
 
 public class GameScreen_Swing extends JPanel implements GameModelObserver {
@@ -15,6 +16,8 @@ public class GameScreen_Swing extends JPanel implements GameModelObserver {
 
     private int[] yutResults;
     private Optional<Integer> selectedYutResult;
+    private Optional<Integer> selectedYutResultIndex;
+    private Integer selectedPiecePosition;
 
     private JLayeredPane layeredPane;
 
@@ -22,6 +25,7 @@ public class GameScreen_Swing extends JPanel implements GameModelObserver {
     private JLabel[] playerInfoLabels;
     private JPanel yutResultPanel;
     private JComboBox yutComboBox;
+    private ArrayList<JButton> movableDestination = new ArrayList<>();
 
     private BoardIndex boardIndex;
     private JLabel[][] horseLabels;
@@ -135,6 +139,7 @@ public class GameScreen_Swing extends JPanel implements GameModelObserver {
             JButton button = new JButton(yutResultString);
             button.addActionListener(e -> {
                 selectedYutResult = Optional.of(result);
+                selectedYutResultIndex = Optional.of(yutResultPanel.getComponentZOrder((JButton) e.getSource()));
                 JOptionPane.showMessageDialog(this, "선택됨 : " + yutResultString);
             });
             yutResultPanel.add(button);
@@ -148,22 +153,48 @@ public class GameScreen_Swing extends JPanel implements GameModelObserver {
         if(selectedYutResult.isEmpty())
             JOptionPane.showMessageDialog(this, "먼저 사용할 윷 결과를 선택하세요.");
 
-        showMoveCandidate(-3, selectedYutResult.get());
+        requestMovablePosition(-1, selectedYutResultIndex.get());
     }
 
-    private void showMoveCandidate(int currentPosition, int yutResult) {
-        clearActiveMoveButtons();
+    private void requestMovablePosition(int currentPosition, int yutResultIndex) {
+        clearMovableDestination();
 
-//        List<Integer> positions = controller.
+        selectedPiecePosition = currentPosition;
+        controller.calculateMovablePosition(currentPosition, yutResultIndex);
     }
 
-    private void clearActiveMoveButtons() {
-//        for (JButton btn : activeMoveButtons) {
-//            layeredPane.remove(btn);
-//        }
-//        activeMoveButtons.clear();
-//        layeredPane.revalidate();
-//        layeredPane.repaint();
+    private void showMoveablePositions(int[] positions) {
+        for(int pos : positions){
+            Point point = boardIndex.getPoint(pos);
+            if (point != null) {
+                JButton btn = new JButton("→");
+                btn.setBounds(point.x, point.y, 50, 40);
+                btn.setBorderPainted(true);
+                btn.addActionListener(e -> {
+                    movePieceByIndex(selectedPiecePosition, pos);
+                    updatePiecesOnBoard();
+                    updatePlayerInfos();
+                    clearMovableDestination();
+                    selectedYutResult = Optional.empty();
+                    selectedPiecePosition = -1;
+                });
+                layeredPane.add(btn, Integer.valueOf(10));
+                movableDestination.add(btn);
+            }
+        }
+    }
+
+    private void clearMovableDestination() {
+        for (JButton btn : movableDestination) {
+            layeredPane.remove(btn);
+        }
+        movableDestination.clear();
+        layeredPane.revalidate();
+        layeredPane.repaint();
+    }
+
+    private void movePieceByIndex(int currentIndex, int pos){
+
     }
 
     private void updatePiecesOnBoard() {
@@ -173,10 +204,16 @@ public class GameScreen_Swing extends JPanel implements GameModelObserver {
     @Override
     public void onUpdate(ModelChangeType type, Object value) {
         switch (type){
+            case NOW_PLAYER_INFO -> updateNowPlayerInfo((int[]) value);
+            case MOVEABLE_POSITION_INFO -> showMoveablePositions((int[]) value);
             case YUT_RESULT -> updateYutResult((int[])value);
             default -> System.out.println("알 수 없는 업데이트 타입입니다.");
         }
-    };
+    }
+
+    private void updateNowPlayerInfo(int[] value) {
+
+    }
 
     private String convertYutIntToString(int yutResultNum) {
         return switch (yutResultNum) {
