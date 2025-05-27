@@ -1,17 +1,19 @@
 package Yutnori.View;
 
 import Yutnori.Controller.GameController;
-import Yutnori.Model.GameSetting;
 import Yutnori.Model.Observer.GameModelObserver;
 import Yutnori.Model.Observer.ModelChangeType;
+import Yutnori.Model.Piece;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-public class GameScreen_Swing extends JPanel implements GameView {
+public class GameScreen_Swing extends JPanel implements GameModelObserver{
 
     private MainFrame_Swing frame;
     private GameController controller;
@@ -33,7 +35,7 @@ public class GameScreen_Swing extends JPanel implements GameView {
     private ArrayList<JButton> movableDestination = new ArrayList<>();
 
     private BoardIndex boardIndex;
-    private JLabel[][] horseLabels;
+    private JLabel[][] pieceLabels;
 
     public GameScreen_Swing(GameController controller, int playerNum, int horseNum, String boardType, MainFrame_Swing frame) {
         this.frame = frame;
@@ -41,7 +43,7 @@ public class GameScreen_Swing extends JPanel implements GameView {
         selectedYutResult = Optional.empty();
 
         boardIndex = new BoardIndex(boardType);
-        horseLabels = new JLabel[playerNum][horseNum];
+        pieceLabels = new JLabel[playerNum][horseNum];
 
         setLayout(null);
         setPreferredSize(new Dimension(1200, 750));
@@ -119,7 +121,6 @@ public class GameScreen_Swing extends JPanel implements GameView {
         add(layeredPane);
 
         controller.addMeModelObserver(this);
-        updatePiecesOnBoard();
         updatePlayerInfos();
     }
 
@@ -160,21 +161,22 @@ public class GameScreen_Swing extends JPanel implements GameView {
 
         clearMovableDestination();
 
+        if(currentPosition == -1) controller.createNewPiece();
         selectedPiecePosition = currentPosition;
         controller.calculateMovablePosition(currentPosition, yutResultIndex);
     }
 
     private void showMoveablePositions(int[] positions) {
-        for(int pos : positions){
+        for(int i=0; i<positions.length; i++){
+            int pos = positions[i];
+            int posIndex = i;
             Point point = boardIndex.getPoint(pos);
             if (point != null) {
                 JButton btn = new JButton("→");
                 btn.setBounds(point.x, point.y, 50, 40);
                 btn.setBorderPainted(true);
                 btn.addActionListener(e -> {
-                    movePieceByIndex(selectedPiecePosition, pos);
-                    updatePiecesOnBoard();
-                    updatePlayerInfos();
+                    movePieceByIndex(posIndex);
                     clearMovableDestination();
                     selectedYutResult = Optional.empty();
                     selectedPiecePosition = -1;
@@ -185,6 +187,7 @@ public class GameScreen_Swing extends JPanel implements GameView {
         }
     }
 
+
     private void clearMovableDestination() {
         for (JButton btn : movableDestination) {
             layeredPane.remove(btn);
@@ -194,22 +197,68 @@ public class GameScreen_Swing extends JPanel implements GameView {
         layeredPane.repaint();
     }
 
-    private void createNewPiece() {
 
+    private void movePieceByIndex(int destinationPosition){
+        controller.movePieceByIndex(destinationPosition);
     }
 
-    private void movePieceByIndex(int currentIndex, int pos){
+    private void updatePiecesOnBoard(Piece[] piecesOnBoard) {
+        for (JLabel[] pieceArray : pieceLabels){
+            for(JLabel piece : pieceArray){
+                if(piece != null) layeredPane.remove(piece);
+            }
+        }
 
+        pieceLabels = new JLabel[4][5];
+        for(Piece piece : piecesOnBoard){
+            // get piece info
+            int team = piece.getOwnerID();
+            int position = piece.getPosition();
+            int stacked = piece.getStacked();
+
+            Point point = boardIndex.getPoint(position);
+            if (point == null) continue;
+
+            // make image
+            String imgPath = "src/Yutnori/View/picture/mal" + (team + 1) + ".png";
+            ImageIcon imgIcon = new ImageIcon(imgPath);
+            int w = imgIcon.getIconWidth() / 2, h = imgIcon.getIconHeight() / 2;
+            Image scaledImg = imgIcon.getImage().getScaledInstance(w, h, Image.SCALE_SMOOTH);
+            imgIcon = new ImageIcon(scaledImg);
+            JLabel pieceLabel = new JLabel(imgIcon);
+            pieceLabel.setBounds(point.x, point.y, w, h);
+
+            pieceLabel.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e){
+                    pieceClicked(position);
+                }
+            });
+
+            layeredPane.add(pieceLabel, Integer.valueOf(10));
+            pieceLabels[team][0] = pieceLabel;
+        }
+
+        layeredPane.revalidate();
+        layeredPane.repaint();
     }
 
-    private void updatePiecesOnBoard() {
+    private void pieceClicked(int position) {
+        if(selectedYutResult.isEmpty()){
+            JOptionPane.showMessageDialog(this, "사용할 윷 결과를 먼저 선택하세요.");
+            return;
+        }
+        selectedPiecePosition = position;
+        requestMovablePosition(position, selectedPiecePosition);
     }
 
     private void updatePlayerInfos() {}
 
+
     @Override
     public void onUpdate(ModelChangeType type, Object value) {
         switch (type){
+            case BOARD_PIECES_INFO -> updatePiecesOnBoard((Piece[]) value);
             case NOW_PLAYER_INFO -> updateNowPlayerInfo((int[]) value);
             case MOVEABLE_POSITION_INFO -> showMoveablePositions((int[]) value);
             case YUT_RESULT -> updateYutResult((int[])value);
@@ -243,20 +292,5 @@ public class GameScreen_Swing extends JPanel implements GameView {
             case "백도" -> -1;
             default -> 0;
         };
-    }
-
-    @Override
-    public void waitingAction(Consumer<Integer> selectYutCallback, Consumer<Integer> YutActionCallback) {
-
-    }
-
-    @Override
-    public void waitingSelectYutStep(Consumer<Integer> getMovablePositionCallback) {
-
-    }
-
-    @Override
-    public void waitingSelectPosition(Consumer<Integer> moveActionCallback) {
-
     }
 }

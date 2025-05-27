@@ -9,10 +9,6 @@ import java.awt.event.ActionListener;
 import java.util.function.Consumer;
 
 public class StartScreen_Swing extends JPanel {
-    private
-
-    private Consumer<TripleInteger> callback;
-
     private JComboBox<Integer> playerNum;
     private JComboBox<Integer> horseNum;
     private JComboBox<String> boardType;
@@ -53,7 +49,7 @@ public class StartScreen_Swing extends JPanel {
                 int players = (int) playerNum.getSelectedItem();
                 int horses = (int) horseNum.getSelectedItem();
                 String board = (String) boardType.getSelectedItem();
-                controller.
+                frame.showGameScreen(players, horses, board);
             }
         });
 
