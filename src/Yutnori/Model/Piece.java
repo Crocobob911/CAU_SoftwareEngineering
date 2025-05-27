@@ -43,7 +43,18 @@ public class Piece {
     public void addStack() {
         stacked++;
     }
-    public void recordPath() {
-        path.add(position); // 현재 위치를 경로에 추가
+    public int getLastPathPosition() {
+        if (path.size() == 2) {
+            return -3; // 경로가 둘만 있으면 (현재 위치, 도 뿐, 돌아갈 곳 없어) -3로 설정 (골인 직전 인덱스로 처리)
+        } else {
+            return path.get(path.size() - 2); // 경로의 마지막 위치를 현재 위치로 설정
+        }
+    }
+    public void recordPath(List<Integer> path) {
+        this.path.addAll(path);
+    }
+    public void handleBackDoPath() {
+        //백도일때 리스트에서 하나를 제거합니다.
+        path.removeLast();
     }
 }

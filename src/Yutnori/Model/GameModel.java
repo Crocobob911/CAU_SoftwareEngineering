@@ -22,7 +22,8 @@ public class GameModel {
     private final List<Integer> yutResult = new ArrayList<>(); // yutResult 를 저장하는 리스트 -1, 1, 2, 3, 4, 5
 
     private int selectedPiecePosition = -1; // 선택된 피스의 위치
-    private List<Integer> movablePositions = new ArrayList<>(); // 이동 가능한 위치를 저장하는 리스트
+    private final List<Integer> movablePositions = new ArrayList<>(); // 이동 가능한 위치를 저장하는 리스트
+    private final List<List<Integer>> pathList = new ArrayList<>(); // 이동 경로를 저장하는 리스트
 
     //게임 설정 - gameSetting 을 기반으로 초기화, startGame 이전에 controller 에서 호출
     public void startModel(GameSetting gameSetting) {
@@ -57,7 +58,8 @@ public class GameModel {
 
     // 턴 종료 여부 확인 메서드 - 남은 액션이 없고, 윷 결과가 없을 때
     public boolean isTurnEnd() {
-        return remainRollCount <= 0 && yutResult.isEmpty();
+        boolean emptyYutResult = yutResult.isEmpty() || yutResult.stream().allMatch(result -> result == -1); // 윷 결과가 없거나 모두 백도인 경우
+        return remainRollCount <= 0 && emptyYutResult;
     }
 
     // 게임 종료 여부 확인 메서드 - 남은 말 없고, 보드에 말이 없을 때
@@ -110,6 +112,7 @@ public class GameModel {
         // 이동 - 세팅
         Piece selectedPiece = getPiece(selectedPiecePosition);
         int destPosition = movablePositions.get(positionIndex);
+        
 
         if(destPosition == -2) { // 골인
             pieces.remove(selectedPiece); // 보드에서 피스를 제거
@@ -119,6 +122,8 @@ public class GameModel {
 
             return; // 골인 처리 후 종료
         }
+        // 이동 경로 기록 골인이 아닐때만
+        selectedPiece.recordPath(pathList.get(positionIndex));
 
         Piece pieceOnPosition = null; // 이동할 위치에 있는 피스 찾기
 
@@ -170,15 +175,30 @@ public class GameModel {
         notifyObservers(ModelChangeType.YUT_RESULT, yutResult.stream().mapToInt(Integer::intValue).toArray()); // 윷 결과를 알림
 
 
-        if (false) {   //백도
-            // todo : 백도 구현
+        if (step == -1) {   //백도 특수 처리
+            movablePositions.clear();
+            pathList.clear();
+
+            Piece selectedPiece = getPiece(selectedPiecePosition);
+            int backDoPosition = selectedPiece.getLastPathPosition(); // 백도일 때는 피스의 경로에서 마지막 위치를 가져옴
+            if (backDoPosition == -3) { // 백도 직전 인덱스인 경우
+                backDoPosition = board.getLastPosition(); // 골인 직전 인덱스 처리
+            }
+            movablePositions.add(backDoPosition);        // piece 의 경로에서 마지막 위치를 가져옴
+            pathList.add(new ArrayList<>()); // 백도 경로를 추가
+            // 백도시 경로 제거, 골인 일 경우는 제외
+            if(backDoPosition != -2) {
+                selectedPiece.handleBackDoPath();
+            }
         }
         else {
             // 초기화
             movablePositions.clear();
+            pathList.clear();
 
             for (List<Integer> list: board.getNextPosition(selectedPiecePosition, step)) {
                 movablePositions.add(list.getLast());
+                pathList.add(list);
             }
             //movablePositions = board.getNextPosition(selectedPiecePosition, step);
 

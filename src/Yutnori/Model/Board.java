@@ -98,6 +98,10 @@ public class Board {
         }
     }
 
+    public int getLastPosition() {
+        return (boardType - 1) * 10 + 4; // 마지막 외부 라인
+    }
+
     public boolean isSamePosition(int posA, int posB) {
         if (posA == posB) {
             return true;
