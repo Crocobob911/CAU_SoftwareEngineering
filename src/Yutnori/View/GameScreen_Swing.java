@@ -266,8 +266,19 @@ public class GameScreen_Swing extends JPanel implements GameModelObserver{
         }
     }
 
+
     private void updateNowPlayerInfo(int[] value) {
 
+
+        Player[] players = gameController.GetPlayerInfos();
+        for (int i = 0; i < players.length; i++) {
+            //int waiting = players[i].getRemainPieceNumber();
+            int waiting = 100;
+            int finished = players[i].getCompletedPieceNumber();
+            teamInfoLabels[i].setText("대기: " + waiting + " 완료: " + finished);
+        }
+        layeredPane.revalidate();
+        layeredPane.repaint();
     }
 
     private String convertYutIntToString(int yutResultNum) {
