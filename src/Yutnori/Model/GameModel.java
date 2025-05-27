@@ -15,9 +15,13 @@ public class GameModel {
 
     // 플레이어가 남은 말 수를 저장하는 배열 -> observer -> remaining pieces info
     private int[] remainingPieces;
-
     // 현재 플레이어 턴, 현재 턴의 액션 수 -> observer -> now player info
     private int nowPlayerID = 0;
+
+    public int getRemainRollCount() {
+        return remainRollCount;
+    }
+
     private int remainRollCount = 0;
     private final List<Integer> yutResult = new ArrayList<>(); // yutResult 를 저장하는 리스트 -1, 1, 2, 3, 4, 5
 
@@ -39,7 +43,7 @@ public class GameModel {
         remainRollCount = 1;
 
         // 게임 뷰 초기화
-        notifyObservers(ModelChangeType.REMAINING_PIECES_INFO, remainingPieces); // 남은 말 수를 알림
+        notifyObservers(ModelChangeType.PLAYERS_PIECES_INFO, remainingPieces); // 남은 말 수를 알림
         notifyObservers(ModelChangeType.NOW_PLAYER_INFO, getPlayerInfo()); // 현재 플레이어 턴을 알림
         notifyObservers(ModelChangeType.BOARD_PIECES_INFO, pieces.toArray(new Piece[0])); // 보드에 있는 피스 정보를 알림
         notifyObservers(ModelChangeType.YUT_RESULT, yutResult.stream().mapToInt(Integer::intValue).toArray()); // 윷 결과를 알림
@@ -53,13 +57,15 @@ public class GameModel {
         // 다음 플레이어 턴으로 넘어감
         nowPlayerID = (nowPlayerID + 1) % gameSetting.playerNumber;
         remainRollCount = 1;
+        yutResult.clear(); // 윷 결과 초기화 -> 백도만 남은 경우로 턴 종료 가능성 있기에
 
+        notifyObservers(ModelChangeType.YUT_RESULT, yutResult.stream().mapToInt(Integer::intValue).toArray());
         notifyObservers(ModelChangeType.NOW_PLAYER_INFO, getPlayerInfo());
     }
 
     // 턴 종료 여부 확인 메서드 - 남은 액션이 없고, 윷 결과가 없거나, 백도만 있을대
     public boolean isTurnEnd() {
-        boolean emptyYutResult = yutResult.isEmpty() || yutResult.stream().allMatch(result -> result == -1); // 윷 결과가 없거나 모두 백도인 경우
+        boolean emptyYutResult = yutResult.isEmpty() || (yutResult.stream().allMatch(result -> result == -1) && !isPlayerPieceInBoard(nowPlayerID)); // 윷 결과가 없거나 모두 백도인 경우
         return remainRollCount <= 0 && emptyYutResult;
     }
 
@@ -104,7 +110,7 @@ public class GameModel {
         // deep copy를 통해 pieces 리스트를 보호
         int[] remainingPiecesCopy = new int[remainingPieces.length];
         System.arraycopy(remainingPieces, 0, remainingPiecesCopy, 0, remainingPieces.length);
-        notifyObservers(ModelChangeType.REMAINING_PIECES_INFO, remainingPiecesCopy); // 남은 말 수를 알림
+        notifyObservers(ModelChangeType.PLAYERS_PIECES_INFO, remainingPiecesCopy); // 남은 말 수를 알림
     }
 
     // 주어진 플레이어의 말을 이동함, 이동 후 보드에 있는 피스 정보도 업데이트
@@ -119,7 +125,7 @@ public class GameModel {
 
         if(destPosition == -2) { // 골인
             pieces.remove(selectedPiece); // 보드에서 피스를 제거
-            notifyObservers(ModelChangeType.REMAINING_PIECES_INFO, remainingPieces); // 남은 말 수를 알림
+            notifyObservers(ModelChangeType.PLAYERS_PIECES_INFO, remainingPieces); // 남은 말 수를 알림
 
             notifyObservers(ModelChangeType.BOARD_PIECES_INFO, pieces.toArray(new Piece[0])); // 보드에 있는 피스 정보를 알림
 
@@ -157,7 +163,7 @@ public class GameModel {
                 // 상대방의 피스가 제거되었으니, 남은 말 수를 알림
                 int[] remainingPiecesCopy = new int[remainingPieces.length];
                 System.arraycopy(remainingPieces, 0, remainingPiecesCopy, 0, remainingPieces.length);
-                notifyObservers(ModelChangeType.REMAINING_PIECES_INFO, remainingPiecesCopy); // 남은 말 수를 알림
+                notifyObservers(ModelChangeType.PLAYERS_PIECES_INFO, remainingPiecesCopy); // 남은 말 수를 알림
 
                 // 추가 턴을 얻음
                 remainRollCount++;

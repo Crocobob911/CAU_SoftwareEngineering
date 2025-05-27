@@ -42,7 +42,7 @@ public class ConsoleView implements GameView {
 
         // 왜 싹다 배열인가요? deep copy를 통해서 모델을 보호하기 위해서입니다. 즉 딱히 List 필요가 없어요
         switch (type) {
-            case REMAINING_PIECES_INFO:
+            case PLAYERS_PIECES_INFO:
                 int[] pieces = (int[]) value;
                 updateRemainingPieces(pieces);
                 break;
