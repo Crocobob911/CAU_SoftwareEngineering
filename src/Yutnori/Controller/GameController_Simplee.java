@@ -3,21 +3,21 @@ package Yutnori.Controller;
 import Yutnori.Model.GameModel;
 import Yutnori.Model.GameSetting;
 import Yutnori.Model.YutPackage.Yut;
-import Yutnori.View.yoonis.Console.ConsoleView;
-import Yutnori.View.yoonis.GameView;
+import Yutnori.View.yoonis.Console.ConsoleViewSimplee;
+import Yutnori.View.yoonis.GameView_Simplee;
 
 public class GameController_Simplee {
     // 게임 설정을 위한 View 클래스
     GameSetting gameSetting;
 
     //연결된 model과 view
-    private final GameView gameView;
+    private final GameView_Simplee gameViewSimplee;
     private final GameModel gameModel;
 
     //생성자
-    public GameController_Simplee(GameModel gameModel, GameView gameView) {
+    public GameController_Simplee(GameModel gameModel, GameView_Simplee gameViewSimplee) {
         this.gameModel = gameModel;
-        this.gameView = gameView;
+        this.gameViewSimplee = gameViewSimplee;
     }
 
     // 순서 주의 사항 -> onSettingComplete 메서드에서 gameSetting을 초기화 한후 startSetting을 호출해 데이터를 받아야 합니다.
@@ -28,11 +28,11 @@ public class GameController_Simplee {
     // 게임 설정을 위한 메서드
     public void setGameSetting() {
         //test : console 환경에서 setting을 진행합니다.
-        GameView gameSettingView = new ConsoleView();     //test : 콘솔 환경에서 설정을 진행합니다.
+        GameView_Simplee gameSettingView = new ConsoleViewSimplee();     //test : 콘솔 환경에서 설정을 진행합니다.
 
         gameSettingView.initSetting();
 
-        // 게임 설정 완료 시 호출할 콜백을 등록하는 메서드
+        // 게임 설정 완료 시 호출할 delegate을 등록하는 메서드
         gameSettingView.OnSettingComplete(values -> {
             gameSetting = new GameSetting(values.first, values.second, values.third);
             System.out.println("게임 설정 완료 : " + gameSetting.toString());
@@ -48,7 +48,7 @@ public class GameController_Simplee {
         gameModel.startModel(gameSetting);
 
         // 게임 씬 초기화
-        gameView.startScene(gameSetting);
+        gameViewSimplee.startScene(gameSetting);
 
         // 게임 실행을 위한 메서드
         waitingAction();
@@ -58,7 +58,7 @@ public class GameController_Simplee {
         // 현재 플레이어의 턴을 처리하는 메서드
         // 플레이어의 액션을 처리하는 메서드
         // pieceAction은 플레이어가 선택한 포지션을 나타냅니다.
-        gameView.waitingAction(this::waitForSelectYut, this::yutAction);       //readme : 자바의 람다의 메서드 참조 이용
+        gameViewSimplee.waitingAction(this::waitForSelectYut, this::yutAction);       //readme : 자바의 람다의 메서드 참조 이용
     }
 
     // 플레이어가 선택한 말이 어떤 윷을 사용할지 선택하는 메서드
@@ -69,8 +69,7 @@ public class GameController_Simplee {
             gameModel.initNewPiece();
         }
         gameModel.setSelectedPiecePosition(piecePosition);
-        gameView.waitingSelectYutStep(this::waitForSelectPosition);
-
+        gameViewSimplee.waitingSelectYutStep(this::waitForSelectPosition);
     }
 
     // 플레이어가 선택한 윷을 기반으로 이동 가능한 위치를 처리하는 메서드
@@ -78,10 +77,8 @@ public class GameController_Simplee {
         // 플레이어가 선택한 윷을 기반으로 이동 가능한 위치를 처리하는 메서드
         // yutStep을 기반으로 이동 가능한 위치를 처리하는 메서드
         gameModel.findMovablePositions(yutIndex);
-        gameView.waitingSelectPosition(this::movePiece);
+        gameViewSimplee.waitingSelectPosition(this::movePiece);
     }
-
-
 
     // yutAction 메서드 - 주어진 값에 따라 지정 윷 또는 랜덤 윷을 모델에 추가 함
     private void yutAction(int yutStep) {
@@ -98,7 +95,7 @@ public class GameController_Simplee {
 
     private void movePiece(int positionIndex) {
         // 플레이어가 선택한 포지션을 기반으로 피스를 이동시키는 메서드
-        // piecePosition을 기반으로 피스를 이동시키는 메서드
+        // piecePosition으로 피스를 이동시키는 메서드
         gameModel.movePieceByIndex(positionIndex);
 
         // 액션 후 처리

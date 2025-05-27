@@ -11,10 +11,12 @@
   <component name="ChangeListManager">
     <list default="true" id="31daac7e-5693-46a6-96b5-01c259af9992" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Yutnori/Controller/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Yutnori/Controller/GameController_Simplee.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Yutnori/StartClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Yutnori/StartClass.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Yutnori/Controller/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Yutnori/Controller/GameController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Yutnori/Controller/GameController_Simplee.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Yutnori/Controller/GameController_Simplee.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Yutnori/View/GameScreen_Swing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Yutnori/View/GameScreen_Swing.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Yutnori/View/MainFrame_Swing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Yutnori/View/MainFrame_Swing.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Yutnori/View/StartScreen_Swing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Yutnori/View/StartScreen_Swing.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Yutnori/View/yoonis/Console/ConsoleView.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Yutnori/View/yoonis/GameView.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,8 +42,8 @@
         <option value="Record" />
         <option value="JUnit5 Test Class" />
         <option value="JUnit3 Test Class" />
-        <option value="Interface" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -62,43 +64,43 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.Yutnori.StartClass.executor": "Debug",
-    "Downloaded.Files.Path.Enabled": "false",
-    "JUnit.GameModelTest.initNewPieceTest.executor": "Run",
-    "JUnit.GameSettingTest.MakeGameSetting.executor": "Run",
-    "JUnit.PieceTest.StackTest.executor": "Run",
-    "JUnit.PieceTest.StackTest2.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "Repository.Attach.Annotations": "false",
-    "Repository.Attach.JavaDocs": "false",
-    "Repository.Attach.Sources": "false",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit3",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit3": "junit.framework.TestCase",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
-    "git-widget-placeholder": "feature-JavaSwing",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/D_Project/CAU_SoftwareEngineering/SE",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "vue.rearranger.settings.migration": "true",
-    "애플리케이션.GameManager.executor": "Run",
-    "애플리케이션.MainFrame.executor": "Run",
-    "애플리케이션.StartClass.executor": "Run",
-    "애플리케이션.start.executor": "Run"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Yutnori.StartClass.executor&quot;: &quot;Run&quot;,
+    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
+    &quot;JUnit.GameModelTest.initNewPieceTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.GameSettingTest.MakeGameSetting.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PieceTest.StackTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PieceTest.StackTest2.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit3&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit3&quot;: &quot;junit.framework.TestCase&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feature-callback&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/D_Project/CAU_SoftwareEngineering/SE&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;,
+    &quot;애플리케이션.GameManager.executor&quot;: &quot;Run&quot;,
+    &quot;애플리케이션.MainFrame.executor&quot;: &quot;Run&quot;,
+    &quot;애플리케이션.StartClass.executor&quot;: &quot;Run&quot;,
+    &quot;애플리케이션.start.executor&quot;: &quot;Run&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CreateTestDialog.Recents.Supers">
       <recent name="junit.framework.TestCase" />
@@ -225,6 +227,8 @@
       <workItem from="1748065167062" duration="2527000" />
       <workItem from="1748098498550" duration="305000" />
       <workItem from="1748227147455" duration="7377000" />
+      <workItem from="1748253820966" duration="1580000" />
+      <workItem from="1748324016966" duration="2384000" />
     </task>
     <servers />
   </component>
@@ -241,27 +245,6 @@
         </entry>
       </map>
     </option>
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/Yutnori/View/GameScreen_Swing.java</url>
-          <line>119</line>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/Yutnori/Model/GameModel.java</url>
-          <line>69</line>
-          <option name="timeStamp" value="5" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/Yutnori/Controller/GameController.java</url>
-          <line>19</line>
-          <option name="timeStamp" value="6" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

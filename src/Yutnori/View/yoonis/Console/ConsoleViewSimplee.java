@@ -4,12 +4,12 @@ import Yutnori.Model.GameSetting;
 import Yutnori.Model.Observer.ModelChangeType;
 import Yutnori.Model.Piece;
 import Yutnori.Model.Util.TripleInteger;
-import Yutnori.View.yoonis.GameView;
+import Yutnori.View.yoonis.GameView_Simplee;
 
 import java.util.Scanner;
 import java.util.function.Consumer;
 
-public class ConsoleView implements GameView {
+public class ConsoleViewSimplee implements GameView_Simplee {
     // 게임 설정을 위한 View 클래스
     // 이 클래스는 콘솔 기반에서 게임 설정을 위한 UI를 제공하는 역할을 합니다.
     // 플레이어 수, 말 수, 보드 타입 등을 설정할 수 있습니다.
@@ -205,17 +205,17 @@ public class ConsoleView implements GameView {
 
     //#region 게임 실행을 위한 override 메서드
     @Override
-    public void waitingAction(Consumer<Integer> selectYutCallback, Consumer<Integer> YutActionCallback) {
+    public void waitingAction(Consumer<Integer> selectPieceCallback, Consumer<Integer> YutActionCallback) {
         // 플레이어의 액션을 기다리는 메서드 : action 은 selectYutCallback, YutActionCallback 두가지로 나뉨
-        System.out.println("액션을 선택하세요.");
-
-
-        if(yutResult.length > 0) { // 윷 결과가 있다면
-            System.out.println("1. 말 이동");
-        }
-        if(rollCount > 0) {        // 남은 액션이 있어야만 윷을 던질 수 있음
-            System.out.println("2. 윷 던지기");
-        }
+//        System.out.println("액션을 선택하세요.");
+//
+//
+//        if(yutResult.length > 0) { // 윷 결과가 있다면
+//            System.out.println("1. 말 이동");
+//        }
+//        if(rollCount > 0) {        // 남은 액션이 있어야만 윷을 던질 수 있음
+//            System.out.println("2. 윷 던지기");
+//        }
 
 
         int action = input.nextInt();
@@ -233,7 +233,7 @@ public class ConsoleView implements GameView {
                 }
             }
             int piecePosition = input.nextInt();
-            selectYutCallback.accept(piecePosition);
+            selectPieceCallback.accept(piecePosition);
         }
         else if (action == 2) {
             System.out.println("어떤 방법으로 윷을 던질 지 선택하세요 : -1 : 백도 / 1 : 도 / 2 : 개 / 3 : 걸 / 4 : 윷 / 5 : 모 / 그 외는 랜덤윷 던지기를 수행합니다.");

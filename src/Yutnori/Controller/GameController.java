@@ -27,6 +27,19 @@ public class GameController {
         model.addYutResult(yutResult);
     }
 
+    public void calculateMovablePosition(int currentPosition, int yut) {
+        model.setSelectedPiecePosition(currentPosition);
+        model.findMovablePositions(yut);
+    }
+
+    public void movePieceByIndex(int movableListIndex){
+        model.movePieceByIndex(movableListIndex);
+    }
+
+    public void createNewPiece(){
+        model.initNewPiece();
+    }
+
     public void addMeModelObserver(GameModelObserver observer) {
         model.registerObserver(observer);
     }

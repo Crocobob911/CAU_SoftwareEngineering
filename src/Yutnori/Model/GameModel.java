@@ -169,7 +169,6 @@ public class GameModel {
         yutResult.remove(yutIndex);
         notifyObservers(ModelChangeType.YUT_RESULT, yutResult.stream().mapToInt(Integer::intValue).toArray()); // 윷 결과를 알림
 
-
         if (false) {   //백도
             // todo : 백도 구현
         }

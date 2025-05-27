@@ -1,9 +1,12 @@
 package Yutnori.View;
 
+import Yutnori.Model.Util.TripleInteger;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.function.Consumer;
 
 public class StartScreen_Swing extends JPanel {
     private JComboBox<Integer> playerNum;
