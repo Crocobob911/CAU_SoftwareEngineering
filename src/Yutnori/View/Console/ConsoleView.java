@@ -22,6 +22,7 @@ public class ConsoleView implements GameView {
     private int nowPlayerID; // 현재 플레이어 ID
     private int rollCount; // 남은 행동 수
     private int[] remainingPieces; // 남은 말 수
+    private int[] graduationPieces; // 졸업한 말 수
     private Piece[] boardPieces; // 보드에 있는 말 정보
     private int[] yutResult; // 사용가능한 윷 결과
 
@@ -43,8 +44,8 @@ public class ConsoleView implements GameView {
         // 왜 싹다 배열인가요? deep copy를 통해서 모델을 보호하기 위해서입니다. 즉 딱히 List 필요가 없어요
         switch (type) {
             case PLAYERS_PIECES_INFO:
-                int[] pieces = (int[]) value;
-                updateRemainingPieces(pieces);
+                int[][] piecesInfo = (int[][]) value; // 플레이어의 말 정보 : playerID, 남은 말 수 || array size 2
+                updatePlayersPieceInfo(piecesInfo);
                 break;
             case NOW_PLAYER_INFO:
                 int[] playerInfo = (int[]) value;       // 현재 플레이어 정보 : playerID, 남은 액션 || array size 2
@@ -95,15 +96,22 @@ public class ConsoleView implements GameView {
         System.out.println("보드 정보가 업데이트되었습니다.");
     }
 
-    // 남은 말 수를 업데이트하는 메서드
-    private void updateRemainingPieces(int[] remainingPieces) {
-        this.remainingPieces = remainingPieces;
+    // 플레이어 말 관련 정보를 업데이트하는 메서드 , 0번 배열은 남은 말 수, 1번 배열은 졸업한 말 수
+    private void updatePlayersPieceInfo(int[][] playersPiecesInfo) {
+        this.remainingPieces = playersPiecesInfo[0]; // 남은 말 수
+        this.graduationPieces = playersPiecesInfo[1]; // 졸업한 말 수
+
 
         System.out.println("남은 말 수: ");
-        for (int i = 0; i < remainingPieces.length; i++) {
+        for (int i = 0; i < playersPiecesInfo.length; i++) {
             System.out.println("플레이어 " + (i) + ": " + remainingPieces[i] + "개");
         }
-        System.out.println("남은 말 수가 업데이트되었습니다.");
+
+        System.out.println("졸업한 말 수: ");
+        for (int i = 0; i < graduationPieces.length; i++) {
+            System.out.println("플레이어 " + (i) + ": " + graduationPieces[i] + "개");
+        }
+        System.out.println("플레이어 Piece 관련 정보가 업데이트되었습니다.");
     }
 
 

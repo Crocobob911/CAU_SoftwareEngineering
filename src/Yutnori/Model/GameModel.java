@@ -13,8 +13,10 @@ public class GameModel {
     private GameSetting gameSetting;
     private Board board;
 
-    // 플레이어가 남은 말 수를 저장하는 배열 -> observer -> remaining pieces info
+    // 플레이어가 남은 말 수를 저장하는 배열 -> observer -> players pieces info
     private int[] remainingPieces;
+    // 플레이어의 졸업 말 수를 저장하는 배열 -> observer -> players pieces info
+    private int[] graduatedPieces;
     // 현재 플레이어 턴, 현재 턴의 액션 수 -> observer -> now player info
     private int nowPlayerID = 0;
 
@@ -36,6 +38,7 @@ public class GameModel {
         for (int i = 0; i < gameSetting.playerNumber; i++) {
             remainingPieces[i] = gameSetting.pieceNumber;
         }
+        this.graduatedPieces = new int[gameSetting.playerNumber]; // 졸업 말 수 초기화
         this.board = new Board(gameSetting.boardType);
 
         // 게임 플레이어 관련 초기화
@@ -43,7 +46,7 @@ public class GameModel {
         remainRollCount = 1;
 
         // 게임 뷰 초기화
-        notifyObservers(ModelChangeType.PLAYERS_PIECES_INFO, remainingPieces); // 남은 말 수를 알림
+        notifyObservers(ModelChangeType.PLAYERS_PIECES_INFO, getPlayersPiecesInfo()); // 남은 말 수를 알림
         notifyObservers(ModelChangeType.NOW_PLAYER_INFO, getPlayerInfo()); // 현재 플레이어 턴을 알림
         notifyObservers(ModelChangeType.BOARD_PIECES_INFO, pieces.toArray(new Piece[0])); // 보드에 있는 피스 정보를 알림
         notifyObservers(ModelChangeType.YUT_RESULT, yutResult.stream().mapToInt(Integer::intValue).toArray()); // 윷 결과를 알림
@@ -106,11 +109,7 @@ public class GameModel {
         remainingPieces[nowPlayerID]--;
 
         // notify
-        // 플레이어가 남은 말 수를 줄이고, 게임 모델에 알림, deep copy 진행을 통한 model 오브젝트 보호 -> deep copy 비용이 발생하지만, 소규모 프로젝트를 감안
-        // deep copy를 통해 pieces 리스트를 보호
-        int[] remainingPiecesCopy = new int[remainingPieces.length];
-        System.arraycopy(remainingPieces, 0, remainingPiecesCopy, 0, remainingPieces.length);
-        notifyObservers(ModelChangeType.PLAYERS_PIECES_INFO, remainingPiecesCopy); // 남은 말 수를 알림
+        notifyObservers(ModelChangeType.PLAYERS_PIECES_INFO, getPlayersPiecesInfo()); // 남은 말 수를 알림
     }
 
     // 주어진 플레이어의 말을 이동함, 이동 후 보드에 있는 피스 정보도 업데이트
@@ -125,7 +124,8 @@ public class GameModel {
 
         if(destPosition == -2) { // 골인
             pieces.remove(selectedPiece); // 보드에서 피스를 제거
-            notifyObservers(ModelChangeType.PLAYERS_PIECES_INFO, remainingPieces); // 남은 말 수를 알림
+            graduatedPieces[selectedPiece.getOwnerID()]++; // 졸업 말 수 증가
+            notifyObservers(ModelChangeType.PLAYERS_PIECES_INFO, getPlayersPiecesInfo()); // 남은 말 수를 알림
 
             notifyObservers(ModelChangeType.BOARD_PIECES_INFO, pieces.toArray(new Piece[0])); // 보드에 있는 피스 정보를 알림
 
@@ -161,9 +161,7 @@ public class GameModel {
                 selectedPiece.setPosition(destPosition); // 피스 위치 업데이트
 
                 // 상대방의 피스가 제거되었으니, 남은 말 수를 알림
-                int[] remainingPiecesCopy = new int[remainingPieces.length];
-                System.arraycopy(remainingPieces, 0, remainingPiecesCopy, 0, remainingPieces.length);
-                notifyObservers(ModelChangeType.PLAYERS_PIECES_INFO, remainingPiecesCopy); // 남은 말 수를 알림
+                notifyObservers(ModelChangeType.PLAYERS_PIECES_INFO, getPlayersPiecesInfo()); // 남은 말 수를 알림
 
                 // 추가 턴을 얻음
                 remainRollCount++;
@@ -245,6 +243,18 @@ public class GameModel {
         playerInfo[0] = nowPlayerID;
         playerInfo[1] = remainRollCount;
         return playerInfo;
+    }
+
+    // 플레이어의 남은 말 수와 졸업 말 수를 반환하는 메서드 첫번째 배열은 남은 말 수, 두번째 배열은 졸업 말 수
+    private int[][] getPlayersPiecesInfo() {
+        int[][] playersPiecesInfo = new int[2][gameSetting.playerNumber];
+        for (int i = 0; i < gameSetting.playerNumber; i++) {
+            playersPiecesInfo[0][i] = remainingPieces[i]; // 남은 말 수
+            playersPiecesInfo[1][i] = graduatedPieces[i]; // 졸업 말 수
+        }
+
+        return playersPiecesInfo;
+
     }
 
     //#endregion
