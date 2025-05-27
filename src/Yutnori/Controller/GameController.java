@@ -96,10 +96,10 @@ public class GameController {
         handleAfterAction();
     }
 
-    private void movePiece(int positionIndex) {
+    private void movePiece(int position) {
         // 플레이어가 선택한 포지션을 기반으로 피스를 이동시키는 메서드
         // piecePosition을 기반으로 피스를 이동시키는 메서드
-        gameModel.movePieceByIndex(positionIndex);
+        gameModel.movePieceByPosition(position);
 
         // 액션 후 처리
         handleAfterAction();

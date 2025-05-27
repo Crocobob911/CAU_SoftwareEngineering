@@ -42,6 +42,7 @@ public class ConsoleView implements GameView {
         System.out.println("게임 모델이 업데이트되었습니다. 타입: " + type);
 
         // 왜 싹다 배열인가요? deep copy를 통해서 모델을 보호하기 위해서입니다. 즉 딱히 List 필요가 없어요
+        // 각 enum 타입은 ModelChangeType 에 정의되어 있습니다. 확인 가능
         switch (type) {
             case PLAYERS_PIECES_INFO:
                 int[][] piecesInfo = (int[][]) value; // 플레이어의 말 정보 : playerID, 남은 말 수 || array size 2
@@ -215,6 +216,8 @@ public class ConsoleView implements GameView {
     @Override
     public void waitingAction(Consumer<Integer> selectYutCallback, Consumer<Integer> YutActionCallback) {
         // 플레이어의 액션을 기다리는 메서드 : action 은 selectYutCallback, YutActionCallback 두가지로 나뉨
+        // selectYutCallback : piece 선택 단계 이후 어떤 윷을 사용할 것인지 선택하는 메서드
+        // YutActionCallback : 윷 던지기 메서드 (Model) 실행
         System.out.println("액션을 선택하세요.");
 
 
@@ -252,7 +255,8 @@ public class ConsoleView implements GameView {
 
     @Override
     public void waitingSelectYutStep(Consumer<Integer> getMovablePositionCallback) {
-        // 플레이어의 액션을 기다리는 메서드 : 위에 액션에서 pieceActionCallback 단계 이후 어떤 윷을 사용할 것인지 선택
+        // 플레이어의 선택을 기다리는 메서드 : piece 선택후 어떤 윳을 사용할 것인지 선택하는 메서드
+        // getMovablePositionCallback : 윷을 던진 후 이동 가능한 위치를 처리하는 메서드
         System.out.println("이동에 사용할 윷을 선택하세요. 리스트 인덱스 번호를 입력해주세요.");
         for (int i = 0; i < yutResult.length; i++) {
             System.out.println(i + ": " + yutResult[i]);
@@ -264,14 +268,14 @@ public class ConsoleView implements GameView {
 
     @Override
     public void waitingSelectPosition(Consumer<Integer> moveActionCallback) {
-        // 플레이어의 액션을 기다리는 메서드 : 위에 액션에서 pieceActionCallback 단계 이후 어떤 윷을 사용할 것인지 선택
+        // 플레이어의 선택을 기다리는 메서드 : piece 선택 - 윷 선택 후 이동 가능한 위치를 선택하는 메서드
         System.out.println("이동할 위치를 선택하세요. 리스트 인덱스 번호르 입력해주세요.");
-        for (int i = 0; i < pieceMoveableInfo.length; i++) {
-            System.out.println(i + ": " + pieceMoveableInfo[i]);
+        for (int j : pieceMoveableInfo) {
+            System.out.println(j + "번 위치로 이동 가능합니다.");
         }
-        int positionIndex = input.nextInt();
-        //!!!! 주의!!!! 리스트 인덱스가 넘어갑니다!!!!
-        moveActionCallback.accept(positionIndex);
+        int position = input.nextInt();
+        //포지션 값이 넘어갑니다. index 값이 아니라 실제 포지션 값이 넘어갑니다.
+        moveActionCallback.accept(position);
     }
     //#endregion
 }

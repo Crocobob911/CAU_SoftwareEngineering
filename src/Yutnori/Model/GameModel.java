@@ -113,16 +113,15 @@ public class GameModel {
     }
 
     // 주어진 플레이어의 말을 이동함, 이동 후 보드에 있는 피스 정보도 업데이트
-    // positionIndex 는 이동 가능한 위치의 인덱스를 뜻함. 포지션과는 다름, 이동가능한 각각의 포지션의 위치를 list로 저장하고, 인덱스를 input 으로 받은 뒤 이 메서드를 호출함
-    // movablePositions 리스트에 있는 위치를 기반으로 피스를 이동시킴
-    public void movePieceByIndex(int positionIndex) {
+    // position 기반으로 이동
+    public void movePieceByPosition(int position) {
 
         // 이동 - 세팅
         Piece selectedPiece = getPiece(selectedPiecePosition);
-        int destPosition = movablePositions.get(positionIndex);     // 최종 이동 위치를 movablePositions 리스트에서 index로 가져옴
-        
+        // 최종 이동 위치를 movablePositions 리스트에서 index로 가져옴
 
-        if(destPosition == -2) { // 골인
+
+        if(position == -2) { // 골인
             pieces.remove(selectedPiece); // 보드에서 피스를 제거
             graduatedPieces[selectedPiece.getOwnerID()]++; // 졸업 말 수 증가
             notifyObservers(ModelChangeType.PLAYERS_PIECES_INFO, getPlayersPiecesInfo()); // 남은 말 수를 알림
@@ -133,32 +132,32 @@ public class GameModel {
         }
 
         // 이동 경로 기록 골인이 아닐때만 -> 필요없는 기록과정 제거용
-        selectedPiece.recordPath(pathList.get(positionIndex));
+        selectedPiece.recordPath(pathList.get(movablePositions.indexOf(position))); // 이동 가능한 위치에 따른 경로 기록
 
         Piece pieceOnPosition = null; // 이동할 위치에 있는 피스 찾기
 
         for (Piece piece : pieces) {
-            if (board.isSamePosition(piece.getPosition(), destPosition)) { // 이동할 위치에 피스가 있는지 확인
+            if (board.isSamePosition(piece.getPosition(), position)) { // 이동할 위치에 피스가 있는지 확인
                 pieceOnPosition = piece;
             }
         }
 
         if (pieceOnPosition == null) { // 이동할 위치에 피스가 없다면
             System.out.println("모델 : 이동할 위치에 피스가 없으므로 피스를 이동합니다. ");
-            selectedPiece.setPosition(destPosition); // 피스 위치 업데이트
+            selectedPiece.setPosition(position); // 피스 위치 업데이트
         }
         else
         { // 이동할 위치에 피스가 있다면
             if (pieceOnPosition.getOwnerID() == nowPlayerID) { // 같은 플레이어의 피스라면
                 System.out.println("모델 : 같은 플레이어의 피스가 있어 스택을 증가시킵니다. ");
                 pieceOnPosition.addStack(); // 스택 증가 -> 업기 구현
-                selectedPiece.setPosition(destPosition); // 피스 위치 업데이트
+                selectedPiece.setPosition(position); // 피스 위치 업데이트
             }
             else { // 다른 플레이어의 피스라면
                 System.out.println("모델 : 다른 플레이어의 피스가 있어 제거하고 추가 턴을 얻습니다. ");
                 pieces.remove(pieceOnPosition); // 상대방의 피스를 제거
                 remainingPieces[pieceOnPosition.getOwnerID()] += pieceOnPosition.getStacked() + 1; // 상대방의 말 수 증가, 왜 +1 인가요. 기본 스택은 항상 0이기 때문에 스택이 아예 없는 경우 1만큼 증가해야해요
-                selectedPiece.setPosition(destPosition); // 피스 위치 업데이트
+                selectedPiece.setPosition(position); // 피스 위치 업데이트
 
                 // 상대방의 피스가 제거되었으니, 남은 말 수를 알림
                 notifyObservers(ModelChangeType.PLAYERS_PIECES_INFO, getPlayersPiecesInfo()); // 남은 말 수를 알림
