@@ -1,6 +1,7 @@
 package Yutnori.View;
 
 import Yutnori.Controller.GameController;
+import Yutnori.Model.GameSetting;
 import Yutnori.Model.Observer.GameModelObserver;
 import Yutnori.Model.Observer.ModelChangeType;
 
@@ -8,8 +9,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.function.Consumer;
 
-public class GameScreen_Swing extends JPanel implements GameModelObserver {
+public class GameScreen_Swing extends JPanel implements GameView {
 
     private MainFrame_Swing frame;
     private GameController controller;
@@ -18,6 +20,9 @@ public class GameScreen_Swing extends JPanel implements GameModelObserver {
     private Optional<Integer> selectedYutResult;
     private Optional<Integer> selectedYutResultIndex;
     private Integer selectedPiecePosition;
+
+    private Consumer<Integer> selectPieceCallback;
+    private Consumer<Integer> selectYutCallback;
 
     private JLayeredPane layeredPane;
 
@@ -108,7 +113,7 @@ public class GameScreen_Swing extends JPanel implements GameModelObserver {
         // create New piece Button
         JButton createNewPieceButton = new JButton("새 말 생성");
         createNewPieceButton.setBounds(30, 600, 120, 30);
-        createNewPieceButton.addActionListener(e -> createNewPiece());
+        createNewPieceButton.addActionListener(e -> requestMovablePosition(-1, selectedYutResultIndex.get()));
         layeredPane.add(createNewPieceButton, Integer.valueOf(10));
 
         add(layeredPane);
@@ -149,14 +154,10 @@ public class GameScreen_Swing extends JPanel implements GameModelObserver {
         yutResultPanel.repaint();
     }
 
-    private void createNewPiece() {
+    private void requestMovablePosition(int currentPosition, int yutResultIndex) {
         if(selectedYutResult.isEmpty())
             JOptionPane.showMessageDialog(this, "먼저 사용할 윷 결과를 선택하세요.");
 
-        requestMovablePosition(-1, selectedYutResultIndex.get());
-    }
-
-    private void requestMovablePosition(int currentPosition, int yutResultIndex) {
         clearMovableDestination();
 
         selectedPiecePosition = currentPosition;
@@ -193,12 +194,17 @@ public class GameScreen_Swing extends JPanel implements GameModelObserver {
         layeredPane.repaint();
     }
 
+    private void createNewPiece() {
+
+    }
+
     private void movePieceByIndex(int currentIndex, int pos){
 
     }
 
     private void updatePiecesOnBoard() {
     }
+
     private void updatePlayerInfos() {}
 
     @Override
@@ -237,5 +243,20 @@ public class GameScreen_Swing extends JPanel implements GameModelObserver {
             case "백도" -> -1;
             default -> 0;
         };
+    }
+
+    @Override
+    public void waitingAction(Consumer<Integer> selectYutCallback, Consumer<Integer> YutActionCallback) {
+
+    }
+
+    @Override
+    public void waitingSelectYutStep(Consumer<Integer> getMovablePositionCallback) {
+
+    }
+
+    @Override
+    public void waitingSelectPosition(Consumer<Integer> moveActionCallback) {
+
     }
 }

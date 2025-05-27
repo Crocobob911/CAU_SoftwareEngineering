@@ -5,8 +5,6 @@ import Yutnori.Model.GameSetting;
 import Yutnori.Model.Observer.GameModelObserver;
 import Yutnori.Model.YutPackage.Yut;
 
-import java.util.List;
-
 public class GameController {
     private GameModel model;
 
@@ -32,6 +30,10 @@ public class GameController {
     public void calculateMovablePosition(int currentPosition, int yut) {
         model.setSelectedPiecePosition(currentPosition);
         model.findMovablePositions(yut);
+    }
+
+    public void createNewPiece(){
+        model.initNewPiece();
     }
 
     public void addMeModelObserver(GameModelObserver observer) {
