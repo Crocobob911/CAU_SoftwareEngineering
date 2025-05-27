@@ -38,6 +38,7 @@ public class GameModel {
         nowPlayerID = 0;
         remainRollCount = 1;
 
+        // 게임 뷰 초기화
         notifyObservers(ModelChangeType.REMAINING_PIECES_INFO, remainingPieces); // 남은 말 수를 알림
         notifyObservers(ModelChangeType.NOW_PLAYER_INFO, getPlayerInfo()); // 현재 플레이어 턴을 알림
         notifyObservers(ModelChangeType.BOARD_PIECES_INFO, pieces.toArray(new Piece[0])); // 보드에 있는 피스 정보를 알림
@@ -47,7 +48,7 @@ public class GameModel {
 
 
 
-    // 턴 전환 메서드, isTurnEnd() 메서드로 턴 종료 여부 확인후 호출할 것
+    // 턴 전환 메서드, isTurnEnd() 메서드로 턴 종료 여부 확인후 호출됩니다.
     public void nextTurn() {
         // 다음 플레이어 턴으로 넘어감
         nowPlayerID = (nowPlayerID + 1) % gameSetting.playerNumber;
@@ -56,7 +57,7 @@ public class GameModel {
         notifyObservers(ModelChangeType.NOW_PLAYER_INFO, getPlayerInfo());
     }
 
-    // 턴 종료 여부 확인 메서드 - 남은 액션이 없고, 윷 결과가 없을 때
+    // 턴 종료 여부 확인 메서드 - 남은 액션이 없고, 윷 결과가 없거나, 백도만 있을대
     public boolean isTurnEnd() {
         boolean emptyYutResult = yutResult.isEmpty() || yutResult.stream().allMatch(result -> result == -1); // 윷 결과가 없거나 모두 백도인 경우
         return remainRollCount <= 0 && emptyYutResult;
@@ -67,7 +68,7 @@ public class GameModel {
         return remainingPieces[nowPlayerID] <= 0 && !isPlayerPieceInBoard(nowPlayerID);
     }
 
-    // 플레이어의 액션을 처리하는 메서드
+    // 윷을 던지고 나온 결과값을 윷 결과 리스트에 추가합니다.
     public void addYutResult(int result) {
         yutResult.add(result);
         remainRollCount--;
@@ -81,7 +82,7 @@ public class GameModel {
         notifyObservers(ModelChangeType.YUT_RESULT, yutResult.stream().mapToInt(Integer::intValue).toArray());      //list to int[]
     }
 
-    //포지션을 기반으로 피스를 찾음 -> 윷놀이에서 포지션 한 곳에 하나의 피스만 존재
+    //포지션을 기반으로 피스를 찾음 -> 윷놀이에서 포지션 한 곳에 하나의 피스만 존재, 보드판 위에서 말은 포지션을 각각의 고유값으로 지닙니다.
     public Piece getPiece(int piecePosition) {
         for (Piece piece : pieces) {
             if (piece.getPosition() == piecePosition) {
@@ -92,7 +93,7 @@ public class GameModel {
         return null;
     }
 
-    // 주어진 플레이어의 말을 init함, 위치는 -1로 초기화
+    // 주어진 플레이어의 말을 init함, 위치는 -1로 초기화, 새 말 시작할때 이 과정을 거침
     public void initNewPiece() {
         Piece piece = new Piece(nowPlayerID);
         pieces.add(piece);
@@ -107,11 +108,13 @@ public class GameModel {
     }
 
     // 주어진 플레이어의 말을 이동함, 이동 후 보드에 있는 피스 정보도 업데이트
+    // positionIndex 는 이동 가능한 위치의 인덱스를 뜻함. 포지션과는 다름, 이동가능한 각각의 포지션의 위치를 list로 저장하고, 인덱스를 input 으로 받은 뒤 이 메서드를 호출함
+    // movablePositions 리스트에 있는 위치를 기반으로 피스를 이동시킴
     public void movePieceByIndex(int positionIndex) {
 
         // 이동 - 세팅
         Piece selectedPiece = getPiece(selectedPiecePosition);
-        int destPosition = movablePositions.get(positionIndex);
+        int destPosition = movablePositions.get(positionIndex);     // 최종 이동 위치를 movablePositions 리스트에서 index로 가져옴
         
 
         if(destPosition == -2) { // 골인
@@ -122,7 +125,8 @@ public class GameModel {
 
             return; // 골인 처리 후 종료
         }
-        // 이동 경로 기록 골인이 아닐때만
+
+        // 이동 경로 기록 골인이 아닐때만 -> 필요없는 기록과정 제거용
         selectedPiece.recordPath(pathList.get(positionIndex));
 
         Piece pieceOnPosition = null; // 이동할 위치에 있는 피스 찾기
@@ -141,13 +145,13 @@ public class GameModel {
         { // 이동할 위치에 피스가 있다면
             if (pieceOnPosition.getOwnerID() == nowPlayerID) { // 같은 플레이어의 피스라면
                 System.out.println("모델 : 같은 플레이어의 피스가 있어 스택을 증가시킵니다. ");
-                pieceOnPosition.addStack(); // 스택 증가
+                pieceOnPosition.addStack(); // 스택 증가 -> 업기 구현
                 selectedPiece.setPosition(destPosition); // 피스 위치 업데이트
             }
             else { // 다른 플레이어의 피스라면
                 System.out.println("모델 : 다른 플레이어의 피스가 있어 제거하고 추가 턴을 얻습니다. ");
                 pieces.remove(pieceOnPosition); // 상대방의 피스를 제거
-                remainingPieces[pieceOnPosition.getOwnerID()] += pieceOnPosition.getStacked() + 1; // 상대방의 말 수 증가
+                remainingPieces[pieceOnPosition.getOwnerID()] += pieceOnPosition.getStacked() + 1; // 상대방의 말 수 증가, 왜 +1 인가요. 기본 스택은 항상 0이기 때문에 스택이 아예 없는 경우 1만큼 증가해야해요
                 selectedPiece.setPosition(destPosition); // 피스 위치 업데이트
 
                 // 상대방의 피스가 제거되었으니, 남은 말 수를 알림
@@ -166,7 +170,8 @@ public class GameModel {
         notifyObservers(ModelChangeType.BOARD_PIECES_INFO, pieces.toArray(new Piece[0])); // 보드에 있는 피스 정보를 알림
     }
 
-    // 선택된 말에서 갈 수 있는 위치를 찾습니다
+    // 선택된 말에서 갈 수 있는 위치를 찾습니다, 윷 인덱스를 기반으로 찾습니다.
+    // yutIndex 는 yutResult 리스트의 인덱스입니다. 윷을 던진 결과를 yutResult 리스트에 저장하고 인덱스를 input 으로 받아 접근합니다.
     public void findMovablePositions(int yutIndex) {
         int step = yutResult.get(yutIndex);
 
@@ -175,14 +180,15 @@ public class GameModel {
         notifyObservers(ModelChangeType.YUT_RESULT, yutResult.stream().mapToInt(Integer::intValue).toArray()); // 윷 결과를 알림
 
 
-        if (step == -1) {   //백도 특수 처리
-            movablePositions.clear();
-            pathList.clear();
+        if (step == -1) {   //백도 특수 처리 -> 구현이 좀 복잡해요. 얹혀 사는 친구라... 굳이 안뜯는걸 추천해요
+            movablePositions.clear();       // 이동 가능한 위치 초기화
+            pathList.clear();               // 이동 가능한 위치에 따른 경로 초기화
+            // pathList 는 List<List<Integer>> 형태로, 각 이동 가능한 위치에 대한 경로를 저장하고 내부 리스트의 마지막 값은 항상 movablePositions 리스트에 있는 위치와 같습니다.
 
             Piece selectedPiece = getPiece(selectedPiecePosition);
             int backDoPosition = selectedPiece.getLastPathPosition(); // 백도일 때는 피스의 경로에서 마지막 위치를 가져옴
-            if (backDoPosition == -3) { // 백도 직전 인덱스인 경우
-                backDoPosition = board.getLastPosition(); // 골인 직전 인덱스 처리
+            if (backDoPosition == -3) { // 백도 직전 인덱스인 경우 -> 간단한 예시로 도 백도가 뜨거나 개 백도 백도가 뜬다던지 , 왜 -3인가요? 그냥 안겹치는 특수 값 리턴입니다.
+                backDoPosition = board.getLastPosition(); // 골인 직전 인덱스 처리 -> 가장 외부라인 포지션으로 바꿔버립니다.
             }
             movablePositions.add(backDoPosition);        // piece 의 경로에서 마지막 위치를 가져옴
             pathList.add(new ArrayList<>()); // 백도 경로를 추가
@@ -191,14 +197,14 @@ public class GameModel {
                 selectedPiece.handleBackDoPath();
             }
         }
-        else {
+        else {  // 일반 이동
             // 초기화
             movablePositions.clear();
             pathList.clear();
 
-            for (List<Integer> list: board.getNextPosition(selectedPiecePosition, step)) {
-                movablePositions.add(list.getLast());
-                pathList.add(list);
+            for (List<Integer> list: board.getNextPosition(selectedPiecePosition, step)) {  //board.getNextPosition(selectedPiecePosition, step) 를 통한 리턴
+                movablePositions.add(list.getLast());                                       // 리턴 값이 List<List<Integer>> 형태로 이기에 getLast() 를 통해 마지막 위치를 가져옴
+                pathList.add(list);                                                         // 이동 가능한 위치에 따른 경로를 저장
             }
             //movablePositions = board.getNextPosition(selectedPiecePosition, step);
 
