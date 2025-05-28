@@ -1,12 +1,7 @@
 package Yutnori.View;
 
-import Yutnori.Model.Util.TripleInteger;
-
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.function.Consumer;
 
 public class StartScreen_Swing extends JPanel {
     private JComboBox<Integer> playerNum;
@@ -43,14 +38,11 @@ public class StartScreen_Swing extends JPanel {
         startButton.setBounds(400, 550, 250, 70);
         add(startButton);
 
-        startButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int players = (int) playerNum.getSelectedItem();
-                int horses = (int) horseNum.getSelectedItem();
-                String board = (String) boardType.getSelectedItem();
-                frame.showGameScreen(players, horses, board);
-            }
+        startButton.addActionListener(e -> {
+            int players = (int) playerNum.getSelectedItem();
+            int horses = (int) horseNum.getSelectedItem();
+            String board = (String) boardType.getSelectedItem();
+            frame.showGameScreen(players, horses, board);
         });
 
         // 버튼들을 배경 위로 올리기

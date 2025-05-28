@@ -7,7 +7,7 @@ import Yutnori.Model.GameSetting;
 import javax.swing.*;
 import java.awt.*;
 
-public class MainFrame_Swing extends JFrame implements MainFrame {
+public class MainFrame_Swing extends JFrame implements View {
     public MainFrame_Swing() {
         setTitle("Yutnori Game");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -47,15 +47,15 @@ public class MainFrame_Swing extends JFrame implements MainFrame {
         controller.gameStart(gameSetting);
 
         // GameScreen으로 전환
-        GameScreen_Swing gameScreen = new GameScreen_Swing(controller, players, horses, boardType, this);
+        InGameScreen_Swing gameScreen = new InGameScreen_Swing(controller, players, horses, boardType, this);
         setContentPane(gameScreen);
         revalidate();
         repaint();
     }
 
-    public void showEndScreen() {
-//        EndScreen_Swing endScreen = new EndScreen_Swing(this, winnerTeam);
-//        setContentPane(endScreen);
+    public void showEndScreen(int winnerTeam) {
+        EndScreen_Swing endScreen = new EndScreen_Swing(this, winnerTeam);
+        setContentPane(endScreen);
         revalidate();
         repaint();
     }
