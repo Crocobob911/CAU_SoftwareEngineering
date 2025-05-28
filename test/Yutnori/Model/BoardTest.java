@@ -14,7 +14,7 @@ public class BoardTest {
         // given
         Board board = new Board(4);
         int from = 4;
-        int step = 5;
+        int step = 3;
 
         // when
         List<List<Integer>> result = board.getNextPosition(from, step);

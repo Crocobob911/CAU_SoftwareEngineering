@@ -22,6 +22,7 @@ public class ConsoleViewSimplee implements GameView_Simplee {
     private int nowPlayerID; // 현재 플레이어 ID
     private int rollCount; // 남은 행동 수
     private int[] remainingPieces; // 남은 말 수
+    private int[] graduationPieces; // 졸업한 말 수
     private Piece[] boardPieces; // 보드에 있는 말 정보
     private int[] yutResult; // 사용가능한 윷 결과
 
@@ -41,10 +42,11 @@ public class ConsoleViewSimplee implements GameView_Simplee {
         System.out.println("게임 모델이 업데이트되었습니다. 타입: " + type);
 
         // 왜 싹다 배열인가요? deep copy를 통해서 모델을 보호하기 위해서입니다. 즉 딱히 List 필요가 없어요
+        // 각 enum 타입은 ModelChangeType 에 정의되어 있습니다. 확인 가능
         switch (type) {
-            case REMAINING_PIECES_INFO:
-                int[] pieces = (int[]) value;
-                updateRemainingPieces(pieces);
+            case PLAYERS_PIECES_INFO:
+                int[][] piecesInfo = (int[][]) value; // 플레이어의 말 정보 : playerID, 남은 말 수 || array size 2
+                updatePlayersPieceInfo(piecesInfo);
                 break;
             case NOW_PLAYER_INFO:
                 int[] playerInfo = (int[]) value;       // 현재 플레이어 정보 : playerID, 남은 액션 || array size 2
@@ -95,15 +97,22 @@ public class ConsoleViewSimplee implements GameView_Simplee {
         System.out.println("보드 정보가 업데이트되었습니다.");
     }
 
-    // 남은 말 수를 업데이트하는 메서드
-    private void updateRemainingPieces(int[] remainingPieces) {
-        this.remainingPieces = remainingPieces;
+    // 플레이어 말 관련 정보를 업데이트하는 메서드 , 0번 배열은 남은 말 수, 1번 배열은 졸업한 말 수
+    private void updatePlayersPieceInfo(int[][] playersPiecesInfo) {
+        this.remainingPieces = playersPiecesInfo[0]; // 남은 말 수
+        this.graduationPieces = playersPiecesInfo[1]; // 졸업한 말 수
+
 
         System.out.println("남은 말 수: ");
-        for (int i = 0; i < remainingPieces.length; i++) {
+        for (int i = 0; i < playersPiecesInfo.length; i++) {
             System.out.println("플레이어 " + (i) + ": " + remainingPieces[i] + "개");
         }
-        System.out.println("남은 말 수가 업데이트되었습니다.");
+
+        System.out.println("졸업한 말 수: ");
+        for (int i = 0; i < graduationPieces.length; i++) {
+            System.out.println("플레이어 " + (i) + ": " + graduationPieces[i] + "개");
+        }
+        System.out.println("플레이어 Piece 관련 정보가 업데이트되었습니다.");
     }
 
 
@@ -207,6 +216,8 @@ public class ConsoleViewSimplee implements GameView_Simplee {
     @Override
     public void waitingAction(Consumer<Integer> selectPieceCallback, Consumer<Integer> YutActionCallback) {
         // 플레이어의 액션을 기다리는 메서드 : action 은 selectYutCallback, YutActionCallback 두가지로 나뉨
+        // selectYutCallback : piece 선택 단계 이후 어떤 윷을 사용할 것인지 선택하는 메서드
+        // YutActionCallback : 윷 던지기 메서드 (Model) 실행
 //        System.out.println("액션을 선택하세요.");
 //
 //
@@ -244,7 +255,8 @@ public class ConsoleViewSimplee implements GameView_Simplee {
 
     @Override
     public void waitingSelectYutStep(Consumer<Integer> getMovablePositionCallback) {
-        // 플레이어의 액션을 기다리는 메서드 : 위에 액션에서 pieceActionCallback 단계 이후 어떤 윷을 사용할 것인지 선택
+        // 플레이어의 선택을 기다리는 메서드 : piece 선택후 어떤 윳을 사용할 것인지 선택하는 메서드
+        // getMovablePositionCallback : 윷을 던진 후 이동 가능한 위치를 처리하는 메서드
         System.out.println("이동에 사용할 윷을 선택하세요. 리스트 인덱스 번호를 입력해주세요.");
         for (int i = 0; i < yutResult.length; i++) {
             System.out.println(i + ": " + yutResult[i]);
@@ -256,14 +268,14 @@ public class ConsoleViewSimplee implements GameView_Simplee {
 
     @Override
     public void waitingSelectPosition(Consumer<Integer> moveActionCallback) {
-        // 플레이어의 액션을 기다리는 메서드 : 위에 액션에서 pieceActionCallback 단계 이후 어떤 윷을 사용할 것인지 선택
+        // 플레이어의 선택을 기다리는 메서드 : piece 선택 - 윷 선택 후 이동 가능한 위치를 선택하는 메서드
         System.out.println("이동할 위치를 선택하세요. 리스트 인덱스 번호르 입력해주세요.");
-        for (int i = 0; i < pieceMoveableInfo.length; i++) {
-            System.out.println(i + ": " + pieceMoveableInfo[i]);
+        for (int j : pieceMoveableInfo) {
+            System.out.println(j + "번 위치로 이동 가능합니다.");
         }
-        int positionIndex = input.nextInt();
-        //!!!! 주의!!!! 리스트 인덱스가 넘어갑니다!!!!
-        moveActionCallback.accept(positionIndex);
+        int position = input.nextInt();
+        //포지션 값이 넘어갑니다. index 값이 아니라 실제 포지션 값이 넘어갑니다.
+        moveActionCallback.accept(position);
     }
     //#endregion
 }
