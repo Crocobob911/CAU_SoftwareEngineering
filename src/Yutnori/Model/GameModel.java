@@ -151,6 +151,7 @@ public class GameModel {
             if (pieceOnPosition.getOwnerID() == nowPlayerID) { // 같은 플레이어의 피스라면
                 System.out.println("모델 : 같은 플레이어의 피스가 있어 스택을 증가시킵니다. ");
                 pieceOnPosition.addStack(); // 스택 증가 -> 업기 구현
+                pieces.remove(selectedPiece); // 기존 피스 제거
                 selectedPiece.setPosition(position); // 피스 위치 업데이트
             }
             else { // 다른 플레이어의 피스라면
