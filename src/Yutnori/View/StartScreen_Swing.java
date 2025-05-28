@@ -29,7 +29,7 @@ public class StartScreen_Swing extends JPanel {
         add(playerNum);
 
         // 말 개수 선택
-        horseNum = new JComboBox<>(new Integer[]{2, 3, 4, 5});
+        horseNum = new JComboBox<>(new Integer[]{1, 2, 3, 4, 5});
         horseNum.setBounds(650, 300, 100, 30);
         add(horseNum);
 
@@ -43,14 +43,11 @@ public class StartScreen_Swing extends JPanel {
         startButton.setBounds(400, 550, 250, 70);
         add(startButton);
 
-        startButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int players = (int) playerNum.getSelectedItem();
-                int horses = (int) horseNum.getSelectedItem();
-                String board = (String) boardType.getSelectedItem();
-                frame.showGameScreen(players, horses, board);
-            }
+        startButton.addActionListener(e -> {
+            int players = (int) playerNum.getSelectedItem();
+            int horses = (int) horseNum.getSelectedItem();
+            String board = (String) boardType.getSelectedItem();
+            frame.showGameScreen(players, horses, board);
         });
 
         // 버튼들을 배경 위로 올리기
