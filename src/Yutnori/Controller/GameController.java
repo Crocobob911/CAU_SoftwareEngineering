@@ -5,8 +5,14 @@ import Yutnori.Model.GameSetting;
 import Yutnori.Model.Observer.GameModelObserver;
 import Yutnori.Model.YutPackage.Yut;
 
+import java.util.Optional;
+
 public class GameController {
     private GameModel model;
+
+    private Optional<Integer> selectedYutResult = Optional.empty();
+    private Optional<Integer> selectedYutResultIndex = Optional.empty();
+    private Integer selectedPiecePosition = -1;
 
     public GameController(GameModel model) {
         this.model = model;
@@ -25,13 +31,31 @@ public class GameController {
         return true;
     }
 
-    public void calculateMovablePosition(int currentPosition, int yut) {
+    public void selectYut(int yutResult, int yutResultIndex){
+        selectedYutResult = Optional.of(yutResult);
+        selectedYutResultIndex = Optional.of(yutResultIndex);
+    }
+
+    public boolean isYutSelected(){
+        return selectedYutResult.isPresent();
+    }
+
+    public void calculateMovablePosition(int currentPosition) {
+        if(!checkTeamOfPiece(currentPosition)){
+            return;
+        }
+
+        selectedPiecePosition = currentPosition;
+
         model.setSelectedPiecePosition(currentPosition);
-        model.findMovablePositions(yut);
+        model.findMovablePositions(selectedYutResultIndex.get());
     }
 
     public void movePiece(int position){
         model.movePieceByPosition(position);
+
+        selectedYutResult = Optional.empty();
+        selectedYutResultIndex = Optional.empty();
 
         if(model.isTurnEnd()) {
             model.nextTurn();
@@ -44,6 +68,10 @@ public class GameController {
 
     public void createNewPiece(){
         model.initNewPiece();
+    }
+
+    private boolean checkTeamOfPiece(int position){
+        return model.getPiece(position).getOwnerID() == model.getNowPlayerID();
     }
 
     public void addMeModelObserver(GameModelObserver observer) {

@@ -22,12 +22,15 @@ public class GameModel {
     private int[] graduatedPieces;
     // 현재 플레이어 턴, 현재 턴의 액션 수 -> observer -> now player info
     private int nowPlayerID = 0;
+    public int getNowPlayerID() {
+        return nowPlayerID;
+    }
 
+    private int remainRollCount = 0;
     public int getRemainRollCount() {
         return remainRollCount;
     }
 
-    private int remainRollCount = 0;
     private final List<Integer> yutResult = new ArrayList<>(); // yutResult 를 저장하는 리스트 -1, 1, 2, 3, 4, 5
 
     private int selectedPiecePosition = -1; // 선택된 피스의 위치
@@ -68,7 +71,7 @@ public class GameModel {
 
         System.out.println("모델 - 다음 플레이어 턴 : " + nowPlayerID);
         notifyObservers(ModelChangeType.YUT_RESULT, yutResult.stream().mapToInt(Integer::intValue).toArray());
-//        notifyObservers(ModelChangeType.NOW_PLAYER_INFO, getPlayerInfo());
+        notifyObservers(ModelChangeType.NOW_PLAYER_INFO, getPlayerInfo());
     }
 
     // 턴 종료 여부 확인 메서드 - 남은 액션이 없고, 윷 결과가 없거나, 백도만 있을대
@@ -115,6 +118,9 @@ public class GameModel {
 
         // notify
         notifyObservers(ModelChangeType.PLAYERS_PIECES_INFO, getPlayersPiecesInfo()); // 남은 말 수를 알림
+
+        // !!! 김명준이 추가 !!!
+        notifyObservers(ModelChangeType.BOARD_PIECES_INFO, pieces.toArray(new Piece[0])); // 보드에 있는 피스 정보를 알림
     }
 
     // 주어진 플레이어의 말을 이동함, 이동 후 보드에 있는 피스 정보도 업데이트

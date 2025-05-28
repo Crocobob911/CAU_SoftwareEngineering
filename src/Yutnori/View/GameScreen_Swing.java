@@ -18,16 +18,11 @@ public class GameScreen_Swing extends JPanel implements GameModelObserver{
     private MainFrame_Swing frame;
     private GameController controller;
 
-    private int[] yutResults;
-    private Optional<Integer> selectedYutResult;
-    private Optional<Integer> selectedYutResultIndex;
-    private Integer selectedPiecePosition;
-
-    private Consumer<Integer> selectPieceCallback;
-    private Consumer<Integer> selectYutCallback;
+//    private Integer selectedPiecePosition;
 
     private JLayeredPane layeredPane;
 
+    private JLabel nowPlayerTextLabel;
     private JLabel yutResultLabel;
     private JLabel[][] playerInfoLabels;
     private JPanel yutResultPanel;
@@ -41,7 +36,6 @@ public class GameScreen_Swing extends JPanel implements GameModelObserver{
     public GameScreen_Swing(GameController controller, int playerNum, int horseNum, String boardType, MainFrame_Swing frame) {
         this.frame = frame;
         this.controller = controller;
-        selectedYutResult = Optional.empty();
 
         boardIndex = new BoardIndex(boardType);
         pieceLabels = new ArrayList<>();
@@ -68,6 +62,12 @@ public class GameScreen_Swing extends JPanel implements GameModelObserver{
         JLabel boardLabel = new JLabel(boardIcon);
         boardLabel.setBounds(20, 25, boardIcon.getIconWidth(), boardIcon.getIconHeight());
         layeredPane.add(boardLabel, Integer.valueOf(1));
+
+        // create Now Player Text
+        nowPlayerTextLabel = new JLabel("Player 1");
+        nowPlayerTextLabel.setBounds(830, -325, 1200, 750);
+        nowPlayerTextLabel.setFont(new Font("Arial", Font.PLAIN, 40));
+        layeredPane.add(nowPlayerTextLabel, Integer.valueOf(2));
 
         // create Combobox
         String[] yutOptions = {"없음", "도", "개", "걸", "윷", "모", "백도"};
@@ -128,7 +128,7 @@ public class GameScreen_Swing extends JPanel implements GameModelObserver{
         JButton createNewPieceButton = new JButton("새 말 생성");
         createNewPieceButton.setBounds(30, 600, 120, 30);
         createNewPieceButton.addActionListener(e ->
-                requestMovablePosition(-1, selectedYutResultIndex.get()));
+                requestMovablePosition(-1));
         layeredPane.add(createNewPieceButton, Integer.valueOf(10));
 
         add(layeredPane);
@@ -152,8 +152,6 @@ public class GameScreen_Swing extends JPanel implements GameModelObserver{
     }
 
     private void updateYutResult(int[] yutResults) {
-        this.yutResults = yutResults;
-
         // update YutResult Panel Display
         yutResultPanel.removeAll();
         for(int result : yutResults) {
@@ -161,9 +159,8 @@ public class GameScreen_Swing extends JPanel implements GameModelObserver{
 
             JButton button = new JButton(yutResultString);
             button.addActionListener(e -> {
-                selectedYutResult = Optional.of(result);
-                selectedYutResultIndex = Optional.of(yutResultPanel.getComponentZOrder((JButton) e.getSource()));
-                JOptionPane.showMessageDialog(this, "선택됨 : " + yutResultString);
+                controller.selectYut(result, yutResultPanel.getComponentZOrder((JButton) e.getSource()));
+//                JOptionPane.showMessageDialog(this, "선택됨 : " + yutResultString);
             });
             yutResultPanel.add(button);
         }
@@ -172,10 +169,11 @@ public class GameScreen_Swing extends JPanel implements GameModelObserver{
         yutResultPanel.repaint();
     }
 
-    private void requestMovablePosition(int currentPosition, int yutResultIndex) {
-        if(selectedYutResult.isEmpty())
+    private void requestMovablePosition(int currentPosition) {
+        if(!controller.isYutSelected()) {
             JOptionPane.showMessageDialog(this, "먼저 사용할 윷 결과를 선택하세요.");
-
+            return;
+        }
         clearMovableDestination();
 
         if(currentPosition == -1) {
@@ -185,8 +183,7 @@ public class GameScreen_Swing extends JPanel implements GameModelObserver{
             }
             controller.createNewPiece();
         }
-        selectedPiecePosition = currentPosition;
-        controller.calculateMovablePosition(currentPosition, yutResultIndex);
+        controller.calculateMovablePosition(currentPosition);
     }
 
     private void showMoveablePositions(int[] positions) {
@@ -199,8 +196,6 @@ public class GameScreen_Swing extends JPanel implements GameModelObserver{
                 btn.addActionListener(e -> {
                     movePiece(pos);
                     clearMovableDestination();
-                    selectedYutResult = Optional.empty();
-                    selectedPiecePosition = -1;
                 });
                 layeredPane.add(btn, Integer.valueOf(10));
                 movableDestination.add(btn);
@@ -274,12 +269,12 @@ public class GameScreen_Swing extends JPanel implements GameModelObserver{
     }
 
     private void pieceClicked(int position) {
-        if(selectedYutResult.isEmpty()){
+        if(!controller.isYutSelected()){
             JOptionPane.showMessageDialog(this, "사용할 윷 결과를 먼저 선택하세요.");
             return;
         }
-        selectedPiecePosition = position;
-        requestMovablePosition(selectedPiecePosition, selectedYutResultIndex.get());
+
+        requestMovablePosition(position);
     }
 
     private void updatePlayerInfos(int[][] playerInfos) {
@@ -293,11 +288,15 @@ public class GameScreen_Swing extends JPanel implements GameModelObserver{
         layeredPane.repaint();
     }
 
+    private void updateNowPlayerInfo(int[] playerInfo) {
+        System.out.println("Player " + (playerInfo[0]+1));
+        nowPlayerTextLabel.setText("Player " + (playerInfo[0]+1));
+    }
 
     @Override
     public void onUpdate(ModelChangeType type, Object value) {
         switch (type){
-//            case NOW_PLAYER_INFO -> updateNowPlayerInfo((int[]) value);
+            case NOW_PLAYER_INFO -> updateNowPlayerInfo((int[]) value);
             case PLAYERS_PIECES_INFO -> updatePlayerInfos((int[][]) value);
             case BOARD_PIECES_INFO -> updatePiecesOnBoard((Piece[]) value);
             case MOVEABLE_POSITION_INFO -> showMoveablePositions((int[]) value);
@@ -305,6 +304,8 @@ public class GameScreen_Swing extends JPanel implements GameModelObserver{
             default -> System.out.println(type + ": 알 수 없는 업데이트 타입입니다.");
         }
     }
+
+
 
 
     private String convertYutIntToString(int yutResultNum) {
