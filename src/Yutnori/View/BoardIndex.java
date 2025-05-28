@@ -14,6 +14,7 @@ public class BoardIndex {
 
     private void initializeCoordinates(String boardType) {
         if (boardType.equals("사각형")) {  // 출발
+            indexToPoint.put(-2, new Point(530, 500));
             indexToPoint.put(-1, new Point(495, 500));
             indexToPoint.put(0, new Point(495, 405));
             indexToPoint.put(1, new Point(495, 320));
@@ -49,6 +50,7 @@ public class BoardIndex {
             indexToPoint.put(72, new Point(495, 500));
         }
         else if (boardType.equals("오각형")) {
+            indexToPoint.put(-2, new Point(5, 210));
             indexToPoint.put(-1, new Point(45, 215));
             indexToPoint.put(0, new Point(55, 285));
             indexToPoint.put(1, new Point(70,335));
@@ -92,6 +94,7 @@ public class BoardIndex {
 
         }
         else if (boardType.equals("육각형")) {
+            indexToPoint.put(-2, new Point(3, 260));
             indexToPoint.put(-1, new Point(35,260));
             indexToPoint.put(0, new Point(60,310));
             indexToPoint.put(1, new Point(80,340));

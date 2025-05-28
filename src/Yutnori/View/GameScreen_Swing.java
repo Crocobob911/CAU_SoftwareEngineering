@@ -29,13 +29,14 @@ public class GameScreen_Swing extends JPanel implements GameModelObserver{
     private JLayeredPane layeredPane;
 
     private JLabel yutResultLabel;
-    private JLabel[] playerInfoLabels;
+    private JLabel[][] playerInfoLabels;
     private JPanel yutResultPanel;
     private JComboBox yutComboBox;
     private ArrayList<JButton> movableDestination = new ArrayList<>();
 
     private BoardIndex boardIndex;
-    private JLabel[][] pieceLabels;
+    private ArrayList<JLabel> pieceLabels = new ArrayList<>();
+    private ArrayList<JLabel> stackedTextLabels = new ArrayList<>();
 
     public GameScreen_Swing(GameController controller, int playerNum, int horseNum, String boardType, MainFrame_Swing frame) {
         this.frame = frame;
@@ -43,7 +44,7 @@ public class GameScreen_Swing extends JPanel implements GameModelObserver{
         selectedYutResult = Optional.empty();
 
         boardIndex = new BoardIndex(boardType);
-        pieceLabels = new JLabel[playerNum][horseNum];
+        pieceLabels = new ArrayList<>();
 
         setLayout(null);
         setPreferredSize(new Dimension(1200, 750));
@@ -87,23 +88,34 @@ public class GameScreen_Swing extends JPanel implements GameModelObserver{
 
         // create Player Infos Labels
         int[][] playerInfoPositions = {{625, 400}, {935, 400}, {625, 550}, {935, 550}};
-        playerInfoLabels = new JLabel[playerNum];
+        playerInfoLabels = new JLabel[2][playerNum];
         for (int i = 0; i < playerNum; i++) {
             ImageIcon playerIcon = new ImageIcon("src/Yutnori/View/picture/team" + (i + 1) + ".png");
             JLabel playerLabel = new JLabel(playerIcon);
             playerLabel.setBounds(playerInfoPositions[i][0], playerInfoPositions[i][1], playerIcon.getIconWidth(), playerIcon.getIconHeight());
             layeredPane.add(playerLabel, Integer.valueOf(1));
 
-            JLabel infoLabel = new JLabel("대기: 0, 완료: 0");
-            infoLabel.setFont(new Font("Arial", Font.PLAIN, 20));
-            infoLabel.setBounds(
-                    playerInfoPositions[i][0] + 40,
-                    playerInfoPositions[i][1] + playerIcon.getIconHeight() - 80,
+            JLabel remainPieceLabel = new JLabel(String.valueOf(horseNum));
+            remainPieceLabel.setFont(new Font("Arial", Font.PLAIN, 20));
+            remainPieceLabel.setBounds(
+                    playerInfoPositions[i][0] + 105,
+                    playerInfoPositions[i][1] + playerIcon.getIconHeight() - 82,
                     250,
                     30
             );
-            layeredPane.add(infoLabel, Integer.valueOf(2));
-            playerInfoLabels[i] = infoLabel;
+
+            JLabel finishedPieceLabel = new JLabel("0");
+            finishedPieceLabel.setFont(new Font("Arial", Font.PLAIN, 20));
+            finishedPieceLabel.setBounds(
+                    playerInfoPositions[i][0] + 105,
+                    playerInfoPositions[i][1] + playerIcon.getIconHeight() - 45,
+                    250,
+                    30
+            );
+            layeredPane.add(remainPieceLabel, Integer.valueOf(2));
+            layeredPane.add(finishedPieceLabel, Integer.valueOf(2));
+            playerInfoLabels[0][i] = remainPieceLabel;
+            playerInfoLabels[1][i] = finishedPieceLabel;
         }
 
         // created Pending Moves Panel
@@ -115,22 +127,27 @@ public class GameScreen_Swing extends JPanel implements GameModelObserver{
         // create New piece Button
         JButton createNewPieceButton = new JButton("새 말 생성");
         createNewPieceButton.setBounds(30, 600, 120, 30);
-        createNewPieceButton.addActionListener(e -> requestMovablePosition(-1, selectedYutResultIndex.get()));
+        createNewPieceButton.addActionListener(e ->
+                requestMovablePosition(-1, selectedYutResultIndex.get()));
         layeredPane.add(createNewPieceButton, Integer.valueOf(10));
 
         add(layeredPane);
 
         controller.addMeModelObserver(this);
-        updatePlayerInfos();
     }
 
     private void throwYut() {
         String selectedYut = (String) yutComboBox.getSelectedItem();
+        boolean throwSuccess = false;
         if(selectedYut.equals("없음")) {
-            controller.throwYut();
+            throwSuccess = controller.throwYut(0);
         }
         else{
-            controller.throwYut(convertYutStringToInt(selectedYut));
+            throwSuccess = controller.throwYut(convertYutStringToInt(selectedYut));
+        }
+
+        if(!throwSuccess) {
+            JOptionPane.showMessageDialog(this, "윷을 더 던질 수 없습니다.");
         }
     }
 
@@ -161,22 +178,26 @@ public class GameScreen_Swing extends JPanel implements GameModelObserver{
 
         clearMovableDestination();
 
-        if(currentPosition == -1) controller.createNewPiece();
+        if(currentPosition == -1) {
+            if(!controller.canCreateNewPiece()){
+                JOptionPane.showMessageDialog(this, "새 말을 더 놓을 수 없습니다.");
+                return;
+            }
+            controller.createNewPiece();
+        }
         selectedPiecePosition = currentPosition;
         controller.calculateMovablePosition(currentPosition, yutResultIndex);
     }
 
     private void showMoveablePositions(int[] positions) {
-        for(int i=0; i<positions.length; i++){
-            int pos = positions[i];
-            int posIndex = i;
+        for(int pos : positions) {
             Point point = boardIndex.getPoint(pos);
             if (point != null) {
                 JButton btn = new JButton("→");
                 btn.setBounds(point.x, point.y, 50, 40);
                 btn.setBorderPainted(true);
                 btn.addActionListener(e -> {
-                    movePieceByIndex(posIndex);
+                    movePiece(pos);
                     clearMovableDestination();
                     selectedYutResult = Optional.empty();
                     selectedPiecePosition = -1;
@@ -187,7 +208,6 @@ public class GameScreen_Swing extends JPanel implements GameModelObserver{
         }
     }
 
-
     private void clearMovableDestination() {
         for (JButton btn : movableDestination) {
             layeredPane.remove(btn);
@@ -197,19 +217,19 @@ public class GameScreen_Swing extends JPanel implements GameModelObserver{
         layeredPane.repaint();
     }
 
-
-    private void movePieceByIndex(int destinationPosition){
-        controller.movePieceByIndex(destinationPosition);
+    private void movePiece(int destinationPosition){
+        controller.movePiece(destinationPosition);
     }
 
     private void updatePiecesOnBoard(Piece[] piecesOnBoard) {
-        for (JLabel[] pieceArray : pieceLabels){
-            for(JLabel piece : pieceArray){
-                if(piece != null) layeredPane.remove(piece);
-            }
+        for (JLabel pieceLabel : pieceLabels){
+            if(pieceLabel != null) layeredPane.remove(pieceLabel);
         }
+//        for(JLabel stackedTextLabel : stackedTextLabels){
+//            layeredPane.remove(stackedTextLabel);
+//        }
 
-        pieceLabels = new JLabel[4][5];
+        pieceLabels = new ArrayList<>();
         for(Piece piece : piecesOnBoard){
             // get piece info
             int team = piece.getOwnerID();
@@ -234,9 +254,18 @@ public class GameScreen_Swing extends JPanel implements GameModelObserver{
                     pieceClicked(position);
                 }
             });
-
             layeredPane.add(pieceLabel, Integer.valueOf(10));
-            pieceLabels[team][0] = pieceLabel;
+            pieceLabels.add(pieceLabel);
+
+//            // stacked Text
+//            if(stacked != 0){
+//                JLabel stackedTextLabel = new JLabel(String.valueOf(stacked));
+//                stackedTextLabel.setHorizontalAlignment(SwingConstants.CENTER);
+//                stackedTextLabel.setFont(new Font("Arial", Font.BOLD, 14));
+//
+//                layeredPane.add(stackedTextLabel, Integer.valueOf(10));
+//                stackedTextLabels.add(stackedTextLabel);
+//            }
         }
 
         layeredPane.revalidate();
@@ -249,37 +278,33 @@ public class GameScreen_Swing extends JPanel implements GameModelObserver{
             return;
         }
         selectedPiecePosition = position;
-        requestMovablePosition(position, selectedPiecePosition);
+        requestMovablePosition(selectedPiecePosition, selectedYutResultIndex.get());
     }
 
-    private void updatePlayerInfos() {}
+    private void updatePlayerInfos(int[][] playerInfos) {
+        for(int i=0; i<playerInfos[0].length; i++){
+            int waiting = playerInfos[0][i];
+            int finished = playerInfos[1][i];
+            playerInfoLabels[0][i].setText(String.valueOf(waiting));
+            playerInfoLabels[1][i].setText(String.valueOf(finished));
+        }
+        layeredPane.revalidate();
+        layeredPane.repaint();
+    }
 
 
     @Override
     public void onUpdate(ModelChangeType type, Object value) {
         switch (type){
+//            case NOW_PLAYER_INFO -> updateNowPlayerInfo((int[]) value);
+            case PLAYERS_PIECES_INFO -> updatePlayerInfos((int[][]) value);
             case BOARD_PIECES_INFO -> updatePiecesOnBoard((Piece[]) value);
-            case NOW_PLAYER_INFO -> updateNowPlayerInfo((int[]) value);
             case MOVEABLE_POSITION_INFO -> showMoveablePositions((int[]) value);
             case YUT_RESULT -> updateYutResult((int[])value);
-            default -> System.out.println("알 수 없는 업데이트 타입입니다.");
+            default -> System.out.println(type + ": 알 수 없는 업데이트 타입입니다.");
         }
     }
 
-
-    private void updateNowPlayerInfo(int[] value) {
-
-
-        Player[] players = gameController.GetPlayerInfos();
-        for (int i = 0; i < players.length; i++) {
-            //int waiting = players[i].getRemainPieceNumber();
-            int waiting = 100;
-            int finished = players[i].getCompletedPieceNumber();
-            teamInfoLabels[i].setText("대기: " + waiting + " 완료: " + finished);
-        }
-        layeredPane.revalidate();
-        layeredPane.repaint();
-    }
 
     private String convertYutIntToString(int yutResultNum) {
         return switch (yutResultNum) {

@@ -15,6 +15,9 @@ public class GameModel {
 
     // 플레이어가 남은 말 수를 저장하는 배열 -> observer -> players pieces info
     private int[] remainingPieces;
+    public int getRemainingPiecesOnCurrentPlayer() {
+        return remainingPieces[nowPlayerID];
+    }
     // 플레이어의 졸업 말 수를 저장하는 배열 -> observer -> players pieces info
     private int[] graduatedPieces;
     // 현재 플레이어 턴, 현재 턴의 액션 수 -> observer -> now player info
@@ -47,7 +50,7 @@ public class GameModel {
 
         // 게임 뷰 초기화
         notifyObservers(ModelChangeType.PLAYERS_PIECES_INFO, getPlayersPiecesInfo()); // 남은 말 수를 알림
-        notifyObservers(ModelChangeType.NOW_PLAYER_INFO, getPlayerInfo()); // 현재 플레이어 턴을 알림
+//        notifyObservers(ModelChangeType.NOW_PLAYER_INFO, getPlayerInfo()); // 현재 플레이어 턴을 알림
         notifyObservers(ModelChangeType.BOARD_PIECES_INFO, pieces.toArray(new Piece[0])); // 보드에 있는 피스 정보를 알림
         notifyObservers(ModelChangeType.YUT_RESULT, yutResult.stream().mapToInt(Integer::intValue).toArray()); // 윷 결과를 알림
         notifyObservers(ModelChangeType.MOVEABLE_POSITION_INFO, movablePositions.stream().mapToInt(i -> i).toArray()); // 이동 가능한 위치를 알림
@@ -57,13 +60,15 @@ public class GameModel {
 
     // 턴 전환 메서드, isTurnEnd() 메서드로 턴 종료 여부 확인후 호출됩니다.
     public void nextTurn() {
+
         // 다음 플레이어 턴으로 넘어감
         nowPlayerID = (nowPlayerID + 1) % gameSetting.playerNumber;
         remainRollCount = 1;
         yutResult.clear(); // 윷 결과 초기화 -> 백도만 남은 경우로 턴 종료 가능성 있기에
 
+        System.out.println("모델 - 다음 플레이어 턴 : " + nowPlayerID);
         notifyObservers(ModelChangeType.YUT_RESULT, yutResult.stream().mapToInt(Integer::intValue).toArray());
-        notifyObservers(ModelChangeType.NOW_PLAYER_INFO, getPlayerInfo());
+//        notifyObservers(ModelChangeType.NOW_PLAYER_INFO, getPlayerInfo());
     }
 
     // 턴 종료 여부 확인 메서드 - 남은 액션이 없고, 윷 결과가 없거나, 백도만 있을대
