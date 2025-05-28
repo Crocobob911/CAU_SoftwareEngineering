@@ -1,8 +1,8 @@
-package Yutnori.View.yoonis;
+package Yutnori.View.simplee.Console;
 
 import Yutnori.Model.GameSetting;
 import Yutnori.Model.Observer.GameModelObserver;
-import Yutnori.Model.Util.TripleInteger;
+import Yutnori.View.simplee.Util.TripleInteger;
 
 import java.util.function.Consumer;
 

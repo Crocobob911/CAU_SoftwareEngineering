@@ -1,10 +1,9 @@
-package Yutnori.View.yoonis.Console;
+package Yutnori.View.simplee.Console;
 
 import Yutnori.Model.GameSetting;
 import Yutnori.Model.Observer.ModelChangeType;
 import Yutnori.Model.Piece;
-import Yutnori.Model.Util.TripleInteger;
-import Yutnori.View.yoonis.GameView_Simplee;
+import Yutnori.View.simplee.Util.TripleInteger;
 
 import java.util.Scanner;
 import java.util.function.Consumer;

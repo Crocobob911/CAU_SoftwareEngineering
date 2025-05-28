@@ -10,10 +10,8 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Optional;
-import java.util.function.Consumer;
 
-public class GameScreen_Swing extends JPanel implements GameModelObserver{
+public class InGameScreen_Swing extends JPanel implements GameModelObserver{
 
     private MainFrame_Swing frame;
     private GameController controller;
@@ -33,7 +31,7 @@ public class GameScreen_Swing extends JPanel implements GameModelObserver{
     private ArrayList<JLabel> pieceLabels = new ArrayList<>();
     private ArrayList<JLabel> stackedTextLabels = new ArrayList<>();
 
-    public GameScreen_Swing(GameController controller, int playerNum, int horseNum, String boardType, MainFrame_Swing frame) {
+    public InGameScreen_Swing(GameController controller, int playerNum, int horseNum, String boardType, MainFrame_Swing frame) {
         this.frame = frame;
         this.controller = controller;
 
@@ -174,7 +172,7 @@ public class GameScreen_Swing extends JPanel implements GameModelObserver{
             JOptionPane.showMessageDialog(this, "먼저 사용할 윷 결과를 선택하세요.");
             return;
         }
-        clearMovableDestination();
+        clearMovablePositionButtons();
 
         if(currentPosition == -1) {
             if(!controller.canCreateNewPiece()){
@@ -195,7 +193,7 @@ public class GameScreen_Swing extends JPanel implements GameModelObserver{
                 btn.setBorderPainted(true);
                 btn.addActionListener(e -> {
                     movePiece(pos);
-                    clearMovableDestination();
+                    clearMovablePositionButtons();
                 });
                 layeredPane.add(btn, Integer.valueOf(10));
                 movableDestination.add(btn);
@@ -203,7 +201,7 @@ public class GameScreen_Swing extends JPanel implements GameModelObserver{
         }
     }
 
-    private void clearMovableDestination() {
+    private void clearMovablePositionButtons() {
         for (JButton btn : movableDestination) {
             layeredPane.remove(btn);
         }
