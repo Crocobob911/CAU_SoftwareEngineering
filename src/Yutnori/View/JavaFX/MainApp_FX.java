@@ -1,12 +1,14 @@
 package Yutnori.View.JavaFX;
 
+import Yutnori.Controller.GameController;
+import Yutnori.Model.GameModel;
+import Yutnori.Model.GameSetting;
 import Yutnori.View.View;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-public class MainAppFX extends Application implements View {
+public class MainApp_FX extends Application implements View {
     private Stage primaryStage;
 
     @Override
@@ -24,7 +26,7 @@ public class MainAppFX extends Application implements View {
     }
 
     public void showStartScreen() {
-        StartScreenFX startScreen = new StartScreenFX(this);
+        StartScreen_FX startScreen = new StartScreen_FX(this);
         Scene scene = new Scene(startScreen, 1200, 750);
         primaryStage.setScene(scene);
     }
@@ -42,13 +44,13 @@ public class MainAppFX extends Application implements View {
         GameController controller = new GameController(model);
         controller.gameStart(gameSetting);
 
-        InGameScreenFX gameScreen = new InGameScreenFX(controller, players, horses, boardType, this);
+        InGameScreen_FX gameScreen = new InGameScreen_FX(controller, players, horses, boardType, this);
         Scene scene = new Scene(gameScreen, 1200, 750);
         primaryStage.setScene(scene);
     }
 
     public void showEndScreen(int winnerTeam) {
-        EndScreenFX endScreen = new EndScreenFX(this, winnerTeam);
+        EndScreen_FX endScreen = new EndScreen_FX(this, winnerTeam);
         Scene scene = new Scene(endScreen, 1200, 750);
         primaryStage.setScene(scene);
     }
@@ -59,6 +61,6 @@ public class MainAppFX extends Application implements View {
 
     @Override
     public void StartProgram() {
-
+        start(primaryStage);
     }
 }
