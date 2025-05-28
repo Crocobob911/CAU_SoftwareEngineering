@@ -225,9 +225,9 @@ public class GameScreen_Swing extends JPanel implements GameModelObserver{
         for (JLabel pieceLabel : pieceLabels){
             if(pieceLabel != null) layeredPane.remove(pieceLabel);
         }
-//        for(JLabel stackedTextLabel : stackedTextLabels){
-//            layeredPane.remove(stackedTextLabel);
-//        }
+        for(JLabel stackedTextLabel : stackedTextLabels){
+            if(stackedTextLabel != null) layeredPane.remove(stackedTextLabel);
+        }
 
         pieceLabels = new ArrayList<>();
         for(Piece piece : piecesOnBoard){
@@ -257,15 +257,16 @@ public class GameScreen_Swing extends JPanel implements GameModelObserver{
             layeredPane.add(pieceLabel, Integer.valueOf(10));
             pieceLabels.add(pieceLabel);
 
-//            // stacked Text
-//            if(stacked != 0){
-//                JLabel stackedTextLabel = new JLabel(String.valueOf(stacked));
-//                stackedTextLabel.setHorizontalAlignment(SwingConstants.CENTER);
-//                stackedTextLabel.setFont(new Font("Arial", Font.BOLD, 14));
-//
-//                layeredPane.add(stackedTextLabel, Integer.valueOf(10));
-//                stackedTextLabels.add(stackedTextLabel);
-//            }
+            // stacked Text
+            if(stacked != 0){
+                JLabel stackedTextLabel = new JLabel(String.valueOf(stacked+1));
+                stackedTextLabel.setBounds(point.x, point.y, w, h);
+                stackedTextLabel.setHorizontalAlignment(SwingConstants.CENTER);
+                stackedTextLabel.setFont(new Font("Arial", Font.BOLD, 14));
+
+                layeredPane.add(stackedTextLabel, Integer.valueOf(11));
+                stackedTextLabels.add(stackedTextLabel);
+            }
         }
 
         layeredPane.revalidate();
