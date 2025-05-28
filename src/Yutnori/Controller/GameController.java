@@ -32,8 +32,8 @@ public class GameController {
         model.findMovablePositions(yut);
     }
 
-    public void movePieceByIndex(int movableListIndex){
-        model.movePieceByIndex(movableListIndex);
+    public void movePiece(int position){
+        model.movePieceByPosition(position);
     }
 
     public void createNewPiece(){

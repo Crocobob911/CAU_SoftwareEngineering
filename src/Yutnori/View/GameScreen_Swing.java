@@ -29,7 +29,7 @@ public class GameScreen_Swing extends JPanel implements GameModelObserver{
     private JLayeredPane layeredPane;
 
     private JLabel yutResultLabel;
-    private JLabel[] playerInfoLabels;
+    private JLabel[][] playerInfoLabels;
     private JPanel yutResultPanel;
     private JComboBox yutComboBox;
     private ArrayList<JButton> movableDestination = new ArrayList<>();
@@ -87,23 +87,34 @@ public class GameScreen_Swing extends JPanel implements GameModelObserver{
 
         // create Player Infos Labels
         int[][] playerInfoPositions = {{625, 400}, {935, 400}, {625, 550}, {935, 550}};
-        playerInfoLabels = new JLabel[playerNum];
+        playerInfoLabels = new JLabel[2][playerNum];
         for (int i = 0; i < playerNum; i++) {
             ImageIcon playerIcon = new ImageIcon("src/Yutnori/View/picture/team" + (i + 1) + ".png");
             JLabel playerLabel = new JLabel(playerIcon);
             playerLabel.setBounds(playerInfoPositions[i][0], playerInfoPositions[i][1], playerIcon.getIconWidth(), playerIcon.getIconHeight());
             layeredPane.add(playerLabel, Integer.valueOf(1));
 
-            JLabel infoLabel = new JLabel("대기: 0, 완료: 0");
-            infoLabel.setFont(new Font("Arial", Font.PLAIN, 20));
-            infoLabel.setBounds(
-                    playerInfoPositions[i][0] + 40,
-                    playerInfoPositions[i][1] + playerIcon.getIconHeight() - 80,
+            JLabel remainPieceLabel = new JLabel(String.valueOf(horseNum));
+            remainPieceLabel.setFont(new Font("Arial", Font.PLAIN, 20));
+            remainPieceLabel.setBounds(
+                    playerInfoPositions[i][0] + 105,
+                    playerInfoPositions[i][1] + playerIcon.getIconHeight() - 82,
                     250,
                     30
             );
-            layeredPane.add(infoLabel, Integer.valueOf(2));
-            playerInfoLabels[i] = infoLabel;
+
+            JLabel finishedPieceLabel = new JLabel("0");
+            finishedPieceLabel.setFont(new Font("Arial", Font.PLAIN, 20));
+            finishedPieceLabel.setBounds(
+                    playerInfoPositions[i][0] + 105,
+                    playerInfoPositions[i][1] + playerIcon.getIconHeight() - 45,
+                    250,
+                    30
+            );
+            layeredPane.add(remainPieceLabel, Integer.valueOf(2));
+            layeredPane.add(finishedPieceLabel, Integer.valueOf(2));
+            playerInfoLabels[0][i] = remainPieceLabel;
+            playerInfoLabels[1][i] = finishedPieceLabel;
         }
 
         // created Pending Moves Panel
@@ -121,7 +132,6 @@ public class GameScreen_Swing extends JPanel implements GameModelObserver{
         add(layeredPane);
 
         controller.addMeModelObserver(this);
-        updatePlayerInfos();
     }
 
     private void throwYut() {
@@ -167,16 +177,14 @@ public class GameScreen_Swing extends JPanel implements GameModelObserver{
     }
 
     private void showMoveablePositions(int[] positions) {
-        for(int i=0; i<positions.length; i++){
-            int pos = positions[i];
-            int posIndex = i;
+        for(int pos : positions) {
             Point point = boardIndex.getPoint(pos);
             if (point != null) {
                 JButton btn = new JButton("→");
                 btn.setBounds(point.x, point.y, 50, 40);
                 btn.setBorderPainted(true);
                 btn.addActionListener(e -> {
-                    movePieceByIndex(posIndex);
+                    movePiece(pos);
                     clearMovableDestination();
                     selectedYutResult = Optional.empty();
                     selectedPiecePosition = -1;
@@ -198,8 +206,8 @@ public class GameScreen_Swing extends JPanel implements GameModelObserver{
     }
 
 
-    private void movePieceByIndex(int destinationPosition){
-        controller.movePieceByIndex(destinationPosition);
+    private void movePiece(int destinationPosition){
+        controller.movePiece(destinationPosition);
     }
 
     private void updatePiecesOnBoard(Piece[] piecesOnBoard) {
@@ -252,34 +260,30 @@ public class GameScreen_Swing extends JPanel implements GameModelObserver{
         requestMovablePosition(position, selectedPiecePosition);
     }
 
-    private void updatePlayerInfos() {}
+    private void updatePlayerInfos(int[][] playerInfos) {
+        for(int i=0; i<playerInfos[0].length; i++){
+            int waiting = playerInfos[0][i];
+            int finished = playerInfos[1][i];
+            playerInfoLabels[0][i].setText(String.valueOf(waiting));
+            playerInfoLabels[1][i].setText(String.valueOf(finished));
+        }
+        layeredPane.revalidate();
+        layeredPane.repaint();
+    }
 
 
     @Override
     public void onUpdate(ModelChangeType type, Object value) {
         switch (type){
+//            case NOW_PLAYER_INFO -> updateNowPlayerInfo((int[]) value);
+            case PLAYERS_PIECES_INFO -> updatePlayerInfos((int[][]) value);
             case BOARD_PIECES_INFO -> updatePiecesOnBoard((Piece[]) value);
-            case NOW_PLAYER_INFO -> updateNowPlayerInfo((int[]) value);
             case MOVEABLE_POSITION_INFO -> showMoveablePositions((int[]) value);
             case YUT_RESULT -> updateYutResult((int[])value);
             default -> System.out.println("알 수 없는 업데이트 타입입니다.");
         }
     }
 
-
-    private void updateNowPlayerInfo(int[] value) {
-
-
-        Player[] players = gameController.GetPlayerInfos();
-        for (int i = 0; i < players.length; i++) {
-            //int waiting = players[i].getRemainPieceNumber();
-            int waiting = 100;
-            int finished = players[i].getCompletedPieceNumber();
-            teamInfoLabels[i].setText("대기: " + waiting + " 완료: " + finished);
-        }
-        layeredPane.revalidate();
-        layeredPane.repaint();
-    }
 
     private String convertYutIntToString(int yutResultNum) {
         return switch (yutResultNum) {
