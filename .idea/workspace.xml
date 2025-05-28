@@ -1,34 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="SE:jar" />
+    </artifacts-to-build>
+  </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="31daac7e-5693-46a6-96b5-01c259af9992" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SE/Yutnori/Board.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SE/Yutnori/Board.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SE/Yutnori/BoardType.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SE/Yutnori/GameManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SE/Yutnori/GameManager.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SE/Yutnori/GameSetting.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SE/Yutnori/GameSetting.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SE/Yutnori/Piece.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SE/Yutnori/Piece.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/SE/Yutnori/Player.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/SE/Yutnori/Player.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Yutnori/Board.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Yutnori/Board.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Yutnori/GameManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Yutnori/GameManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Yutnori/Piece.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Yutnori/Piece.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Yutnori/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Yutnori/Player.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Yutnori/YutPackage/YutResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Yutnori/YutPackage/YutResult.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Yutnori/Controller/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Yutnori/Controller/GameController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Yutnori/Controller/GameController_Simplee.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Yutnori/Controller/GameController_Simplee.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Yutnori/View/GameScreen_Swing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Yutnori/View/GameScreen_Swing.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Yutnori/View/StartScreen_Swing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Yutnori/View/StartScreen_Swing.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Yutnori/View/yoonis/Console/ConsoleView.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Yutnori/View/yoonis/GameView.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <projects_view>
+          <tree_state>
+            <expand />
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Enum" />
         <option value="Record" />
+        <option value="JUnit5 Test Class" />
+        <option value="JUnit3 Test Class" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -49,30 +64,54 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "simplee",
-    "last_opened_file_path": "D:/D_Project/CAU_SoftwareEngineering/SE",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "프로젝트",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "editor.preferences.fonts.default",
-    "vue.rearranger.settings.migration": "true",
-    "애플리케이션.GameManager.executor": "Run",
-    "애플리케이션.StartClass.executor": "Run",
-    "애플리케이션.start.executor": "Run"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Yutnori.StartClass.executor&quot;: &quot;Run&quot;,
+    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
+    &quot;JUnit.GameModelTest.initNewPieceTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.GameSettingTest.MakeGameSetting.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PieceTest.StackTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PieceTest.StackTest2.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit3&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit3&quot;: &quot;junit.framework.TestCase&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feature-callback&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/D_Project/CAU_SoftwareEngineering/SE&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;,
+    &quot;애플리케이션.GameManager.executor&quot;: &quot;Run&quot;,
+    &quot;애플리케이션.MainFrame.executor&quot;: &quot;Run&quot;,
+    &quot;애플리케이션.StartClass.executor&quot;: &quot;Run&quot;,
+    &quot;애플리케이션.start.executor&quot;: &quot;Run&quot;
   }
-}]]></component>
-  <component name="RunManager">
-    <configuration name="StartClass" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+}</component>
+  <component name="RecentsManager">
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="junit.framework.TestCase" />
+      <recent name="" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="Yutnori.Model" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.Yutnori.StartClass">
+    <configuration name="Yutnori.StartClass" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Yutnori.StartClass" />
       <module name="SE" />
       <extension name="coverage">
@@ -85,20 +124,89 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="GameModelTest.initNewPieceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="SE" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Yutnori.Model.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="Yutnori.Model" />
+      <option name="MAIN_CLASS_NAME" value="Yutnori.Model.GameModelTest" />
+      <option name="METHOD_NAME" value="initNewPieceTest" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="GameSettingTest.MakeGameSetting" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="SE" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Yutnori.Model.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="Yutnori.Model" />
+      <option name="MAIN_CLASS_NAME" value="Yutnori.Model.GameSettingTest" />
+      <option name="METHOD_NAME" value="MakeGameSetting" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PieceTest.StackTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="SE" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Yutnori.Model.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="Yutnori.Model" />
+      <option name="MAIN_CLASS_NAME" value="Yutnori.Model.PieceTest" />
+      <option name="METHOD_NAME" value="StackTest" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PieceTest.StackTest2" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="SE" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Yutnori.Model.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="Yutnori.Model" />
+      <option name="MAIN_CLASS_NAME" value="Yutnori.Model.PieceTest" />
+      <option name="METHOD_NAME" value="StackTest2" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="애플리케이션.StartClass" />
+        <item itemvalue="Application.Yutnori.StartClass" />
+        <item itemvalue="JUnit.GameModelTest.initNewPieceTest" />
+        <item itemvalue="JUnit.PieceTest.StackTest2" />
+        <item itemvalue="JUnit.PieceTest.StackTest" />
+        <item itemvalue="JUnit.GameSettingTest.MakeGameSetting" />
       </list>
     </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-fbdcb00ec9e3-intellij.indexing.shared.core-IU-251.23774.435" />
-        <option value="bundled-js-predefined-d6986cc7102b-f27c65a3e318-JavaScript-IU-251.23774.435" />
+        <option value="bundled-jdk-9823dce3aa75-125ca727e0f0-intellij.indexing.shared.core-IU-243.24978.46" />
+        <option value="bundled-js-predefined-d6986cc7102b-76f8388c3a79-JavaScript-IU-243.24978.46" />
       </set>
     </attachedChunks>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="디폴트 작업">
       <changelist id="31daac7e-5693-46a6-96b5-01c259af9992" name="변경" comment="" />
@@ -108,7 +216,19 @@
       <updated>1746450888076</updated>
       <workItem from="1746450889189" duration="728000" />
       <workItem from="1746451652030" duration="18842000" />
-      <workItem from="1746520101469" duration="29317000" />
+      <workItem from="1746520101469" duration="30040000" />
+      <workItem from="1746597753627" duration="15641000" />
+      <workItem from="1746673466082" duration="19181000" />
+      <workItem from="1746888342135" duration="1013000" />
+      <workItem from="1746892439872" duration="3670000" />
+      <workItem from="1746900399262" duration="644000" />
+      <workItem from="1746901184392" duration="1460000" />
+      <workItem from="1747973511102" duration="2930000" />
+      <workItem from="1748065167062" duration="2527000" />
+      <workItem from="1748098498550" duration="305000" />
+      <workItem from="1748227147455" duration="7377000" />
+      <workItem from="1748253820966" duration="1580000" />
+      <workItem from="1748324016966" duration="2384000" />
     </task>
     <servers />
   </component>

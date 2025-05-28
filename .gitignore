@@ -1,0 +1,26 @@
+# macOS 숨김 파일 무시
+.DS_Store
+
+# Java IDE 설정 파일 무시
+.idea/
+*.iml
+
+# 빌드 디렉토리 무시 (예: Eclipse, IntelliJ)
+bin/
+out/
+target/
+
+# 로그 파일 무시
+*.log
+
+# JAR, WAR, class 파일 무시
+*.class
+*.jar
+*.war
+
+# OS 임시 파일 무시
+Thumbs.db
+ehthumbs.db
+
+# workspace 설정 파일 무시
+.idea/workspace.xml
