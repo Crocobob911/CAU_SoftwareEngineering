@@ -29,7 +29,7 @@ public class StartScreen_Swing extends JPanel {
         add(playerNum);
 
         // 말 개수 선택
-        horseNum = new JComboBox<>(new Integer[]{1, 2, 3, 4, 5});
+        horseNum = new JComboBox<>(new Integer[]{2, 3, 4, 5});
         horseNum.setBounds(650, 300, 100, 30);
         add(horseNum);
 
