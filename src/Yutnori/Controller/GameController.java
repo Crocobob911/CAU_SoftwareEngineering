@@ -24,10 +24,11 @@ public class GameController {
 
     public boolean throwYut(int yutResult){
         if(model.getRemainRollCount() <= 0) return false;
-        // TODO : 여기서 '더 던질 수 있느냐 없느냐' 체크해야함.
 
         if(yutResult == 0)  yutResult = Yut.getYutResult();
         model.addYutResult(yutResult);
+
+        checkTurnEnd();
         return true;
     }
 
@@ -62,7 +63,7 @@ public class GameController {
     }
 
     public boolean canCreateNewPiece(){
-        return model.getRemainingPiecesOnCurrentPlayer() > 0;
+        return model.getRemainingPiecesOnCurrentPlayer() > 0 && selectedYutResult.get() != -1;
     }
 
     public void createNewPiece(){

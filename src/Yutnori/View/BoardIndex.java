@@ -100,12 +100,12 @@ public class BoardIndex {
             indexToPoint.put(1, new Point(80,340));
             indexToPoint.put(2, new Point(100,375));
             indexToPoint.put(3, new Point(125,410));
-            indexToPoint.put(4, new Point(140,450));
-            indexToPoint.put(10, new Point(140,450));
-            indexToPoint.put(11, new Point(205,450));
-            indexToPoint.put(12, new Point(250,450));
-            indexToPoint.put(13, new Point(295,450));
-            indexToPoint.put(14, new Point(340,450));
+            indexToPoint.put(4, new Point(155,450));
+            indexToPoint.put(10, new Point(205,450));
+            indexToPoint.put(11, new Point(250,450));
+            indexToPoint.put(12, new Point(300,450));
+            indexToPoint.put(13, new Point(350,450));
+            indexToPoint.put(14, new Point(405,450));
             indexToPoint.put(20, new Point(425,410));
             indexToPoint.put(21, new Point(450,375));
             indexToPoint.put(22, new Point(470,340));
