@@ -126,7 +126,8 @@ public class GameScreen_Swing extends JPanel implements GameModelObserver{
         // create New piece Button
         JButton createNewPieceButton = new JButton("새 말 생성");
         createNewPieceButton.setBounds(30, 600, 120, 30);
-        createNewPieceButton.addActionListener(e -> requestMovablePosition(-1, selectedYutResultIndex.get()));
+        createNewPieceButton.addActionListener(e ->
+                requestMovablePosition(-1, selectedYutResultIndex.get()));
         layeredPane.add(createNewPieceButton, Integer.valueOf(10));
 
         add(layeredPane);
@@ -136,11 +137,16 @@ public class GameScreen_Swing extends JPanel implements GameModelObserver{
 
     private void throwYut() {
         String selectedYut = (String) yutComboBox.getSelectedItem();
+        boolean throwSuccess = false;
         if(selectedYut.equals("없음")) {
-            controller.throwYut();
+            throwSuccess = controller.throwYut(0);
         }
         else{
-            controller.throwYut(convertYutStringToInt(selectedYut));
+            throwSuccess = controller.throwYut(convertYutStringToInt(selectedYut));
+        }
+
+        if(!throwSuccess) {
+            JOptionPane.showMessageDialog(this, "윷을 더 던질 수 없습니다.");
         }
     }
 
@@ -171,7 +177,13 @@ public class GameScreen_Swing extends JPanel implements GameModelObserver{
 
         clearMovableDestination();
 
-        if(currentPosition == -1) controller.createNewPiece();
+        if(currentPosition == -1) {
+            if(!controller.canCreateNewPiece()){
+                JOptionPane.showMessageDialog(this, "새 말을 더 놓을 수 없습니다.");
+                return;
+            }
+            controller.createNewPiece();
+        }
         selectedPiecePosition = currentPosition;
         controller.calculateMovablePosition(currentPosition, yutResultIndex);
     }
@@ -280,7 +292,7 @@ public class GameScreen_Swing extends JPanel implements GameModelObserver{
             case BOARD_PIECES_INFO -> updatePiecesOnBoard((Piece[]) value);
             case MOVEABLE_POSITION_INFO -> showMoveablePositions((int[]) value);
             case YUT_RESULT -> updateYutResult((int[])value);
-            default -> System.out.println("알 수 없는 업데이트 타입입니다.");
+            default -> System.out.println(type + ": 알 수 없는 업데이트 타입입니다.");
         }
     }
 

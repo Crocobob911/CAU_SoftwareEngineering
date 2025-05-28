@@ -16,15 +16,13 @@ public class GameController {
         model.startModel(gameSetting);
     }
 
-    public void throwYut(){
-        int yutResult = Yut.getYutResult();
-        model.addYutResult(yutResult);
-    }
-
-    public void throwYut(int yutResult){
+    public boolean throwYut(int yutResult){
+        if(model.getRemainRollCount() <= 0) return false;
         // TODO : 여기서 '더 던질 수 있느냐 없느냐' 체크해야함.
 
+        if(yutResult == 0)  yutResult = Yut.getYutResult();
         model.addYutResult(yutResult);
+        return true;
     }
 
     public void calculateMovablePosition(int currentPosition, int yut) {
@@ -34,6 +32,14 @@ public class GameController {
 
     public void movePiece(int position){
         model.movePieceByPosition(position);
+
+        if(model.isTurnEnd()) {
+            model.nextTurn();
+        }
+    }
+
+    public boolean canCreateNewPiece(){
+        return model.getRemainingPiecesOnCurrentPlayer() > 0;
     }
 
     public void createNewPiece(){

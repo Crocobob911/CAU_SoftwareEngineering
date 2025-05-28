@@ -48,10 +48,10 @@ public class ConsoleViewSimplee implements GameView_Simplee {
                 int[][] piecesInfo = (int[][]) value; // 플레이어의 말 정보 : playerID, 남은 말 수 || array size 2
                 updatePlayersPieceInfo(piecesInfo);
                 break;
-            case NOW_PLAYER_INFO:
-                int[] playerInfo = (int[]) value;       // 현재 플레이어 정보 : playerID, 남은 액션 || array size 2
-                updateNowPlayerInfo(playerInfo);
-                break;
+//            case NOW_PLAYER_INFO:
+//                int[] playerInfo = (int[]) value;       // 현재 플레이어 정보 : playerID, 남은 액션 || array size 2
+//                updateNowPlayerInfo(playerInfo);
+//                break;
             case BOARD_PIECES_INFO:
                 Piece[] boardPieces = (Piece[]) value; // 보드 정보 -> 주로 piece 정보
                 updateBoardPieces(boardPieces);
@@ -75,14 +75,14 @@ public class ConsoleViewSimplee implements GameView_Simplee {
     }
 
     //#region update 개별 메서드
-    private void updateNowPlayerInfo(int[] playerInfo) {
-        this.nowPlayerID = playerInfo[0]; // 현재 플레이어 ID
-        this.rollCount = playerInfo[1]; // 남은 액션 수
-
-        System.out.println("\n\n현재 플레이어: " + playerInfo[0]);
-        System.out.println("남은 액션 수: " + playerInfo[1]);
-        System.out.println("현재 플레이어 정보가 업데이트되었습니다.");
-    }
+//    private void updateNowPlayerInfo(int[] playerInfo) {
+//        this.nowPlayerID = playerInfo[0]; // 현재 플레이어 ID
+//        this.rollCount = playerInfo[1]; // 남은 액션 수
+//
+//        System.out.println("\n\n현재 플레이어: " + playerInfo[0]);
+//        System.out.println("남은 액션 수: " + playerInfo[1]);
+//        System.out.println("현재 플레이어 정보가 업데이트되었습니다.");
+//    }
 
     private void updateBoardPieces(Piece[] boardPieces) {
         this.boardPieces = boardPieces;
