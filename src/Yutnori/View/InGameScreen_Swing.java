@@ -176,7 +176,7 @@ public class InGameScreen_Swing extends JPanel implements GameModelObserver{
 
         if(currentPosition == -1) {
             if(!controller.canCreateNewPiece()){
-                JOptionPane.showMessageDialog(this, "새 말을 더 놓을 수 없습니다.");
+                JOptionPane.showMessageDialog(this, "새 말을 놓을 수 없습니다.");
                 return;
             }
             controller.createNewPiece();
