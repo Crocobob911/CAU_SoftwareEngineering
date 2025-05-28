@@ -231,7 +231,7 @@ public class GameModel {
     public void endGame() {
         // 게임 종료 처리
         System.out.println("모델 : 게임이 종료되었습니다.");
-        notifyObservers(ModelChangeType.GAME_END, null);
+        notifyObservers(ModelChangeType.GAME_END, nowPlayerID);
     }
 
     // !! 모델의 내용이 바뀌었지만, 이 메서드 이후 실행되는 getMovablePositions 까지 실행 후 notify 합니다.

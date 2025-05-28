@@ -301,11 +301,14 @@ public class GameScreen_Swing extends JPanel implements GameModelObserver{
             case BOARD_PIECES_INFO -> updatePiecesOnBoard((Piece[]) value);
             case MOVEABLE_POSITION_INFO -> showMoveablePositions((int[]) value);
             case YUT_RESULT -> updateYutResult((int[])value);
+            case GAME_END -> gameEnd((int) value);
             default -> System.out.println(type + ": 알 수 없는 업데이트 타입입니다.");
         }
     }
 
-
+    private void gameEnd(int winnerPlayerID) {
+        frame.showEndScreen(winnerPlayerID);
+    }
 
 
     private String convertYutIntToString(int yutResultNum) {

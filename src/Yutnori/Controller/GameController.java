@@ -57,9 +57,8 @@ public class GameController {
         selectedYutResult = Optional.empty();
         selectedYutResultIndex = Optional.empty();
 
-        if(model.isTurnEnd()) {
-            model.nextTurn();
-        }
+        checkGameEnd();
+        checkTurnEnd();
     }
 
     public boolean canCreateNewPiece(){
@@ -72,6 +71,15 @@ public class GameController {
 
     private boolean checkTeamOfPiece(int position){
         return model.getPiece(position).getOwnerID() == model.getNowPlayerID();
+    }
+
+
+    private void checkTurnEnd(){
+        if(model.isTurnEnd())   model.nextTurn();
+    }
+
+    private void checkGameEnd() {
+        if(model.isGameEnd())   model.endGame();
     }
 
     public void addMeModelObserver(GameModelObserver observer) {

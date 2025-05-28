@@ -53,9 +53,9 @@ public class MainFrame_Swing extends JFrame implements MainFrame {
         repaint();
     }
 
-    public void showEndScreen() {
-//        EndScreen_Swing endScreen = new EndScreen_Swing(this, winnerTeam);
-//        setContentPane(endScreen);
+    public void showEndScreen(int winnerTeam) {
+        EndScreen_Swing endScreen = new EndScreen_Swing(this, winnerTeam);
+        setContentPane(endScreen);
         revalidate();
         repaint();
     }
