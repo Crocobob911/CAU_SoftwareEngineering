@@ -11,12 +11,13 @@
   <component name="ChangeListManager">
     <list default="true" id="31daac7e-5693-46a6-96b5-01c259af9992" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Yutnori/Controller/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Yutnori/Controller/GameController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Yutnori/Controller/GameController_Simplee.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Yutnori/Controller/GameController_Simplee.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Yutnori/View/GameScreen_Swing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Yutnori/View/GameScreen_Swing.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Yutnori/View/StartScreen_Swing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Yutnori/View/StartScreen_Swing.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Yutnori/View/yoonis/Console/ConsoleView.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Yutnori/View/yoonis/GameView.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/META-INF/MANIFEST.MF" beforeDir="false" afterPath="$PROJECT_DIR$/src/META-INF/MANIFEST.MF" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Yutnori/StartClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Yutnori/StartClass.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Yutnori/View/BoardIndex.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Yutnori/View/Swing/BoardIndex_Swing.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Yutnori/View/EndScreen_Swing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Yutnori/View/Swing/EndScreen_Swing.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Yutnori/View/InGameScreen_Swing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Yutnori/View/Swing/InGameScreen_Swing.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Yutnori/View/MainFrame_Swing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Yutnori/View/Swing/MainFrame_Swing.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Yutnori/View/StartScreen_Swing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Yutnori/View/Swing/StartScreen_Swing.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,9 +42,9 @@
         <option value="Enum" />
         <option value="Record" />
         <option value="JUnit5 Test Class" />
-        <option value="JUnit3 Test Class" />
         <option value="Class" />
         <option value="Interface" />
+        <option value="JUnit3 Test Class" />
       </list>
     </option>
   </component>
@@ -70,6 +71,8 @@
     &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
     &quot;JUnit.GameModelTest.initNewPieceTest.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.GameSettingTest.MakeGameSetting.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.MainFrame_SwingTest.endScreenTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.MainFrame_SwingTest.testEndScreenTest.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.PieceTest.StackTest.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.PieceTest.StackTest2.executor&quot;: &quot;Run&quot;,
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
@@ -81,7 +84,7 @@
     &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit3&quot;,
     &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit3&quot;: &quot;junit.framework.TestCase&quot;,
     &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;feature-callback&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feature-JavaSwing&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;D:/D_Project/CAU_SoftwareEngineering/SE&quot;,
@@ -106,7 +109,11 @@
       <recent name="junit.framework.TestCase" />
       <recent name="" />
     </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\Coding\CAU_SoftwareEngineering\src\Yutnori\View\picture" />
+    </key>
     <key name="CreateTestDialog.RecentsKey">
+      <recent name="Yutnori.View" />
       <recent name="Yutnori.Model" />
     </key>
   </component>
@@ -140,17 +147,17 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="GameSettingTest.MakeGameSetting" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="SE" />
+    <configuration name="MainFrame_SwingTest.testEndScreenTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Test" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="Yutnori.Model.*" />
+          <option name="PATTERN" value="Yutnori.View.Swing.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="Yutnori.Model" />
-      <option name="MAIN_CLASS_NAME" value="Yutnori.Model.GameSettingTest" />
-      <option name="METHOD_NAME" value="MakeGameSetting" />
+      <option name="PACKAGE_NAME" value="Yutnori.View" />
+      <option name="MAIN_CLASS_NAME" value="Yutnori.View.MainFrame_SwingTest" />
+      <option name="METHOD_NAME" value="testEndScreenTest" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -191,10 +198,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.Yutnori.StartClass" />
+        <item itemvalue="JUnit.MainFrame_SwingTest.testEndScreenTest" />
         <item itemvalue="JUnit.GameModelTest.initNewPieceTest" />
         <item itemvalue="JUnit.PieceTest.StackTest2" />
         <item itemvalue="JUnit.PieceTest.StackTest" />
-        <item itemvalue="JUnit.GameSettingTest.MakeGameSetting" />
       </list>
     </recent_temporary>
   </component>
@@ -229,6 +236,8 @@
       <workItem from="1748227147455" duration="7377000" />
       <workItem from="1748253820966" duration="1580000" />
       <workItem from="1748324016966" duration="2384000" />
+      <workItem from="1748409319131" duration="1684000" />
+      <workItem from="1748413559001" duration="1442000" />
     </task>
     <servers />
   </component>

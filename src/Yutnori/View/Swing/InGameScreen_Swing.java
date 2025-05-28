@@ -1,4 +1,4 @@
-package Yutnori.View;
+package Yutnori.View.Swing;
 
 import Yutnori.Controller.GameController;
 import Yutnori.Model.Observer.GameModelObserver;
@@ -27,7 +27,7 @@ public class InGameScreen_Swing extends JPanel implements GameModelObserver{
     private JComboBox yutComboBox;
     private ArrayList<JButton> movableDestination = new ArrayList<>();
 
-    private BoardIndex boardIndex;
+    private BoardIndex_Swing boardIndex;
     private ArrayList<JLabel> pieceLabels = new ArrayList<>();
     private ArrayList<JLabel> stackedTextLabels = new ArrayList<>();
 
@@ -35,7 +35,7 @@ public class InGameScreen_Swing extends JPanel implements GameModelObserver{
         this.frame = frame;
         this.controller = controller;
 
-        boardIndex = new BoardIndex(boardType);
+        boardIndex = new BoardIndex_Swing(boardType);
         pieceLabels = new ArrayList<>();
 
         setLayout(null);
