@@ -35,7 +35,8 @@ public class GameScreen_Swing extends JPanel implements GameModelObserver{
     private ArrayList<JButton> movableDestination = new ArrayList<>();
 
     private BoardIndex boardIndex;
-    private JLabel[][] pieceLabels;
+    private ArrayList<JLabel> pieceLabels = new ArrayList<>();
+    private ArrayList<JLabel> stackedTextLabels = new ArrayList<>();
 
     public GameScreen_Swing(GameController controller, int playerNum, int horseNum, String boardType, MainFrame_Swing frame) {
         this.frame = frame;
@@ -43,7 +44,7 @@ public class GameScreen_Swing extends JPanel implements GameModelObserver{
         selectedYutResult = Optional.empty();
 
         boardIndex = new BoardIndex(boardType);
-        pieceLabels = new JLabel[playerNum][horseNum];
+        pieceLabels = new ArrayList<>();
 
         setLayout(null);
         setPreferredSize(new Dimension(1200, 750));
@@ -207,7 +208,6 @@ public class GameScreen_Swing extends JPanel implements GameModelObserver{
         }
     }
 
-
     private void clearMovableDestination() {
         for (JButton btn : movableDestination) {
             layeredPane.remove(btn);
@@ -217,19 +217,19 @@ public class GameScreen_Swing extends JPanel implements GameModelObserver{
         layeredPane.repaint();
     }
 
-
     private void movePiece(int destinationPosition){
         controller.movePiece(destinationPosition);
     }
 
     private void updatePiecesOnBoard(Piece[] piecesOnBoard) {
-        for (JLabel[] pieceArray : pieceLabels){
-            for(JLabel piece : pieceArray){
-                if(piece != null) layeredPane.remove(piece);
-            }
+        for (JLabel pieceLabel : pieceLabels){
+            if(pieceLabel != null) layeredPane.remove(pieceLabel);
         }
+//        for(JLabel stackedTextLabel : stackedTextLabels){
+//            layeredPane.remove(stackedTextLabel);
+//        }
 
-        pieceLabels = new JLabel[4][5];
+        pieceLabels = new ArrayList<>();
         for(Piece piece : piecesOnBoard){
             // get piece info
             int team = piece.getOwnerID();
@@ -254,9 +254,18 @@ public class GameScreen_Swing extends JPanel implements GameModelObserver{
                     pieceClicked(position);
                 }
             });
-
             layeredPane.add(pieceLabel, Integer.valueOf(10));
-            pieceLabels[team][0] = pieceLabel;
+            pieceLabels.add(pieceLabel);
+
+//            // stacked Text
+//            if(stacked != 0){
+//                JLabel stackedTextLabel = new JLabel(String.valueOf(stacked));
+//                stackedTextLabel.setHorizontalAlignment(SwingConstants.CENTER);
+//                stackedTextLabel.setFont(new Font("Arial", Font.BOLD, 14));
+//
+//                layeredPane.add(stackedTextLabel, Integer.valueOf(10));
+//                stackedTextLabels.add(stackedTextLabel);
+//            }
         }
 
         layeredPane.revalidate();
@@ -269,7 +278,7 @@ public class GameScreen_Swing extends JPanel implements GameModelObserver{
             return;
         }
         selectedPiecePosition = position;
-        requestMovablePosition(position, selectedPiecePosition);
+        requestMovablePosition(selectedPiecePosition, selectedYutResultIndex.get());
     }
 
     private void updatePlayerInfos(int[][] playerInfos) {
