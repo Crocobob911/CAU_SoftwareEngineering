@@ -152,6 +152,7 @@ public class InGameScreen_Swing extends JPanel implements GameModelObserver{
     private void updateYutResult(int[] yutResults) {
         // update YutResult Panel Display
         yutResultPanel.removeAll();
+
         for(int result : yutResults) {
             String yutResultString = convertYutIntToString(result);
 
@@ -298,16 +299,34 @@ public class InGameScreen_Swing extends JPanel implements GameModelObserver{
             case PLAYERS_PIECES_INFO -> updatePlayerInfos((int[][]) value);
             case BOARD_PIECES_INFO -> updatePiecesOnBoard((Piece[]) value);
             case MOVEABLE_POSITION_INFO -> showMoveablePositions((int[]) value);
-            case YUT_RESULT -> updateYutResult((int[])value);
+            case YUT_RESULTS -> updateYutResult((int[])value);
+            case NEW_YUT_RESULT -> updateLastThrownYut((int) value);
             case GAME_END -> gameEnd((int) value);
             default -> System.out.println(type + ": 알 수 없는 업데이트 타입입니다.");
         }
+    }
+
+    private void updateLastThrownYut(int yut) {
+        String yutImagePath = "src/Yutnori/View/picture/" + convertYutIntToStringEnglish(yut) + ".png";
+        yutResultLabel.setIcon(new ImageIcon(yutImagePath));
+
     }
 
     private void gameEnd(int winnerPlayerID) {
         frame.showEndScreen(winnerPlayerID);
     }
 
+    private String convertYutIntToStringEnglish(int yutResultNum){
+        return switch (yutResultNum) {
+            case 1 -> "do";
+            case 2 -> "gae";
+            case 3 -> "geol";
+            case 4 -> "yut";
+            case 5 -> "mo";
+            case -1 -> "back_do";
+            default -> "";
+        };
+    }
 
     private String convertYutIntToString(int yutResultNum) {
         return switch (yutResultNum) {
