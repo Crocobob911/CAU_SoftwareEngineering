@@ -55,7 +55,7 @@ public class ConsoleViewSimplee implements GameView_Simplee {
                 Piece[] boardPieces = (Piece[]) value; // 보드 정보 -> 주로 piece 정보
                 updateBoardPieces(boardPieces);
                 break;
-            case YUT_RESULT:
+            case YUT_RESULTS:
                 int[] yutResult = (int[]) value;       // 윷을 던질 때 및 소모 시에 사용
                 updateYutResult(yutResult); // 윷을 던질 때에 주로 사용
                 break;

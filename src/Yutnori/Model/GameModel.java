@@ -55,7 +55,7 @@ public class GameModel {
         notifyObservers(ModelChangeType.PLAYERS_PIECES_INFO, getPlayersPiecesInfo()); // 남은 말 수를 알림
 //        notifyObservers(ModelChangeType.NOW_PLAYER_INFO, getPlayerInfo()); // 현재 플레이어 턴을 알림
         notifyObservers(ModelChangeType.BOARD_PIECES_INFO, pieces.toArray(new Piece[0])); // 보드에 있는 피스 정보를 알림
-        notifyObservers(ModelChangeType.YUT_RESULT, yutResult.stream().mapToInt(Integer::intValue).toArray()); // 윷 결과를 알림
+        notifyObservers(ModelChangeType.YUT_RESULTS, yutResult.stream().mapToInt(Integer::intValue).toArray()); // 윷 결과를 알림
         notifyObservers(ModelChangeType.MOVEABLE_POSITION_INFO, movablePositions.stream().mapToInt(i -> i).toArray()); // 이동 가능한 위치를 알림
     }
 
@@ -70,7 +70,7 @@ public class GameModel {
         yutResult.clear(); // 윷 결과 초기화 -> 백도만 남은 경우로 턴 종료 가능성 있기에
 
         System.out.println("모델 - 다음 플레이어 턴 : " + nowPlayerID);
-        notifyObservers(ModelChangeType.YUT_RESULT, yutResult.stream().mapToInt(Integer::intValue).toArray());
+        notifyObservers(ModelChangeType.YUT_RESULTS, yutResult.stream().mapToInt(Integer::intValue).toArray());
         notifyObservers(ModelChangeType.NOW_PLAYER_INFO, getPlayerInfo());
     }
 
@@ -96,7 +96,8 @@ public class GameModel {
         }
 
         notifyObservers(ModelChangeType.NOW_PLAYER_INFO, getPlayerInfo()); // 남은 액션 수를 알림
-        notifyObservers(ModelChangeType.YUT_RESULT, yutResult.stream().mapToInt(Integer::intValue).toArray());      //list to int[]
+        notifyObservers(ModelChangeType.NEW_YUT_RESULT, result);
+        notifyObservers(ModelChangeType.YUT_RESULTS, yutResult.stream().mapToInt(Integer::intValue).toArray());      //list to int[]
     }
 
     //포지션을 기반으로 피스를 찾음 -> 윷놀이에서 포지션 한 곳에 하나의 피스만 존재, 보드판 위에서 말은 포지션을 각각의 고유값으로 지닙니다.
@@ -192,7 +193,7 @@ public class GameModel {
 
         //윷 소모
         yutResult.remove(yutIndex);
-        notifyObservers(ModelChangeType.YUT_RESULT, yutResult.stream().mapToInt(Integer::intValue).toArray()); // 윷 결과를 알림
+        notifyObservers(ModelChangeType.YUT_RESULTS, yutResult.stream().mapToInt(Integer::intValue).toArray()); // 윷 결과를 알림
 
 
         if (step == -1) {   //백도 특수 처리 -> 구현이 좀 복잡해요. 얹혀 사는 친구라... 굳이 안뜯는걸 추천해요
@@ -222,8 +223,6 @@ public class GameModel {
                 pathList.add(list);                                                         // 이동 가능한 위치에 따른 경로를 저장
             }
             //movablePositions = board.getNextPosition(selectedPiecePosition, step);
-
-
         }
         notifyObservers(ModelChangeType.MOVEABLE_POSITION_INFO, movablePositions.stream().mapToInt(i -> i).toArray());
     }
