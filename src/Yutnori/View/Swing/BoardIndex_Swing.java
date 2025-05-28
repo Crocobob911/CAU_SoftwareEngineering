@@ -1,13 +1,13 @@
-package Yutnori.View;
+package Yutnori.View.Swing;
 
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class BoardIndex {
+public class BoardIndex_Swing {
     private Map<Integer, Point> indexToPoint;
 
-    public BoardIndex(String boardType) {
+    public BoardIndex_Swing(String boardType) {
         indexToPoint = new HashMap<>();
         initializeCoordinates(boardType);
     }

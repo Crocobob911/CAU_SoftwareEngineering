@@ -1,8 +1,9 @@
-package Yutnori.View;
+package Yutnori.View.Swing;
 
 import Yutnori.Controller.GameController;
 import Yutnori.Model.GameModel;
 import Yutnori.Model.GameSetting;
+import Yutnori.View.View;
 
 import javax.swing.*;
 import java.awt.*;
