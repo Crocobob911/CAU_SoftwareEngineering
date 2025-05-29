@@ -8,6 +8,8 @@ import Yutnori.View.View;
 import javax.swing.*;
 import java.awt.*;
 
+// Swing View를 위한 Frame.
+// 여러 Screen들을 생성하고, 서로 전환해주는 역할.
 public class MainFrame_Swing extends JFrame implements View {
     public MainFrame_Swing() {
         setTitle("Yutnori Game");
@@ -19,6 +21,7 @@ public class MainFrame_Swing extends JFrame implements View {
         showStartScreen();
     }
 
+    // Main Frame을 시작시키는 함수. 프로그램 진입정(StartClass.main())에서 호출됨.
     @Override
     public void StartProgram() {
         SwingUtilities.invokeLater(()-> {
@@ -27,6 +30,7 @@ public class MainFrame_Swing extends JFrame implements View {
         });
     }
 
+    // Start Screen을 표시. 인원 수, 말 수, 보드 모양을 결정하는 화면.
     public void showStartScreen() {
         StartScreen_Swing startScreen = new StartScreen_Swing(this);
         this.setContentPane(startScreen);
@@ -34,7 +38,8 @@ public class MainFrame_Swing extends JFrame implements View {
         repaint();
     }
 
-    public void showGameScreen(int players, int horses, String boardType) {
+    // 인게임 화면을 표시. StartScreen에서 GameSetting 값들을 전달받아 InGameScreen로 전환.
+    public void showInGameScreen(int players, int horses, String boardType) {
         int boardTypeInt = switch (boardType) {
             case "사각형" -> 4;
             case "오각형" -> 5;
@@ -54,6 +59,7 @@ public class MainFrame_Swing extends JFrame implements View {
         repaint();
     }
 
+    // End Screen 표기.
     public void showEndScreen(int winnerTeam) {
         EndScreen_Swing endScreen = new EndScreen_Swing(this, winnerTeam);
         setContentPane(endScreen);
