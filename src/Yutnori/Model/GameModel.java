@@ -135,7 +135,7 @@ public class GameModel {
 
         if(position == -2) { // 골인
             pieces.remove(selectedPiece); // 보드에서 피스를 제거
-            graduatedPieces[selectedPiece.getOwnerID()]++; // 졸업 말 수 증가
+            graduatedPieces[selectedPiece.getOwnerID()] += selectedPiece.getStacked() + 1; // 졸업 말 수 증가, 왜 +1 인가요. 기본 스택은 항상 0이기 때문에 스택이 아예 없는 경우 1만큼 증가해야해요
             notifyObservers(ModelChangeType.PLAYERS_PIECES_INFO, getPlayersPiecesInfo()); // 남은 말 수를 알림
 
             notifyObservers(ModelChangeType.BOARD_PIECES_INFO, pieces.toArray(new Piece[0])); // 보드에 있는 피스 정보를 알림
