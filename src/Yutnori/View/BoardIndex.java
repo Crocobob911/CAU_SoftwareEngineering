@@ -4,6 +4,8 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
+// Model 측의 Piece Postion Index와
+// 보드 위의 각 Node의 좌표를 대응하는 클래스.
 public class BoardIndex {
     private Map<Integer, Point> indexToPoint;
 
@@ -144,7 +146,6 @@ public class BoardIndex {
             indexToPoint.put(110, new Point(190,260));
             indexToPoint.put(111, new Point(120,260));
             indexToPoint.put(112, new Point(35,260));
-
         }
     }
 
