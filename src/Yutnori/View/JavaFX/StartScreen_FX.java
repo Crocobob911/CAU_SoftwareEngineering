@@ -30,6 +30,7 @@ public class StartScreen_FX extends Pane {
         playerNum.getItems().addAll(2, 3, 4);
         playerNum.setLayoutX(650);
         playerNum.setLayoutY(160);
+        playerNum.setValue(2);
         getChildren().add(playerNum);
 
         // 말 개수 선택 콤보박스
@@ -37,6 +38,7 @@ public class StartScreen_FX extends Pane {
         horseNum.getItems().addAll(2, 3, 4, 5);
         horseNum.setLayoutX(650);
         horseNum.setLayoutY(300);
+        horseNum.setValue(2);
         getChildren().add(horseNum);
 
         // 게임판 선택 콤보박스
@@ -44,6 +46,7 @@ public class StartScreen_FX extends Pane {
         boardType.getItems().addAll("사각형", "오각형", "육각형");
         boardType.setLayoutX(650);
         boardType.setLayoutY(440);
+        boardType.setValue("사각형");
         getChildren().add(boardType);
 
         // 게임 시작 버튼

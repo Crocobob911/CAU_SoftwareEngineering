@@ -28,7 +28,6 @@ public class InGameScreen_FX extends Pane implements GameModelObserver {
     private MainApp_FX app;
     private GameController controller;
 
-    // layeredPane 대신 Pane를 사용하고, 각 노드의 viewOrder를 설정하여 레이어링 구현
     private Pane layeredPane;
 
     private Label nowPlayerTextLabel;
@@ -36,7 +35,7 @@ public class InGameScreen_FX extends Pane implements GameModelObserver {
     private ComboBox<String> yutComboBox;
     private ArrayList<Button> movableDestination = new ArrayList<>();
 
-    private BoardIndex_Swing boardIndex;  // 기존 클래스 사용 (Point 반환)
+    private BoardIndex_Swing boardIndex;
     private ArrayList<ImageView> pieceImageViews = new ArrayList<>();
     private ArrayList<Label> stackedTextLabels = new ArrayList<>();
 
@@ -89,7 +88,7 @@ public class InGameScreen_FX extends Pane implements GameModelObserver {
         nowPlayerTextLabel = new Label("Player 1");
         nowPlayerTextLabel.setFont(Font.font("Arial", 40));
         nowPlayerTextLabel.setLayoutX(830);
-        nowPlayerTextLabel.setLayoutY(-325);
+        nowPlayerTextLabel.setLayoutY(28);
         nowPlayerTextLabel.setViewOrder(-2);
         layeredPane.getChildren().add(nowPlayerTextLabel);
 
@@ -100,6 +99,7 @@ public class InGameScreen_FX extends Pane implements GameModelObserver {
         yutComboBox.setPrefWidth(120);
         yutComboBox.setPrefHeight(50);
         yutComboBox.setViewOrder(-2);
+        yutComboBox.setValue("없음");
         layeredPane.getChildren().add(yutComboBox);
 
         // 5. Throw Button (layer 2)
