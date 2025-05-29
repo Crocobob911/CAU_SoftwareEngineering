@@ -4,6 +4,7 @@ import Yutnori.Controller.GameController;
 import Yutnori.Model.Observer.GameModelObserver;
 import Yutnori.Model.Observer.ModelChangeType;
 import Yutnori.Model.Piece;
+import Yutnori.View.BoardIndex;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,8 +17,7 @@ public class InGameScreen_Swing extends JPanel implements GameModelObserver{
     private MainFrame_Swing frame;
     private GameController controller;
 
-//    private Integer selectedPiecePosition;
-
+    //# region UI fields
     private JLayeredPane layeredPane;
 
     private JLabel nowPlayerTextLabel;
@@ -27,21 +27,23 @@ public class InGameScreen_Swing extends JPanel implements GameModelObserver{
     private JComboBox yutComboBox;
     private ArrayList<JButton> movableDestination = new ArrayList<>();
 
-    private BoardIndex_Swing boardIndex;
+    private BoardIndex boardIndex;
     private ArrayList<JLabel> pieceLabels = new ArrayList<>();
     private ArrayList<JLabel> stackedTextLabels = new ArrayList<>();
+    //endregion
 
+    // InGameScreen의 생성자. Base UI들을 배치함.
     public InGameScreen_Swing(GameController controller, int playerNum, int horseNum, String boardType, MainFrame_Swing frame) {
         this.frame = frame;
         this.controller = controller;
 
-        boardIndex = new BoardIndex_Swing(boardType);
+        boardIndex = new BoardIndex(boardType);
         pieceLabels = new ArrayList<>();
 
         setLayout(null);
         setPreferredSize(new Dimension(1200, 750));
 
-        // create Background Image
+        // 배경 이미치 배치
         layeredPane = new JLayeredPane();
         layeredPane.setBounds(0, 0, 1200, 750);
 
@@ -50,7 +52,7 @@ public class InGameScreen_Swing extends JPanel implements GameModelObserver{
         combinedLabel.setBounds(0, 0, 1200, 750);
         layeredPane.add(combinedLabel, Integer.valueOf(0));
 
-        // create Board (4, 5, 6)
+        // 보드 이미지 (4, 5, 6) 배치
         String boardImagePath = switch (boardType) {
             case "오각형" -> "src/Yutnori/View/picture/pentaYutBoard.png";
             case "육각형" -> "src/Yutnori/View/picture/hexaYutBoard.png";
@@ -61,30 +63,30 @@ public class InGameScreen_Swing extends JPanel implements GameModelObserver{
         boardLabel.setBounds(20, 25, boardIcon.getIconWidth(), boardIcon.getIconHeight());
         layeredPane.add(boardLabel, Integer.valueOf(1));
 
-        // create Now Player Text
+        // 현재 플레이어 표시 Text 배치
         nowPlayerTextLabel = new JLabel("Player 1");
         nowPlayerTextLabel.setBounds(830, -325, 1200, 750);
         nowPlayerTextLabel.setFont(new Font("Arial", Font.PLAIN, 40));
         layeredPane.add(nowPlayerTextLabel, Integer.valueOf(2));
 
-        // create Combobox
+        // 윷 지정 던지기 ComboBox 배치
         String[] yutOptions = {"없음", "도", "개", "걸", "윷", "모", "백도"};
         yutComboBox = new JComboBox<>(yutOptions);
         yutComboBox.setBounds(700, 320, 120, 50);
         layeredPane.add(yutComboBox, Integer.valueOf(2));
 
-        // create Throw Button
+        // 윷 던지기 Button 배치
         JButton throwButton = new JButton("던지기");
         throwButton.setBounds(850, 320, 100, 50);
         throwButton.addActionListener(e -> throwYut());
         layeredPane.add(throwButton, Integer.valueOf(2));
 
-        // create Yut Throw Result Label
+        // 윷 던진 결과 표시 Image 배치
         yutResultLabel = new JLabel(new ImageIcon("src/Yutnori/View/picture/mo.png"));
         yutResultLabel.setBounds(690, 105, 425, 210);
         layeredPane.add(yutResultLabel, Integer.valueOf(2));
 
-        // create Player Infos Labels
+        // 각 플레이어 정보 (남은 말, 졸업한 말) 표시 UI 배치
         int[][] playerInfoPositions = {{625, 400}, {935, 400}, {625, 550}, {935, 550}};
         playerInfoLabels = new JLabel[2][playerNum];
         for (int i = 0; i < playerNum; i++) {
@@ -93,6 +95,7 @@ public class InGameScreen_Swing extends JPanel implements GameModelObserver{
             playerLabel.setBounds(playerInfoPositions[i][0], playerInfoPositions[i][1], playerIcon.getIconWidth(), playerIcon.getIconHeight());
             layeredPane.add(playerLabel, Integer.valueOf(1));
 
+            // 남은 말 표기 UI
             JLabel remainPieceLabel = new JLabel(String.valueOf(horseNum));
             remainPieceLabel.setFont(new Font("Arial", Font.PLAIN, 20));
             remainPieceLabel.setBounds(
@@ -102,6 +105,7 @@ public class InGameScreen_Swing extends JPanel implements GameModelObserver{
                     30
             );
 
+            // 졸업한 말 표기 UI
             JLabel finishedPieceLabel = new JLabel("0");
             finishedPieceLabel.setFont(new Font("Arial", Font.PLAIN, 20));
             finishedPieceLabel.setBounds(
@@ -116,13 +120,13 @@ public class InGameScreen_Swing extends JPanel implements GameModelObserver{
             playerInfoLabels[1][i] = finishedPieceLabel;
         }
 
-        // created Pending Moves Panel
+        // 던진 윷 결과 UI 배치
         yutResultPanel = new JPanel();
         yutResultPanel.setLayout(new FlowLayout());
         yutResultPanel.setBounds(30, 650, 500, 50);
         layeredPane.add(yutResultPanel, Integer.valueOf(2));
 
-        // create New piece Button
+        // '새 말 놓기' 버튼 배치
         JButton createNewPieceButton = new JButton("새 말 생성");
         createNewPieceButton.setBounds(30, 600, 120, 30);
         createNewPieceButton.addActionListener(e ->
@@ -131,24 +135,44 @@ public class InGameScreen_Swing extends JPanel implements GameModelObserver{
 
         add(layeredPane);
 
+        // Model의 Observer로 이 인스턴스 등록
         controller.addMeModelObserver(this);
     }
 
+    //#region Throw Yut
+    // 윷 던지기.
+    // ComboBox에서 "없음"을 선택한 경우 - 랜덤 던지기
+    // ComboBox에서 던져질 윷을 지정한 경우 - 지정 던지기
     private void throwYut() {
         String selectedYut = (String) yutComboBox.getSelectedItem();
         boolean throwSuccess = false;
-        if(selectedYut.equals("없음")) {
+
+        if(selectedYut.equals("없음")) {      // 랜덤 던지기
             throwSuccess = controller.throwYut(0);
         }
-        else{
+        else{       // 지정 던지기
             throwSuccess = controller.throwYut(convertYutStringToInt(selectedYut));
         }
 
+        // 윷을 더 던질 수 있냐 없냐가 모델에서 결정됨.
+        // 더 던질 수 있는 경우 :
+        // 1. '윷', '모'가 나옴.
+        // 2. 다른 팀의 말을 잡았음.
+        // 위의 경우가 아니라서 더 던질 수 없는데도, 던지기 버튼을 눌렀을 경우 아래 문구 출력.
         if(!throwSuccess) {
             JOptionPane.showMessageDialog(this, "윷을 더 던질 수 없습니다.");
         }
     }
 
+    // 방금 어떤 윷이 던져졌는지 표시하는 Image UI를 수정.
+    private void updateLastThrownYut(int yut) {
+        String yutImagePath = "src/Yutnori/View/picture/" + convertYutIntToStringEnglish(yut) + ".png";
+        yutResultLabel.setIcon(new ImageIcon(yutImagePath));
+    }
+
+    // ThrowYut 함수로 controller를 통해 Model을 호출.
+    // 새로 던져진 윷이 yutResults 배열에 추가되고, 그 배열이 통째로 View에게 전달됨. (Observer 패턴)
+    // 그 배열이 전달될 때, 이 함수가 호출됨.
     private void updateYutResult(int[] yutResults) {
         // update YutResult Panel Display
         yutResultPanel.removeAll();
@@ -158,16 +182,33 @@ public class InGameScreen_Swing extends JPanel implements GameModelObserver{
 
             JButton button = new JButton(yutResultString);
             button.addActionListener(e -> {
+                // 윷 버튼을 누르면, 어떤 윷이 골라졌는지 컨트롤러에 전달. 컨트롤러는 이를 저장하고 있음.
                 controller.selectYut(result, yutResultPanel.getComponentZOrder((JButton) e.getSource()));
-//                JOptionPane.showMessageDialog(this, "선택됨 : " + yutResultString);
             });
             yutResultPanel.add(button);
         }
 
+        // Panel 재표시
         yutResultPanel.revalidate();
         yutResultPanel.repaint();
     }
+    //endregion
 
+    //#region Moveable Position
+    // 보드 위의 '말' 버튼이 눌리면 호출되는 함수.
+    // (이미 선택되어있는) 윷으로, 이 말이 어디로 이동할 수 있는지 Model에 요청함.
+    private void pieceClicked(int position) {
+        if(!controller.isYutSelected()){
+            JOptionPane.showMessageDialog(this, "사용할 윷 결과를 먼저 선택하세요.");
+            return;
+        }
+        requestMovablePosition(position);
+    }
+
+    // 말이 어디로 이동할 수 있는지 계산하도록 요청.
+    // 이때 필요한 정보는 '현재 말 위치', '윷'.
+    // 어떤 윷이 골라졌는지는 이미 컨트롤러에 저장되어있는 상태이기 때문에 (updateYutResult 함수 참고),
+    // 이 함수에서는 '현재 말 위치'만 전달.
     private void requestMovablePosition(int currentPosition) {
         if(!controller.isYutSelected()) {
             JOptionPane.showMessageDialog(this, "먼저 사용할 윷 결과를 선택하세요.");
@@ -185,6 +226,7 @@ public class InGameScreen_Swing extends JPanel implements GameModelObserver{
         controller.calculateMovablePosition(currentPosition);
     }
 
+    // Model로부터 '이동 가능한 위치'의 배열을 받아서 표시함. (Observer 패턴)
     private void showMoveablePositions(int[] positions) {
         for(int pos : positions) {
             Point point = boardIndex.getPoint(pos);
@@ -210,11 +252,16 @@ public class InGameScreen_Swing extends JPanel implements GameModelObserver{
         layeredPane.revalidate();
         layeredPane.repaint();
     }
+    //endregion
 
+    //#region Move Piece
+    // 말을 destinationPosition으로 이동시키도록 요청
+    // '어떤 말'을 움직일지는 이미 결정되어있는 상태
     private void movePiece(int destinationPosition){
         controller.movePiece(destinationPosition);
     }
 
+    // Model로부터 보드 위의 모든 말 정보를 받아서, 표기함. (Observer 패턴)
     private void updatePiecesOnBoard(Piece[] piecesOnBoard) {
         for (JLabel pieceLabel : pieceLabels){
             if(pieceLabel != null) layeredPane.remove(pieceLabel);
@@ -266,16 +313,10 @@ public class InGameScreen_Swing extends JPanel implements GameModelObserver{
         layeredPane.revalidate();
         layeredPane.repaint();
     }
+    //endregion
 
-    private void pieceClicked(int position) {
-        if(!controller.isYutSelected()){
-            JOptionPane.showMessageDialog(this, "사용할 윷 결과를 먼저 선택하세요.");
-            return;
-        }
-
-        requestMovablePosition(position);
-    }
-
+    //#region Update other UI
+    // Model로부터 각 플레이어의 정보를 전달받아, UI를 수정함. (Observer 패턴)
     private void updatePlayerInfos(int[][] playerInfos) {
         for(int i=0; i<playerInfos[0].length; i++){
             int waiting = playerInfos[0][i];
@@ -287,11 +328,19 @@ public class InGameScreen_Swing extends JPanel implements GameModelObserver{
         layeredPane.repaint();
     }
 
+    // Model로부터 현재 어떤 플레이어의 턴인지 전달받아, UI를 수정함 (Observer 패턴)
     private void updateNowPlayerInfo(int[] playerInfo) {
         System.out.println("Player " + (playerInfo[0]+1));
         nowPlayerTextLabel.setText("Player " + (playerInfo[0]+1));
     }
+    //endregion
 
+    // 게임이 끝나면, frame에게 End Screen으로 전환하도록 요청.
+    private void gameEnd(int winnerPlayerID) {
+        frame.showEndScreen(winnerPlayerID);
+    }
+
+    // Observer 패턴. subject인 Model로부터 호출되는 함수.
     @Override
     public void onUpdate(ModelChangeType type, Object value) {
         switch (type){
@@ -306,16 +355,7 @@ public class InGameScreen_Swing extends JPanel implements GameModelObserver{
         }
     }
 
-    private void updateLastThrownYut(int yut) {
-        String yutImagePath = "src/Yutnori/View/picture/" + convertYutIntToStringEnglish(yut) + ".png";
-        yutResultLabel.setIcon(new ImageIcon(yutImagePath));
-
-    }
-
-    private void gameEnd(int winnerPlayerID) {
-        frame.showEndScreen(winnerPlayerID);
-    }
-
+    //#region Yut Text Convert
     private String convertYutIntToStringEnglish(int yutResultNum){
         return switch (yutResultNum) {
             case 1 -> "do";
@@ -351,4 +391,5 @@ public class InGameScreen_Swing extends JPanel implements GameModelObserver{
             default -> 0;
         };
     }
+    //endregion
 }
