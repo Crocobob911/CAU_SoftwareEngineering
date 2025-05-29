@@ -3,14 +3,13 @@ package Yutnori.View.Swing;
 import Yutnori.Controller.GameController;
 import Yutnori.Model.GameModel;
 import Yutnori.Model.GameSetting;
-import Yutnori.View.View;
 
 import javax.swing.*;
 import java.awt.*;
 
 // Swing View를 위한 Frame.
 // 여러 Screen들을 생성하고, 서로 전환해주는 역할.
-public class MainFrame_Swing extends JFrame implements View {
+public class MainFrame_Swing extends JFrame{
     public MainFrame_Swing() {
         setTitle("Yutnori Game");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -21,9 +20,7 @@ public class MainFrame_Swing extends JFrame implements View {
         showStartScreen();
     }
 
-    // Main Frame을 시작시키는 함수. 프로그램 진입정(StartClass.main())에서 호출됨.
-    @Override
-    public void StartProgram() {
+    public static void main(String[] args) {
         SwingUtilities.invokeLater(()-> {
             MainFrame_Swing frame = new MainFrame_Swing();
             frame.setVisible(true);
