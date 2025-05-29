@@ -48,14 +48,12 @@ public class InGameScreen_FX extends Pane implements GameModelObserver {
         boardIndex = new BoardIndex_Swing(boardType);
         pieceImageViews = new ArrayList<>();
 
-        // 전체 크기 1200 x 750
         setPrefSize(1200, 750);
 
-        // Layered Pane 역할을 하는 Pane 생성
         layeredPane = new Pane();
         layeredPane.setPrefSize(1200, 750);
 
-        // 1. Background Image (layer 0 → viewOrder = 0)
+        // 1. Background Image
         Image bgImage = new Image("file:src/Yutnori/View/picture/background.png");
         ImageView bgImageView = new ImageView(bgImage);
         bgImageView.setFitWidth(1200);
@@ -65,18 +63,12 @@ public class InGameScreen_FX extends Pane implements GameModelObserver {
         bgImageView.setViewOrder(0);
         layeredPane.getChildren().add(bgImageView);
 
-        // 2. Board Image (layer 1 → viewOrder = -1)
-        String boardImagePath;
-        switch (boardType) {
-            case "오각형":
-                boardImagePath = "src/Yutnori/View/picture/pentaYutBoard.png";
-                break;
-            case "육각형":
-                boardImagePath = "src/Yutnori/View/picture/hexaYutBoard.png";
-                break;
-            default:
-                boardImagePath = "src/Yutnori/View/picture/rectYutBoard.png";
-        }
+        // 2. Board Image
+        String boardImagePath = switch (boardType) {
+            case "오각형" -> "src/Yutnori/View/picture/pentaYutBoard.png";
+            case "육각형" -> "src/Yutnori/View/picture/hexaYutBoard.png";
+            default -> "src/Yutnori/View/picture/rectYutBoard.png";
+        };
         Image boardImage = new Image("file:" + boardImagePath);
         ImageView boardImageView = new ImageView(boardImage);
         boardImageView.setLayoutX(20);
@@ -84,7 +76,7 @@ public class InGameScreen_FX extends Pane implements GameModelObserver {
         boardImageView.setViewOrder(-1);
         layeredPane.getChildren().add(boardImageView);
 
-        // 3. Now Player Text (layer 2 → viewOrder = -2)
+        // 3. Now Player Text
         nowPlayerTextLabel = new Label("Player 1");
         nowPlayerTextLabel.setFont(Font.font("Arial", 40));
         nowPlayerTextLabel.setLayoutX(830);
@@ -92,7 +84,7 @@ public class InGameScreen_FX extends Pane implements GameModelObserver {
         nowPlayerTextLabel.setViewOrder(-2);
         layeredPane.getChildren().add(nowPlayerTextLabel);
 
-        // 4. ComboBox for Yut Options (layer 2)
+        // 4. ComboBox for Yut Options
         yutComboBox = new ComboBox<>(FXCollections.observableArrayList("없음", "도", "개", "걸", "윷", "모", "백도"));
         yutComboBox.setLayoutX(700);
         yutComboBox.setLayoutY(320);
@@ -102,7 +94,7 @@ public class InGameScreen_FX extends Pane implements GameModelObserver {
         yutComboBox.setValue("없음");
         layeredPane.getChildren().add(yutComboBox);
 
-        // 5. Throw Button (layer 2)
+        // 5. Throw Button
         Button throwButton = new Button("던지기");
         throwButton.setLayoutX(850);
         throwButton.setLayoutY(320);
@@ -112,9 +104,8 @@ public class InGameScreen_FX extends Pane implements GameModelObserver {
         throwButton.setViewOrder(-2);
         layeredPane.getChildren().add(throwButton);
 
-        // 6. Yut Throw Result ImageView (layer 2)
-        Image yutResultImage = new Image("file:src/Yutnori/View/picture/mo.png");
-        yutResultImageView = new ImageView(yutResultImage);
+        // 6. Yut Throw Result ImageView
+        yutResultImageView = new ImageView(new Image("file:src/Yutnori/View/picture/mo.png"));
         yutResultImageView.setLayoutX(690);
         yutResultImageView.setLayoutY(105);
         yutResultImageView.setFitWidth(425);
@@ -135,7 +126,7 @@ public class InGameScreen_FX extends Pane implements GameModelObserver {
             playerImageView.setViewOrder(-1);
             layeredPane.getChildren().add(playerImageView);
 
-            // Remain Piece Label (layer 2)
+            // Remain Piece Label
             Label remainPieceLabel = new Label(String.valueOf(horseNum));
             remainPieceLabel.setFont(Font.font("Arial", 20));
             remainPieceLabel.setLayoutX(posX + 105);
@@ -155,7 +146,7 @@ public class InGameScreen_FX extends Pane implements GameModelObserver {
             playerInfoLabels[1][i] = finishedPieceLabel;
         }
 
-        // 8. Yut Result Panel as HBox (layer 2)
+        // 8. Yut Result Panel as HBox
         yutResultPanel = new HBox();
         yutResultPanel.setLayoutX(30);
         yutResultPanel.setLayoutY(650);
@@ -165,7 +156,7 @@ public class InGameScreen_FX extends Pane implements GameModelObserver {
         yutResultPanel.setViewOrder(-2);
         layeredPane.getChildren().add(yutResultPanel);
 
-        // 9. New Piece Button (layer 10 → viewOrder = -10)
+        // 9. New Piece Button
         Button createNewPieceButton = new Button("새 말 생성");
         createNewPieceButton.setLayoutX(30);
         createNewPieceButton.setLayoutY(600);
@@ -175,7 +166,6 @@ public class InGameScreen_FX extends Pane implements GameModelObserver {
         createNewPieceButton.setViewOrder(-10);
         layeredPane.getChildren().add(createNewPieceButton);
 
-        // 최종적으로 이 Pane에 layeredPane 추가
         this.getChildren().add(layeredPane);
 
         controller.addMeModelObserver(this);
@@ -242,7 +232,7 @@ public class InGameScreen_FX extends Pane implements GameModelObserver {
                     movePiece(pos);
                     clearMovablePositionButtons();
                 });
-                btn.setViewOrder(-10); // layer 10
+                btn.setViewOrder(-12);
                 layeredPane.getChildren().add(btn);
                 movableDestination.add(btn);
             }
@@ -304,6 +294,7 @@ public class InGameScreen_FX extends Pane implements GameModelObserver {
                 stackedTextLabel.setAlignment(Pos.CENTER);
                 stackedTextLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
                 stackedTextLabel.setViewOrder(-11);
+                stackedTextLabel.setMouseTransparent(true);
                 layeredPane.getChildren().add(stackedTextLabel);
                 stackedTextLabels.add(stackedTextLabel);
             }
@@ -335,30 +326,14 @@ public class InGameScreen_FX extends Pane implements GameModelObserver {
     @Override
     public void onUpdate(ModelChangeType type, Object value) {
         switch (type) {
-            case NOW_PLAYER_INFO:
-                updateNowPlayerInfo((int[]) value);
-                break;
-            case PLAYERS_PIECES_INFO:
-                updatePlayerInfos((int[][]) value);
-                break;
-            case BOARD_PIECES_INFO:
-                updatePiecesOnBoard((Piece[]) value);
-                break;
-            case MOVEABLE_POSITION_INFO:
-                showMoveablePositions((int[]) value);
-                break;
-            case YUT_RESULTS:
-                updateYutResult((int[]) value);
-                break;
-            case NEW_YUT_RESULT:
-                updateLastThrownYut((int) value);
-                break;
-            case GAME_END:
-                gameEnd((int) value);
-                break;
-            default:
-                System.out.println(type + ": 알 수 없는 업데이트 타입입니다.");
-                break;
+            case NOW_PLAYER_INFO -> updateNowPlayerInfo((int[]) value);
+            case PLAYERS_PIECES_INFO -> updatePlayerInfos((int[][]) value);
+            case BOARD_PIECES_INFO -> updatePiecesOnBoard((Piece[]) value);
+            case MOVEABLE_POSITION_INFO -> showMoveablePositions((int[]) value);
+            case YUT_RESULTS -> updateYutResult((int[]) value);
+            case NEW_YUT_RESULT -> updateLastThrownYut((int) value);
+            case GAME_END -> gameEnd((int) value);
+            default -> System.out.println(type + ": 알 수 없는 업데이트 타입입니다.");
         }
     }
 

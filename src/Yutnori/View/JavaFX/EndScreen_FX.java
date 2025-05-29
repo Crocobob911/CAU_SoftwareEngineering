@@ -21,7 +21,7 @@ public class EndScreen_FX extends Pane {
         // 전체 크기 설정
         setPrefSize(1200, 750);
 
-        // 배경 이미지 (배경은 뒤쪽에 위치하도록 toBack() 호출)
+        // 배경 이미지
         Image background = new Image("file:src/Yutnori/View/picture/end_BackGround.png");
         ImageView backgroundIV = new ImageView(background);
         backgroundIV.setFitWidth(1200);
@@ -30,7 +30,7 @@ public class EndScreen_FX extends Pane {
         backgroundIV.setLayoutY(0);
         getChildren().add(backgroundIV);
 
-        // 승리 메시지 (Label 중앙 정렬)
+        // 승리 메시지
         Label endText = new Label("Player " + (winnerPlayer + 1) + " WIN!");
         endText.setAlignment(Pos.CENTER);
         endText.setFont(Font.font("Arial", FontWeight.BOLD, 20));

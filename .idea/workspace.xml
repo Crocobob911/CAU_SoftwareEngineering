@@ -10,9 +10,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="31daac7e-5693-46a6-96b5-01c259af9992" name="변경" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/SE.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/SE.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Yutnori/StartClass.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Yutnori/View/JavaFX/EndScreen_FX.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Yutnori/View/JavaFX/EndScreen_FX.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Yutnori/View/JavaFX/InGameScreen_FX.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Yutnori/View/JavaFX/InGameScreen_FX.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Yutnori/View/JavaFX/MainApp_FX.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Yutnori/View/JavaFX/MainApp_FX.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Yutnori/View/Swing/MainFrame_Swing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Yutnori/View/Swing/MainFrame_Swing.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Yutnori/View/View.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -92,7 +96,7 @@
     "project.structure.last.edited": "Libraries",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "settings.editor.selected.configurable": "configurable.group.editor",
     "vue.rearranger.settings.migration": "true",
     "애플리케이션.GameManager.executor": "Run",
     "애플리케이션.MainApp_FX.executor": "Run",

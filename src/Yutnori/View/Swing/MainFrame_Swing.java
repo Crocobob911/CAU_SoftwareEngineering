@@ -3,12 +3,11 @@ package Yutnori.View.Swing;
 import Yutnori.Controller.GameController;
 import Yutnori.Model.GameModel;
 import Yutnori.Model.GameSetting;
-import Yutnori.View.View;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class MainFrame_Swing extends JFrame implements View {
+public class MainFrame_Swing extends JFrame{
     public MainFrame_Swing() {
         setTitle("Yutnori Game");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -19,8 +18,7 @@ public class MainFrame_Swing extends JFrame implements View {
         showStartScreen();
     }
 
-    @Override
-    public void StartProgram() {
+    public static void main(String[] args) {
         SwingUtilities.invokeLater(()-> {
             MainFrame_Swing frame = new MainFrame_Swing();
             frame.setVisible(true);

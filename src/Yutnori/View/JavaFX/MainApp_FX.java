@@ -3,13 +3,16 @@ package Yutnori.View.JavaFX;
 import Yutnori.Controller.GameController;
 import Yutnori.Model.GameModel;
 import Yutnori.Model.GameSetting;
-import Yutnori.View.View;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class MainApp_FX extends Application implements View {
+public class MainApp_FX extends Application{
     private Stage primaryStage;
+
+    public static void main(String[] args) {
+        launch(args);
+    }
 
     @Override
     public void start(Stage primaryStage) {
@@ -55,12 +58,4 @@ public class MainApp_FX extends Application implements View {
         primaryStage.setScene(scene);
     }
 
-    public static void main(String[] args) {
-        launch(args);
-    }
-
-    @Override
-    public void StartProgram() {
-        start(primaryStage);
-    }
 }
