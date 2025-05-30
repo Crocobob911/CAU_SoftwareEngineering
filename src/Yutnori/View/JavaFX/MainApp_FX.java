@@ -43,8 +43,7 @@ public class MainApp_FX extends Application{
         };
 
         GameSetting gameSetting = new GameSetting(players, horses, boardTypeInt);
-        GameModel model = new GameModel();
-        GameController controller = new GameController(model);
+        GameController controller = new GameController();
         controller.gameStart(gameSetting);
 
         InGameScreen_FX gameScreen = new InGameScreen_FX(controller, players, horses, boardType, this);

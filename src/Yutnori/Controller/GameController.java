@@ -13,8 +13,8 @@ public class GameController {
     private Optional<Integer> selectedYutResult = Optional.empty();
     private Optional<Integer> selectedYutResultIndex = Optional.empty();
 
-    public GameController(GameModel model) {
-        this.model = model;
+    public GameController() {
+        this.model = new GameModel();
     }
 
     public void gameStart(GameSetting gameSetting) {

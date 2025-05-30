@@ -45,8 +45,7 @@ public class MainFrame_Swing extends JFrame{
         };
         GameSetting gameSetting = new GameSetting(players, horses, boardTypeInt);
 
-        GameModel model = new GameModel();
-        GameController controller = new GameController(model);
+        GameController controller = new GameController();
         controller.gameStart(gameSetting);
 
         // GameScreen으로 전환
