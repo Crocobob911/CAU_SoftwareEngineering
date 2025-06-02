@@ -8,4 +8,5 @@ public enum ModelChangeType {
     PLAYERS_PIECES_INFO,          // 게임 정보 -> 게임 설정, 플레이어 정보 (게임판 변동시)
     MOVEABLE_POSITION_INFO, // 말 이동 가능 정보 -> 주로 말 이동 시 사용
     GAME_END,           // 게임 종료
+    GAME_STATE_CHANGED  // 게임 상태 변경
 }

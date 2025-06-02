@@ -61,4 +61,14 @@ public class Piece {
         //백도일때 리스트에서 하나를 제거합니다.
         path.removeLast();
     }
+
+    @Override
+    public String toString() {
+        return "Piece{" +
+                "ownerID=" + ownerID +
+                ", position=" + position +
+                ", stacked=" + stacked +
+                ", path=" + path +
+                '}';
+    }
 }

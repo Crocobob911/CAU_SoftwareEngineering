@@ -130,7 +130,7 @@ public class InGameScreen_Swing extends JPanel implements GameModelObserver{
         JButton createNewPieceButton = new JButton("새 말 생성");
         createNewPieceButton.setBounds(30, 600, 120, 30);
         createNewPieceButton.addActionListener(e ->
-                requestMovablePosition(-1));
+                controller.createNewPiece());
         layeredPane.add(createNewPieceButton, Integer.valueOf(10));
 
         add(layeredPane);
@@ -145,7 +145,7 @@ public class InGameScreen_Swing extends JPanel implements GameModelObserver{
     // ComboBox에서 던져질 윷을 지정한 경우 - 지정 던지기
     private void throwYut() {
         String selectedYut = (String) yutComboBox.getSelectedItem();
-        boolean throwSuccess = false;
+        boolean throwSuccess;
 
         if(selectedYut.equals("없음")) {      // 랜덤 던지기
             throwSuccess = controller.throwYut(0);
@@ -198,36 +198,18 @@ public class InGameScreen_Swing extends JPanel implements GameModelObserver{
     // 보드 위의 '말' 버튼이 눌리면 호출되는 함수.
     // (이미 선택되어있는) 윷으로, 이 말이 어디로 이동할 수 있는지 Model에 요청함.
     private void pieceClicked(int position) {
-        if(!controller.isYutSelected()){
-            JOptionPane.showMessageDialog(this, "사용할 윷 결과를 먼저 선택하세요.");
-            return;
-        }
-        requestMovablePosition(position);
-    }
-
-    // 말이 어디로 이동할 수 있는지 계산하도록 요청.
-    // 이때 필요한 정보는 '현재 말 위치', '윷'.
-    // 어떤 윷이 골라졌는지는 이미 컨트롤러에 저장되어있는 상태이기 때문에 (updateYutResult 함수 참고),
-    // 이 함수에서는 '현재 말 위치'만 전달.
-    private void requestMovablePosition(int currentPosition) {
-        if(!controller.isYutSelected()) {
-            JOptionPane.showMessageDialog(this, "먼저 사용할 윷 결과를 선택하세요.");
-            return;
-        }
-        clearMovablePositionButtons();
-
-        if(currentPosition == -1) {
-            if(!controller.canCreateNewPiece()){
-                JOptionPane.showMessageDialog(this, "새 말을 놓을 수 없습니다.");
-                return;
-            }
-            controller.createNewPiece();
-        }
-        controller.calculateMovablePosition(currentPosition);
+//        if(!controller.isYutSelected()){
+//            JOptionPane.showMessageDialog(this, "사용할 윷 결과를 먼저 선택하세요.");
+//            return;
+//        }
+//        requestMovablePosition(position);
+        controller.selectPiece(position);
     }
 
     // Model로부터 '이동 가능한 위치'의 배열을 받아서 표시함. (Observer 패턴)
     private void showMoveablePositions(int[] positions) {
+        clearMovablePositionButtons();
+
         for(int pos : positions) {
             Point point = boardIndex.getPoint(pos);
             if (point != null) {
