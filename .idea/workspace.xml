@@ -10,7 +10,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="31daac7e-5693-46a6-96b5-01c259af9992" name="변경" comment="">
-      <change beforePath="$PROJECT_DIR$/src/Yutnori/Model/GameModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Yutnori/Model/GameModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/Yutnori/Model/BackDoTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/Yutnori/Model/BackDoTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,6 +56,7 @@
     <ConfirmationsSetting value="1" id="Add" />
   </component>
   <component name="ProjectViewState">
+    <option name="autoscrollFromSource" value="true" />
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
@@ -63,10 +65,19 @@
     "Application.MainApp_FX.executor": "Run",
     "Application.Yutnori.StartClass.executor": "Run",
     "Downloaded.Files.Path.Enabled": "false",
+    "JUnit.BackDoTest.executor": "Run",
+    "JUnit.BackDoTest.moveDefault.executor": "Run",
+    "JUnit.BoardTest.boardMoveTest2.executor": "Run",
+    "JUnit.BoardTest.boardMoveTest3.executor": "Run",
+    "JUnit.BoardTest.executor": "Run",
     "JUnit.GameModelTest.initNewPieceTest.executor": "Run",
     "JUnit.GameSettingTest.MakeGameSetting.executor": "Run",
+    "JUnit.GameSettingTest.executor": "Run",
     "JUnit.MainFrame_SwingTest.endScreenTest.executor": "Run",
     "JUnit.MainFrame_SwingTest.testEndScreenTest.executor": "Run",
+    "JUnit.MoveActionTest.moveCatchPiece.executor": "Run",
+    "JUnit.MoveActionTest.moveDefault.executor": "Run",
+    "JUnit.MoveActionTest.moveStackedPiece.executor": "Run",
     "JUnit.PieceTest.StackTest.executor": "Run",
     "JUnit.PieceTest.StackTest2.executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
@@ -78,7 +89,7 @@
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit3",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit3": "junit.framework.TestCase",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
-    "git-widget-placeholder": "develop",
+    "git-widget-placeholder": "feature-JUnitTest",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/javafx-sdk-21.0.7/lib",
@@ -87,7 +98,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Libraries",
+    "project.structure.last.edited": "라이브러리",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
     "settings.editor.selected.configurable": "configurable.group.editor",
@@ -95,6 +106,7 @@
     "애플리케이션.GameManager.executor": "Run",
     "애플리케이션.MainApp_FX.executor": "Run",
     "애플리케이션.MainFrame.executor": "Run",
+    "애플리케이션.MainFrame_Swing.executor": "Run",
     "애플리케이션.StartClass.executor": "Run",
     "애플리케이션.start.executor": "Run"
   }
@@ -115,29 +127,8 @@
       <recent name="Yutnori.Model" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.GameModelTest.initNewPieceTest">
-    <configuration name="MainApp_FX" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="Yutnori.View.JavaFX.MainApp_FX" />
-      <module name="SE" />
-      <option name="VM_PARAMETERS" value="--module-path &quot;C:\javafx-sdk-21.0.7\lib&quot; --add-modules javafx.controls,javafx.fxml" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="StartClass" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="Yutnori.StartClass" />
-      <module name="SE" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="Yutnori.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="GameModelTest.initNewPieceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.BackDoTest">
+    <configuration name="BackDoTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="SE" />
       <extension name="coverage">
         <pattern>
@@ -146,30 +137,13 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="Yutnori.Model" />
-      <option name="MAIN_CLASS_NAME" value="Yutnori.Model.GameModelTest" />
-      <option name="METHOD_NAME" value="initNewPieceTest" />
-      <option name="TEST_OBJECT" value="method" />
+      <option name="MAIN_CLASS_NAME" value="Yutnori.Model.BackDoTest" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="MainFrame_SwingTest.testEndScreenTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="Test" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="Yutnori.View.Swing.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="Yutnori.View" />
-      <option name="MAIN_CLASS_NAME" value="Yutnori.View.MainFrame_SwingTest" />
-      <option name="METHOD_NAME" value="testEndScreenTest" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="PieceTest.StackTest2" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="BackDoTest.moveDefault" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="SE" />
       <extension name="coverage">
         <pattern>
@@ -178,33 +152,83 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="Yutnori.Model" />
-      <option name="MAIN_CLASS_NAME" value="Yutnori.Model.PieceTest" />
-      <option name="METHOD_NAME" value="StackTest2" />
+      <option name="MAIN_CLASS_NAME" value="Yutnori.Model.BackDoTest" />
+      <option name="METHOD_NAME" value="moveDefault" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MoveActionTest.moveCatchPiece" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="SE" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Yutnori.Model.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="Yutnori.Model" />
+      <option name="MAIN_CLASS_NAME" value="Yutnori.Model.MoveActionTest" />
+      <option name="METHOD_NAME" value="moveCatchPiece" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MoveActionTest.moveDefault" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="SE" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Yutnori.Model.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="Yutnori.Model" />
+      <option name="MAIN_CLASS_NAME" value="Yutnori.Model.MoveActionTest" />
+      <option name="METHOD_NAME" value="moveDefault" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MoveActionTest.moveStackedPiece" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="SE" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Yutnori.Model.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="Yutnori.Model" />
+      <option name="MAIN_CLASS_NAME" value="Yutnori.Model.MoveActionTest" />
+      <option name="METHOD_NAME" value="moveStackedPiece" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <list>
-      <item itemvalue="JUnit.GameModelTest.initNewPieceTest" />
-      <item itemvalue="JUnit.MainFrame_SwingTest.testEndScreenTest" />
-      <item itemvalue="JUnit.PieceTest.StackTest2" />
-      <item itemvalue="애플리케이션.MainApp_FX" />
-      <item itemvalue="애플리케이션.StartClass" />
+      <item itemvalue="JUnit.BackDoTest" />
+      <item itemvalue="JUnit.BackDoTest.moveDefault" />
+      <item itemvalue="JUnit.MoveActionTest.moveCatchPiece" />
+      <item itemvalue="JUnit.MoveActionTest.moveDefault" />
+      <item itemvalue="JUnit.MoveActionTest.moveStackedPiece" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.MainFrame_SwingTest.testEndScreenTest" />
-        <item itemvalue="JUnit.GameModelTest.initNewPieceTest" />
-        <item itemvalue="JUnit.PieceTest.StackTest2" />
+        <item itemvalue="JUnit.BackDoTest" />
+        <item itemvalue="JUnit.BackDoTest.moveDefault" />
+        <item itemvalue="JUnit.MoveActionTest.moveCatchPiece" />
+        <item itemvalue="JUnit.MoveActionTest.moveStackedPiece" />
+        <item itemvalue="JUnit.MoveActionTest.moveDefault" />
       </list>
     </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-28b599e66164-intellij.indexing.shared.core-IU-242.23339.11" />
-        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-IU-242.23339.11" />
+        <option value="bundled-jdk-9823dce3aa75-fbdcb00ec9e3-intellij.indexing.shared.core-IU-251.25410.129" />
+        <option value="bundled-js-predefined-d6986cc7102b-6a121458b545-JavaScript-IU-251.25410.129" />
       </set>
     </attachedChunks>
   </component>
@@ -236,6 +260,8 @@
       <workItem from="1748422022701" duration="3124000" />
       <workItem from="1748425208999" duration="75000" />
       <workItem from="1748425294644" duration="467000" />
+      <workItem from="1748845841780" duration="1178000" />
+      <workItem from="1748847353322" duration="6931000" />
     </task>
     <servers />
   </component>

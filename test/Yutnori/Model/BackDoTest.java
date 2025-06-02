@@ -14,36 +14,23 @@ public class BackDoTest {
         GameModel gameModel = new GameModel();
         gameModel.startModel(GameSetting.getTestBoard());   // 2인 3말 4판 보드
 
-        // when 1
+        // when 1 - 도
         gameModel.initNewPiece(); // 말 초기화
         gameModel.setSelectedPiecePosition(-1); // init 된 말을 선택함
-        gameModel.addYutResult(2); // 2 : 걸이 나옴
+        gameModel.addYutResult(1); // 도가 나옴
         gameModel.findMovablePositions(0);
 
         System.out.println("이동 가능 경로 : " + gameModel.showMovablePositions());
 
-        gameModel.movePieceByPosition(1); // 1 위치로 이동
+        gameModel.movePieceByPosition(0); // 1 위치로 이동
 
 
-        // then 1 - 개까지의 경로 기억
+        // then 1 - 도 위치
         System.out.println("=== 1st Move ===");
         System.out.println(gameModel.showPieceInfo());
 
-        // when 2
-        gameModel.setSelectedPiecePosition(1); // 1 위치에 있는 말을 선택함
-        gameModel.addYutResult(-1); // -1 : 백도 나옴
-        gameModel.findMovablePositions(0);
-
-        System.out.println("이동 가능 경로 : " + gameModel.showMovablePositions());
-
-        gameModel.movePieceByPosition(0); // 0 위치로 이동
-
-        // then 2 - 개 이후 백도
-        System.out.println("=== 2nd Move ===");
-        System.out.println(gameModel.showPieceInfo());
-
         
-        // when 3
+        // when 2 - 도 백도
         gameModel.setSelectedPiecePosition(0); // 0 위치에 있는 말을 선택함
         gameModel.addYutResult(-1); // -1 : 백도 나옴
         gameModel.findMovablePositions(0);
@@ -52,11 +39,11 @@ public class BackDoTest {
         
         gameModel.movePieceByPosition(34); // 34 위치로 이동 (위치 인덱스 = 골인 위치로 설정 -> 이후 어떤 백도를 제외한 모든 윷이 골인 처리됨)
 
-        // then 3 - 개 백도 백도 이후 시작 위치
-        System.out.println("=== 3rd Move ===");
+        // then 2 - 도 백도 이후 시작 위치
+        System.out.println("=== 2nd Move ===");
         System.out.println(gameModel.showPieceInfo());
 
-        // when 4 - 개 백도 백도 백도 -> 골인
+        // when 3 - 도 백도 백도
         gameModel.setSelectedPiecePosition(34); // 34 위치에 있는 말을 선택함
         gameModel.addYutResult(-1); // -1 : 백도 나옴
         gameModel.findMovablePositions(0);
@@ -65,8 +52,8 @@ public class BackDoTest {
 
         gameModel.movePieceByPosition(-2); // piece의 path 에서 백도 가능 위치를 찾을 수 없는 경우 골인 처리 됨
 
-        // then 4 - 개 백도 백도 백도 -> 골인
-        System.out.println("=== 4th Move ===");
+        // then 4 - 도 백도 백도 -> 골인
+        System.out.println("=== 3rd Move ===");
         System.out.println(gameModel.showPieceInfo());
     }
 
