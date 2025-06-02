@@ -287,5 +287,14 @@ public class GameModel {
     }
     //#endregion
     
-
+    //#region 디버그용
+    public String showPieceInfo() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Pieces Info:\n");
+        for (Piece piece : pieces) {
+            sb.append(piece.toString()).append("\n");
+        }
+        return sb.toString();
+    }
+    //#endregion
 }
