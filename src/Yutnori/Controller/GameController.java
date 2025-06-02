@@ -51,18 +51,6 @@ public class GameController {
         model.initNewPiece();
     }
 
-    // 윷이 골라져있는지 아닌지 반환.
-    public boolean isYutSelected(){
-        return selectedYutResult.isPresent();
-    }
-
-    public void calculateMovablePosition(int currentPosition) {
-        if(!checkTeamOfPiece(currentPosition)) return;
-
-        model.setSelectedPiecePosition(currentPosition);
-//        model.findMovablePositions(selectedYutResultIndex.get());
-    }
-
     public void movePiece(int position){
         if(model.getCurrentState() != GameState.BOTH_YUT_PIECE_SELECTED){
             return;

@@ -162,7 +162,7 @@ public class InGameScreen_FX extends Pane implements GameModelObserver {
         createNewPieceButton.setLayoutY(600);
         createNewPieceButton.setPrefWidth(120);
         createNewPieceButton.setPrefHeight(30);
-        createNewPieceButton.setOnAction(e -> requestMovablePosition(-1));
+        createNewPieceButton.setOnAction(e -> controller.createNewPiece());
         createNewPieceButton.setViewOrder(-10);
         layeredPane.getChildren().add(createNewPieceButton);
 
@@ -173,7 +173,7 @@ public class InGameScreen_FX extends Pane implements GameModelObserver {
 
     private void throwYut() {
         String selectedYut = yutComboBox.getValue();
-        boolean throwSuccess = false;
+        boolean throwSuccess;
         if ("없음".equals(selectedYut)) {
             throwSuccess = controller.throwYut(0);
         } else {
@@ -203,23 +203,9 @@ public class InGameScreen_FX extends Pane implements GameModelObserver {
         }
     }
 
-    private void requestMovablePosition(int currentPosition) {
-        if (!controller.isYutSelected()) {
-            showAlert("먼저 사용할 윷 결과를 선택하세요.");
-            return;
-        }
-        clearMovablePositionButtons();
-        if (currentPosition == -1) {
-            if (!controller.canCreateNewPiece()) {
-                showAlert("새 말을 놓을 수 없습니다.");
-                return;
-            }
-            controller.createNewPiece();
-        }
-        controller.calculateMovablePosition(currentPosition);
-    }
-
     private void showMoveablePositions(int[] positions) {
+        clearMovablePositionButtons();
+
         for (int pos : positions) {
             Point point = boardIndex.getPoint(pos);
             if (point != null) {
@@ -302,11 +288,7 @@ public class InGameScreen_FX extends Pane implements GameModelObserver {
     }
 
     private void pieceClicked(int position) {
-        if (!controller.isYutSelected()) {
-            showAlert("사용할 윷 결과를 먼저 선택하세요.");
-            return;
-        }
-        requestMovablePosition(position);
+        controller.selectPiece(position);
     }
 
     private void updatePlayerInfos(int[][] playerInfos) {
