@@ -37,6 +37,17 @@ public class GameModel {
     private final List<Integer> movablePositions = new ArrayList<>(); // 이동 가능한 위치를 저장하는 리스트
     private final List<List<Integer>> pathList = new ArrayList<>(); // 이동 경로를 저장하는 리스트
 
+    private GameState currentState = GameState.INITIAL;
+
+    public GameState getCurrentState() {
+        return currentState;
+    }
+
+    private void setState(GameState newState) {
+        this.currentState = newState;
+        notifyObservers(ModelChangeType.GAME_STATE_CHANGED, currentState);
+    }
+
     //게임 설정 - gameSetting 을 기반으로 초기화, startGame 이전에 controller 에서 호출
     public void startModel(GameSetting gameSetting) {
         this.gameSetting = gameSetting;
@@ -57,6 +68,7 @@ public class GameModel {
         notifyObservers(ModelChangeType.BOARD_PIECES_INFO, pieces.toArray(new Piece[0])); // 보드에 있는 피스 정보를 알림
         notifyObservers(ModelChangeType.YUT_RESULTS, yutResult.stream().mapToInt(Integer::intValue).toArray()); // 윷 결과를 알림
         notifyObservers(ModelChangeType.MOVEABLE_POSITION_INFO, movablePositions.stream().mapToInt(i -> i).toArray()); // 이동 가능한 위치를 알림
+        setState(GameState.WAITING_FOR_YUT_SELECTION);
     }
 
 
@@ -184,6 +196,7 @@ public class GameModel {
 
         // notify
         notifyObservers(ModelChangeType.BOARD_PIECES_INFO, pieces.toArray(new Piece[0])); // 보드에 있는 피스 정보를 알림
+        setState(GameState.WAITING_FOR_YUT_SELECTION);  // 상태 변경 -> 초기 상태로 돌아감
     }
 
     // 선택된 말에서 갈 수 있는 위치를 찾습니다, 윷 인덱스를 기반으로 찾습니다.
@@ -225,6 +238,7 @@ public class GameModel {
             //movablePositions = board.getNextPosition(selectedPiecePosition, step);
         }
         notifyObservers(ModelChangeType.MOVEABLE_POSITION_INFO, movablePositions.stream().mapToInt(i -> i).toArray());
+        setState(GameState.WAITING_FOR_PIECE_SELECTION); // 상태 변경
     }
 
     public void endGame() {
@@ -236,6 +250,7 @@ public class GameModel {
     // !! 모델의 내용이 바뀌었지만, 이 메서드 이후 실행되는 getMovablePositions 까지 실행 후 notify 합니다.
     public void setSelectedPiecePosition(int piecePosition) {
         this.selectedPiecePosition = piecePosition;
+        setState(GameState.WAITING_FOR_MOVE_SELECTION); // 상태 변경
     }
 
     //#region private 메서드
