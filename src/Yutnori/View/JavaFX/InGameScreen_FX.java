@@ -4,7 +4,7 @@ import Yutnori.Controller.GameController;
 import Yutnori.Model.Observer.GameModelObserver;
 import Yutnori.Model.Observer.ModelChangeType;
 import Yutnori.Model.Piece;
-import Yutnori.View.Swing.BoardIndex_Swing;
+import Yutnori.View.BoardIndex;
 import javafx.collections.FXCollections;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
@@ -35,7 +35,7 @@ public class InGameScreen_FX extends Pane implements GameModelObserver {
     private ComboBox<String> yutComboBox;
     private ArrayList<Button> movableDestination = new ArrayList<>();
 
-    private BoardIndex_Swing boardIndex;
+    private BoardIndex boardIndex;
     private ArrayList<ImageView> pieceImageViews = new ArrayList<>();
     private ArrayList<Label> stackedTextLabels = new ArrayList<>();
 
@@ -45,7 +45,7 @@ public class InGameScreen_FX extends Pane implements GameModelObserver {
     public InGameScreen_FX(GameController controller, int playerNum, int horseNum, String boardType, MainApp_FX frame) {
         this.app = frame;
         this.controller = controller;
-        boardIndex = new BoardIndex_Swing(boardType);
+        boardIndex = new BoardIndex(boardType);
         pieceImageViews = new ArrayList<>();
 
         setPrefSize(1200, 750);
