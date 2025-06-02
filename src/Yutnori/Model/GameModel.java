@@ -296,5 +296,14 @@ public class GameModel {
         }
         return sb.toString();
     }
+
+    public String showMovablePositions() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Movable Positions: ");
+        for (int position : movablePositions) {
+            sb.append(position).append(" ");
+        }
+        return sb.toString();
+    }
     //#endregion
 }
