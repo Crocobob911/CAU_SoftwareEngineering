@@ -3,6 +3,7 @@ package Yutnori.Model;
 import Yutnori.Model.Observer.GameModelObserver;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import Yutnori.Model.Observer.ModelChangeType;
 import Yutnori.Model.YutPackage.Yut;
@@ -15,6 +16,7 @@ public class GameModel {
 
     // 플레이어가 남은 말 수를 저장하는 배열 -> observer -> players pieces info
     private int[] remainingPieces;
+
     public int getRemainingPiecesOnCurrentPlayer() {
         return remainingPieces[nowPlayerID];
     }
@@ -33,7 +35,8 @@ public class GameModel {
 
     private final List<Integer> yutResult = new ArrayList<>(); // yutResult 를 저장하는 리스트 -1, 1, 2, 3, 4, 5
 
-    private int selectedPiecePosition = -1; // 선택된 피스의 위치
+    private Optional<Integer> selectedYutIndex = Optional.empty();
+    private Optional<Integer> selectedPiecePosition = Optional.empty(); // 선택된 피스의 위치
     private final List<Integer> movablePositions = new ArrayList<>(); // 이동 가능한 위치를 저장하는 리스트
     private final List<List<Integer>> pathList = new ArrayList<>(); // 이동 경로를 저장하는 리스트
 
@@ -43,8 +46,38 @@ public class GameModel {
         return currentState;
     }
 
-    private void setState(GameState newState) {
-        this.currentState = newState;
+    private void convertState(GameState newState) {
+        if(currentState == GameState.INITIAL){
+            // INITIAL일 때, YUT이 선택되면 PIECE를 기다리고, PIECE가 선택되면 YUT을 기다림.
+            currentState = newState;
+        }
+        else if(currentState == GameState.PIECE_SELECTED){
+            // YUT이 선택되길 기다림
+            if(newState == GameState.YUT_SELECTED){
+                currentState = GameState.BOTH_YUT_PIECE_SELECTED;
+                findMovablePositions(selectedPiecePosition.get(), selectedYutIndex.get());
+            }
+        }
+        else if(currentState == GameState.YUT_SELECTED){
+            // PIECE이 선택되길 기다림
+            if(newState == GameState.PIECE_SELECTED)    {
+                currentState = GameState.BOTH_YUT_PIECE_SELECTED;
+                findMovablePositions(selectedPiecePosition.get(), selectedYutIndex.get());
+            }
+        }
+        else if(currentState == GameState.BOTH_YUT_PIECE_SELECTED){
+            if(newState == GameState.PIECE_SELECTED || newState == GameState.YUT_SELECTED)    {
+                findMovablePositions(selectedPiecePosition.get(), selectedYutIndex.get());
+            }
+            else if(newState == GameState.INITIAL){
+                // MOVE일 때, MovePiece가 완료되면 INITIAL로 돌아감
+                currentState = GameState.INITIAL;
+
+                selectedYutIndex = Optional.empty();
+                selectedPiecePosition = Optional.empty();
+            }
+        }
+        System.out.println("GameState -> " + currentState);
         notifyObservers(ModelChangeType.GAME_STATE_CHANGED, currentState);
     }
 
@@ -57,6 +90,7 @@ public class GameModel {
         }
         this.graduatedPieces = new int[gameSetting.playerNumber]; // 졸업 말 수 초기화
         this.board = new Board(gameSetting.boardType);
+        currentState = GameState.INITIAL;
 
         // 게임 플레이어 관련 초기화
         nowPlayerID = 0;
@@ -68,7 +102,7 @@ public class GameModel {
         notifyObservers(ModelChangeType.BOARD_PIECES_INFO, pieces.toArray(new Piece[0])); // 보드에 있는 피스 정보를 알림
         notifyObservers(ModelChangeType.YUT_RESULTS, yutResult.stream().mapToInt(Integer::intValue).toArray()); // 윷 결과를 알림
         notifyObservers(ModelChangeType.MOVEABLE_POSITION_INFO, movablePositions.stream().mapToInt(i -> i).toArray()); // 이동 가능한 위치를 알림
-        setState(GameState.WAITING_FOR_YUT_SELECTION);
+        notifyObservers(ModelChangeType.GAME_STATE_CHANGED, currentState);
     }
 
 
@@ -128,6 +162,7 @@ public class GameModel {
         Piece piece = new Piece(nowPlayerID);
         pieces.add(piece);
         remainingPieces[nowPlayerID]--;
+        setSelectedPiecePosition(-1);
 
         // notify
         notifyObservers(ModelChangeType.PLAYERS_PIECES_INFO, getPlayersPiecesInfo()); // 남은 말 수를 알림
@@ -141,8 +176,12 @@ public class GameModel {
     public void movePieceByPosition(int position) {
 
         // 이동 - 세팅
-        Piece selectedPiece = getPiece(selectedPiecePosition);
+        Piece selectedPiece = getPiece(selectedPiecePosition.get());
         // 최종 이동 위치를 movablePositions 리스트에서 index로 가져옴
+
+        //윷 소모
+        yutResult.remove((int) selectedYutIndex.get());
+        notifyObservers(ModelChangeType.YUT_RESULTS, yutResult.stream().mapToInt(Integer::intValue).toArray()); // 윷 결과를 알림
 
 
         if(position == -2) { // 골인
@@ -196,25 +235,20 @@ public class GameModel {
 
         // notify
         notifyObservers(ModelChangeType.BOARD_PIECES_INFO, pieces.toArray(new Piece[0])); // 보드에 있는 피스 정보를 알림
-        setState(GameState.WAITING_FOR_YUT_SELECTION);  // 상태 변경 -> 초기 상태로 돌아감
+        convertState(GameState.INITIAL);  // 상태 변경 -> 초기 상태로 돌아감
     }
 
     // 선택된 말에서 갈 수 있는 위치를 찾습니다, 윷 인덱스를 기반으로 찾습니다.
     // yutIndex 는 yutResult 리스트의 인덱스입니다. 윷을 던진 결과를 yutResult 리스트에 저장하고 인덱스를 input 으로 받아 접근합니다.
-    public void findMovablePositions(int yutIndex) {
+    public void findMovablePositions(int piecePosition, int yutIndex) {
         int step = yutResult.get(yutIndex);
-
-        //윷 소모
-        yutResult.remove(yutIndex);
-        notifyObservers(ModelChangeType.YUT_RESULTS, yutResult.stream().mapToInt(Integer::intValue).toArray()); // 윷 결과를 알림
-
 
         if (step == -1) {   //백도 특수 처리 -> 구현이 좀 복잡해요. 얹혀 사는 친구라... 굳이 안뜯는걸 추천해요
             movablePositions.clear();       // 이동 가능한 위치 초기화
             pathList.clear();               // 이동 가능한 위치에 따른 경로 초기화
             // pathList 는 List<List<Integer>> 형태로, 각 이동 가능한 위치에 대한 경로를 저장하고 내부 리스트의 마지막 값은 항상 movablePositions 리스트에 있는 위치와 같습니다.
 
-            Piece selectedPiece = getPiece(selectedPiecePosition);
+            Piece selectedPiece = getPiece(piecePosition);
             int backDoPosition = selectedPiece.getLastPathPosition(); // 백도일 때는 피스의 경로에서 마지막 위치를 가져옴
             if (backDoPosition == -3) { // 백도 직전 인덱스인 경우 -> 간단한 예시로 도 백도가 뜨거나 개 백도 백도가 뜬다던지 , 왜 -3인가요? 그냥 안겹치는 특수 값 리턴입니다.
                 backDoPosition = board.getLastPosition(); // 골인 직전 인덱스 처리 -> 가장 외부라인 포지션으로 바꿔버립니다.
@@ -231,14 +265,13 @@ public class GameModel {
             movablePositions.clear();
             pathList.clear();
 
-            for (List<Integer> list: board.getNextPosition(selectedPiecePosition, step)) {  //board.getNextPosition(selectedPiecePosition, step) 를 통한 리턴
+            for (List<Integer> list: board.getNextPosition(piecePosition, step)) {  //board.getNextPosition(selectedPiecePosition, step) 를 통한 리턴
                 movablePositions.add(list.getLast());                                       // 리턴 값이 List<List<Integer>> 형태로 이기에 getLast() 를 통해 마지막 위치를 가져옴
                 pathList.add(list);                                                         // 이동 가능한 위치에 따른 경로를 저장
             }
             //movablePositions = board.getNextPosition(selectedPiecePosition, step);
         }
         notifyObservers(ModelChangeType.MOVEABLE_POSITION_INFO, movablePositions.stream().mapToInt(i -> i).toArray());
-        setState(GameState.WAITING_FOR_PIECE_SELECTION); // 상태 변경
     }
 
     public void endGame() {
@@ -249,8 +282,13 @@ public class GameModel {
 
     // !! 모델의 내용이 바뀌었지만, 이 메서드 이후 실행되는 getMovablePositions 까지 실행 후 notify 합니다.
     public void setSelectedPiecePosition(int piecePosition) {
-        this.selectedPiecePosition = piecePosition;
-        setState(GameState.WAITING_FOR_MOVE_SELECTION); // 상태 변경
+        this.selectedPiecePosition = Optional.of(piecePosition);
+        convertState(GameState.PIECE_SELECTED); // 상태 변경
+    }
+
+    public void setSelectedYutIndex(int yutIndex){
+        this.selectedYutIndex = Optional.of(yutIndex);
+        convertState(GameState.YUT_SELECTED); // 상태 변경
     }
 
     //#region private 메서드

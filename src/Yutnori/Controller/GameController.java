@@ -2,6 +2,7 @@ package Yutnori.Controller;
 
 import Yutnori.Model.GameModel;
 import Yutnori.Model.GameSetting;
+import Yutnori.Model.GameState;
 import Yutnori.Model.Observer.GameModelObserver;
 import Yutnori.Model.YutPackage.Yut;
 
@@ -36,6 +37,18 @@ public class GameController {
     public void selectYut(int yutResult, int yutResultIndex){
         selectedYutResult = Optional.of(yutResult);
         selectedYutResultIndex = Optional.of(yutResultIndex);
+
+        model.setSelectedYutIndex(yutResultIndex);
+    }
+
+    public void selectPiece(int piecePosition){
+        if(!checkTeamOfPiece(piecePosition)) return;
+
+        model.setSelectedPiecePosition(piecePosition);
+    }
+
+    public void createNewPiece(){
+        model.initNewPiece();
     }
 
     // 윷이 골라져있는지 아닌지 반환.
@@ -44,15 +57,17 @@ public class GameController {
     }
 
     public void calculateMovablePosition(int currentPosition) {
-        if(!checkTeamOfPiece(currentPosition)){
-            return;
-        }
+        if(!checkTeamOfPiece(currentPosition)) return;
 
         model.setSelectedPiecePosition(currentPosition);
-        model.findMovablePositions(selectedYutResultIndex.get());
+//        model.findMovablePositions(selectedYutResultIndex.get());
     }
 
     public void movePiece(int position){
+        if(model.getCurrentState() != GameState.BOTH_YUT_PIECE_SELECTED){
+            return;
+        }
+
         model.movePieceByPosition(position);
 
         selectedYutResult = Optional.empty();
@@ -67,10 +82,6 @@ public class GameController {
     // 보드 상에 아무 말도 없는데 '백도'가 나온 경우도 제한함.
     public boolean canCreateNewPiece(){
         return model.getRemainingPiecesOnCurrentPlayer() > 0 && selectedYutResult.get() != -1;
-    }
-
-    public void createNewPiece(){
-        model.initNewPiece();
     }
 
     // 선택된 말이 어떤 플레이어의 말인지 확인.
