@@ -287,5 +287,23 @@ public class GameModel {
     }
     //#endregion
     
+    //#region 디버그용
+    public String showPieceInfo() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Pieces Info:\n");
+        for (Piece piece : pieces) {
+            sb.append(piece.toString()).append("\n");
+        }
+        return sb.toString();
+    }
 
+    public String showMovablePositions() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Movable Positions: ");
+        for (int position : movablePositions) {
+            sb.append(position).append(" ");
+        }
+        return sb.toString();
+    }
+    //#endregion
 }
