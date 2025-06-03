@@ -11,7 +11,9 @@
   <component name="ChangeListManager">
     <list default="true" id="31daac7e-5693-46a6-96b5-01c259af9992" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Yutnori/Model/GameModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Yutnori/Model/GameModel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test/Yutnori/Model/BackDoTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/Yutnori/Model/BackDoTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/Yutnori/Model/MoveActionTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/Yutnori/Model/MoveActionTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,6 +78,7 @@
     "JUnit.GameSettingTest.executor": "Run",
     "JUnit.MainFrame_SwingTest.endScreenTest.executor": "Run",
     "JUnit.MainFrame_SwingTest.testEndScreenTest.executor": "Run",
+    "JUnit.MoveActionTest.executor": "Run",
     "JUnit.MoveActionTest.moveCatchPiece.executor": "Run",
     "JUnit.MoveActionTest.moveDefault (1).executor": "Run",
     "JUnit.MoveActionTest.moveDefault.executor": "Run",
@@ -129,7 +132,7 @@
       <recent name="Yutnori.Model" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.MoveActionTest">
+  <component name="RunManager" selected="JUnit.BackDoTest">
     <configuration name="BackDoTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="SE" />
       <extension name="coverage">
@@ -216,8 +219,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.MoveActionTest" />
         <item itemvalue="JUnit.BackDoTest" />
+        <item itemvalue="JUnit.MoveActionTest" />
         <item itemvalue="JUnit.BoardTest" />
         <item itemvalue="JUnit.MoveActionTest.moveDefault (1)" />
         <item itemvalue="JUnit.BackDoTest.moveDefault" />

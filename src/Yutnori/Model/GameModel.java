@@ -358,5 +358,13 @@ public class GameModel {
         }
         return sb.toString();
     }
+
+    public int[] getRemainingPieces() {
+        return remainingPieces;
+    }
+
+    public int[] getGraduatedPieces() {
+        return graduatedPieces;
+    }
     //#endregion
 }

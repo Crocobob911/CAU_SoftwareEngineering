@@ -3,7 +3,7 @@ package Yutnori.Model;
 import Yutnori.Model.Observer.ModelChangeType;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 // 말 이동시 가능한 경우 - 1. 일반 이동 / 2. 업기 / 3. 잡기가 실제로 이루어지는지 확인하는 테스트
 public class MoveActionTest {
@@ -22,8 +22,11 @@ public class MoveActionTest {
         gameModel.movePieceByPosition(2); // 2 위치로 이동
 
         // then
-        String result = gameModel.showPieceInfo();
-        System.out.println(result);
+        Piece piece = gameModel.getPiece(2);
+        assertNotNull("말이 이동했으므로 위치 2에 말이 있어야 합니다", piece);
+        assertEquals("말의 위치가 2여야 합니다", 2, piece.getPosition());
+        assertEquals("말의 소유자가 0번 플레이어여야 합니다", 0, piece.getOwnerID());
+        assertEquals("말의 스택이 0이어야 합니다", 0, piece.getStacked());
     }
 
     @Test
@@ -48,8 +51,11 @@ public class MoveActionTest {
         gameModel.movePieceByPosition(2); // 2 위치로 이동
 
         // then
-        String result = gameModel.showPieceInfo();
-        System.out.println(result);
+        Piece piece = gameModel.getPiece(2);
+        assertNotNull("말이 이동했으므로 위치 2에 말이 있어야 합니다", piece);
+        assertEquals("말의 위치가 2여야 합니다", 2, piece.getPosition());
+        assertEquals("말의 소유자가 0번 플레이어여야 합니다", 0, piece.getOwnerID());
+        assertEquals("말의 스택이 1이어야 합니다", 1, piece.getStacked());
     }
 
     @Test
@@ -76,7 +82,11 @@ public class MoveActionTest {
         gameModel.movePieceByPosition(2); // 2 위치로 이동
 
         // then
-        String result = gameModel.showPieceInfo();
-        System.out.println(result);
+        Piece piece = gameModel.getPiece(2);
+        assertNotNull("말이 이동했으므로 위치 2에 말이 있어야 합니다", piece);
+        assertEquals("말의 위치가 2여야 합니다", 2, piece.getPosition());
+        assertEquals("말의 소유자가 1번 플레이어여야 합니다", 1, piece.getOwnerID());
+        assertEquals("말의 스택이 0이어야 합니다", 0, piece.getStacked());
+        assertEquals("0번 플레이어의 남은 말 수가 3이어야 합니다", 3, gameModel.getRemainingPieces()[0]);
     }
 }
