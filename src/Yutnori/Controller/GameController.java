@@ -48,6 +48,7 @@ public class GameController {
     }
 
     public void createNewPiece(){
+        if(!canCreateNewPiece()) return;
         model.initNewPiece();
     }
 
