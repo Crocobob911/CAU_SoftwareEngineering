@@ -198,6 +198,7 @@ public class InGameScreen_FX extends Pane implements GameModelObserver {
             button.setOnAction(e -> {
                 int index = yutResultPanel.getChildren().indexOf(button);
                 controller.selectYut(result, index);
+                showAlert("윷이 선택되었습니다.");
             });
             yutResultPanel.getChildren().add(button);
         }
@@ -267,6 +268,7 @@ public class InGameScreen_FX extends Pane implements GameModelObserver {
             pieceView.setViewOrder(-10);
             pieceView.setOnMouseClicked((MouseEvent e) -> {
                 pieceClicked(position);
+                showAlert("말이 선택되었습니다.");
             });
             layeredPane.getChildren().add(pieceView);
             pieceImageViews.add(pieceView);
