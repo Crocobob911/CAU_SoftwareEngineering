@@ -191,6 +191,7 @@ public class GameModel {
 
             notifyObservers(ModelChangeType.BOARD_PIECES_INFO, pieces.toArray(new Piece[0])); // 보드에 있는 피스 정보를 알림
 
+            convertState(GameState.INITIAL);  // 상태 변경 -> 초기 상태로 돌아감
             return; // 골인 처리 후 종료
         }
 
