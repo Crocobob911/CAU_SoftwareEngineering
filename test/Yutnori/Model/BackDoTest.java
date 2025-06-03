@@ -18,7 +18,8 @@ public class BackDoTest {
         gameModel.initNewPiece(); // 말 초기화
         gameModel.setSelectedPiecePosition(-1); // init 된 말을 선택함
         gameModel.addYutResult(1); // 도가 나옴
-        gameModel.findMovablePositions(0);
+        gameModel.setSelectedYutIndex(0); // 첫 번째 윷 결과 선택
+        gameModel.findMovablePositions(-1, 0);
 
         System.out.println("이동 가능 경로 : " + gameModel.showMovablePositions());
 
@@ -33,7 +34,8 @@ public class BackDoTest {
         // when 2 - 도 백도
         gameModel.setSelectedPiecePosition(0); // 0 위치에 있는 말을 선택함
         gameModel.addYutResult(-1); // -1 : 백도 나옴
-        gameModel.findMovablePositions(0);
+        gameModel.setSelectedYutIndex(0); // 첫 번째 윷 결과 선택
+        gameModel.findMovablePositions(0, 0);
         
         System.out.println("이동 가능 경로 : " + gameModel.showMovablePositions());
         
@@ -46,13 +48,14 @@ public class BackDoTest {
         // when 3 - 도 백도 백도
         gameModel.setSelectedPiecePosition(34); // 34 위치에 있는 말을 선택함
         gameModel.addYutResult(-1); // -1 : 백도 나옴
-        gameModel.findMovablePositions(0);
+        gameModel.setSelectedYutIndex(0); // 첫 번째 윷 결과 선택
+        gameModel.findMovablePositions(34, 0);
 
         System.out.println("이동 가능 경로 : " + gameModel.showMovablePositions()); // -> 백도 불가능 -> 골인
 
         gameModel.movePieceByPosition(-2); // piece의 path 에서 백도 가능 위치를 찾을 수 없는 경우 골인 처리 됨
 
-        // then 4 - 도 백도 백도 -> 골인
+        // then 3 - 도 백도 백도 -> 골인
         System.out.println("=== 3rd Move ===");
         System.out.println(gameModel.showPieceInfo());
     }
