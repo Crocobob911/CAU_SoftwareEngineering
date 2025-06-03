@@ -183,6 +183,7 @@ public class InGameScreen_Swing extends JPanel implements GameModelObserver{
             JButton button = new JButton(yutResultString);
             button.addActionListener(e -> {
                 // 윷 버튼을 누르면, 어떤 윷이 골라졌는지 컨트롤러에 전달. 컨트롤러는 이를 저장하고 있음.
+                JOptionPane.showMessageDialog(null,"윷이 선택되었습니다.");
                 controller.selectYut(result, yutResultPanel.getComponentZOrder((JButton) e.getSource()));
             });
             yutResultPanel.add(button);
@@ -204,6 +205,7 @@ public class InGameScreen_Swing extends JPanel implements GameModelObserver{
 //        }
 //        requestMovablePosition(position);
         controller.selectPiece(position);
+        JOptionPane.showMessageDialog(null,"말이 선택되었습니다.");
     }
 
     // Model로부터 '이동 가능한 위치'의 배열을 받아서 표시함. (Observer 패턴)
