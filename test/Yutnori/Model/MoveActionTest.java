@@ -18,7 +18,7 @@ public class MoveActionTest {
         gameModel.setSelectedPiecePosition(-1); // init 된 말을 선택함
         gameModel.addYutResult(3); // 3 : 걸이 나옴
         gameModel.setSelectedYutIndex(0); // 첫 번째 윷 결과 선택
-        gameModel.findMovablePositions(-1, 0);
+        //gameModel.findMovablePositions(-1, 0);
         gameModel.movePieceByPosition(2); // 2 위치로 이동
 
         // then
@@ -37,14 +37,14 @@ public class MoveActionTest {
         gameModel.setSelectedPiecePosition(-1); // init 된 말을 선택함
         gameModel.addYutResult(3); // 3 : 걸이 나옴
         gameModel.setSelectedYutIndex(0); // 첫 번째 윷 결과 선택
-        gameModel.findMovablePositions(-1, 0);
+        //gameModel.findMovablePositions(-1, 0);
         gameModel.movePieceByPosition(2); // 2 위치로 이동
 
         gameModel.initNewPiece(); // 말 초기화
         gameModel.setSelectedPiecePosition(-1); // init 된 말을 선택함
         gameModel.addYutResult(3); // 3 : 걸이 나옴
         gameModel.setSelectedYutIndex(0); // 첫 번째 윷 결과 선택
-        gameModel.findMovablePositions(-1, 0);
+        //gameModel.findMovablePositions(-1, 0);
         gameModel.movePieceByPosition(2); // 2 위치로 이동
 
         // then
@@ -63,7 +63,7 @@ public class MoveActionTest {
         gameModel.setSelectedPiecePosition(-1); // init 된 말을 선택함
         gameModel.addYutResult(3); // 3 : 걸이 나옴
         gameModel.setSelectedYutIndex(0); // 첫 번째 윷 결과 선택
-        gameModel.findMovablePositions(-1, 0);
+        //gameModel.findMovablePositions(-1, 0);
         gameModel.movePieceByPosition(2); // 2 위치로 이동
 
         gameModel.nextTurn();       // 턴 넘김
@@ -72,7 +72,7 @@ public class MoveActionTest {
         gameModel.setSelectedPiecePosition(-1); // init 된 말을 선택함
         gameModel.addYutResult(3); // 3 : 걸이 나옴
         gameModel.setSelectedYutIndex(0); // 첫 번째 윷 결과 선택
-        gameModel.findMovablePositions(-1, 0);
+        //gameModel.findMovablePositions(-1, 0);
         gameModel.movePieceByPosition(2); // 2 위치로 이동
 
         // then
