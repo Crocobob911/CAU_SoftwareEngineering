@@ -1,11 +1,9 @@
 package Yutnori.Model;
 
 import org.junit.Test;
-
 import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-
+import java.util.Arrays;
+import static org.junit.Assert.*;
 
 public class BoardTest {
 
@@ -13,33 +11,29 @@ public class BoardTest {
     @Test
     public void boardMoveTest() {
         // given
-        System.out.println("이동 경로 테스트 1");
-        // 이 경우 외부 분할 지점에서 이동하기에 이동가능한 경로가 2개가 나와야한다.
         int from = 4;
         int step = 3;
         Board board = new Board(4);
-
 
         // when
         List<List<Integer>> result = board.getNextPosition(from, step);
 
         // then
-
-
-        for (int i = 0; i < result.size(); i++) {
-            System.out.println("경로 " + (i + 1));
-            List<Integer> path = result.get(i);
-            for (Integer position : path) {
-                System.out.println("Position: " + position);
-            }
-        }
-
+        // 외부 분할 지점에서 이동 시 2개의 경로가 있어야 함
+        assertEquals(2, result.size());
+        
+        // 첫 번째 경로 검증 (외부 경로)
+        List<Integer> expectedPath1 = Arrays.asList(40, 41, 42);
+        assertEquals(expectedPath1, result.get(0));
+        
+        // 두 번째 경로 검증 (내부 경로)
+        List<Integer> expectedPath2 = Arrays.asList(10, 11, 12);
+        assertEquals(expectedPath2, result.get(1));
     }
 
     @Test
     public void boardMoveTest2() {
         // given
-        System.out.println("이동 경로 테스트 2");
         int from = 24;
         int step = 3;
         Board board = new Board(4);
@@ -48,20 +42,17 @@ public class BoardTest {
         List<List<Integer>> result = board.getNextPosition(from, step);
 
         // then
-
-        for (int i = 0; i < result.size(); i++) {
-            System.out.println("경로 " + (i + 1));
-            List<Integer> path = result.get(i);
-            for (Integer position : path) {
-                System.out.println("Position: " + position);
-            }
-        }
+        // 24번 위치에서 이동 시 1개의 경로만 있어야 함
+        assertEquals(1, result.size());
+        
+        // 예상 경로 검증
+        List<Integer> expectedPath = Arrays.asList(30, 31, 32);
+        assertEquals(expectedPath, result.get(0));
     }
 
     @Test
     public void boardMoveTest3() {
         // given
-        System.out.println("이동 경로 테스트 3");
         int from = 41;
         int step = 5;
         Board board = new Board(4);
@@ -70,14 +61,11 @@ public class BoardTest {
         List<List<Integer>> result = board.getNextPosition(from, step);
 
         // then
-
-        for (int i = 0; i < result.size(); i++) {
-            System.out.println("경로 " + (i + 1));
-            List<Integer> path = result.get(i);
-            for (Integer position : path) {
-                System.out.println("Position: " + position);
-            }
-        }
+        // 41번 위치에서 이동 시 1개의 경로만 있어야 함
+        assertEquals(1, result.size());
+        
+        // 예상 경로 검증
+        List<Integer> expectedPath = Arrays.asList(42, 60, 61, 62, 30);
+        assertEquals(expectedPath, result.get(0));
     }
-
 }
