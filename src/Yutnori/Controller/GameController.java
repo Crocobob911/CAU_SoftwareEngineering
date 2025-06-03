@@ -70,7 +70,9 @@ public class GameController {
     // 현재 플레이어의 '남은 말 수'를 확인함.
     // 보드 상에 아무 말도 없는데 '백도'가 나온 경우도 제한함.
     public boolean canCreateNewPiece(){
-        return model.getRemainingPiecesOnCurrentPlayer() > 0 && selectedYutResult.get() != -1;
+        return selectedYutResult.map(
+                integer -> model.getRemainingPiecesOnCurrentPlayer() > 0 && integer != -1).orElseGet(
+                        () -> model.getRemainingPiecesOnCurrentPlayer() > 0);
     }
 
     // 선택된 말이 어떤 플레이어의 말인지 확인.
