@@ -20,7 +20,7 @@ public class StartScreen_FX extends Pane {
         setPrefSize(1200, 750);
 
         // 배경 이미지 설정
-        ImageView backgroundImage = new ImageView(new Image("file:src/Yutnori/View/picture/start_background.png"));
+        ImageView backgroundImage = new ImageView(new Image(getClass().getResourceAsStream("/Yutnori/View/picture/start_background.png")));
         backgroundImage.setFitWidth(1200);
         backgroundImage.setFitHeight(750);
         getChildren().add(backgroundImage);

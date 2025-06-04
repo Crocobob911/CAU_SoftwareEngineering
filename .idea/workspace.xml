@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ArtifactsWorkspaceSettings">
     <artifacts-to-build>
-      <artifact name="SE:jar" />
+      <artifact name="Yutnori_Swing:jar" />
     </artifacts-to-build>
   </component>
   <component name="AutoImportSettings">
@@ -11,9 +11,12 @@
   <component name="ChangeListManager">
     <list default="true" id="31daac7e-5693-46a6-96b5-01c259af9992" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Yutnori/Model/GameModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Yutnori/Model/GameModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/Yutnori/Model/BackDoTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/Yutnori/Model/BackDoTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/Yutnori/Model/MoveActionTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/Yutnori/Model/MoveActionTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Yutnori/View/JavaFX/EndScreen_FX.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Yutnori/View/JavaFX/EndScreen_FX.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Yutnori/View/JavaFX/InGameScreen_FX.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Yutnori/View/JavaFX/InGameScreen_FX.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Yutnori/View/JavaFX/StartScreen_FX.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Yutnori/View/JavaFX/StartScreen_FX.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Yutnori/View/Swing/EndScreen_Swing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Yutnori/View/Swing/EndScreen_Swing.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Yutnori/View/Swing/InGameScreen_Swing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Yutnori/View/Swing/InGameScreen_Swing.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Yutnori/View/Swing/StartScreen_Swing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Yutnori/View/Swing/StartScreen_Swing.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,6 +73,7 @@
     "Downloaded.Files.Path.Enabled": "false",
     "JUnit.BackDoTest.executor": "Run",
     "JUnit.BackDoTest.moveDefault.executor": "Run",
+    "JUnit.BoardTest.boardMoveTest.executor": "Run",
     "JUnit.BoardTest.boardMoveTest2.executor": "Run",
     "JUnit.BoardTest.boardMoveTest3.executor": "Run",
     "JUnit.BoardTest.executor": "Run",
@@ -94,7 +98,7 @@
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit3",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit3": "junit.framework.TestCase",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
-    "git-widget-placeholder": "feature-TestFix",
+    "git-widget-placeholder": "main",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/javafx-sdk-21.0.7/lib",
@@ -103,7 +107,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Project",
+    "project.structure.last.edited": "아티팩트",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
     "settings.editor.selected.configurable": "configurable.group.editor",
@@ -132,34 +136,30 @@
       <recent name="Yutnori.Model" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.BackDoTest">
-    <configuration name="BackDoTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="애플리케이션.MainFrame_Swing">
+    <configuration name="MainApp_FX" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Yutnori.View.JavaFX.MainApp_FX" />
       <module name="SE" />
+      <option name="VM_PARAMETERS" value="--module-path C:\Users\wook9\Desktop\2025-1\소프트웨어공학\과제\openjfx-21.0.7_windows-x64_bin-sdk\javafx-sdk-21.0.7/lib --add-modules javafx.controls,javafx.fxml " />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="Yutnori.Model.*" />
+          <option name="PATTERN" value="Yutnori.View.JavaFX.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="Yutnori.Model" />
-      <option name="MAIN_CLASS_NAME" value="Yutnori.Model.BackDoTest" />
-      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="BackDoTest.moveDefault" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="MainFrame_Swing" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Yutnori.View.Swing.MainFrame_Swing" />
       <module name="SE" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="Yutnori.Model.*" />
+          <option name="PATTERN" value="Yutnori.View.Swing.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="Yutnori.Model" />
-      <option name="MAIN_CLASS_NAME" value="Yutnori.Model.BackDoTest" />
-      <option name="METHOD_NAME" value="moveDefault" />
-      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -179,7 +179,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="MoveActionTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="BoardTest.boardMoveTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="SE" />
       <extension name="coverage">
         <pattern>
@@ -188,14 +188,15 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="Yutnori.Model" />
-      <option name="MAIN_CLASS_NAME" value="Yutnori.Model.MoveActionTest" />
-      <option name="TEST_OBJECT" value="class" />
+      <option name="MAIN_CLASS_NAME" value="Yutnori.Model.BoardTest" />
+      <option name="METHOD_NAME" value="boardMoveTest" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="MoveActionTest.moveDefault (1)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="Test" />
+    <configuration name="BoardTest.boardMoveTest2" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="SE" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="Yutnori.Model.*" />
@@ -203,35 +204,35 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="Yutnori.Model" />
-      <option name="MAIN_CLASS_NAME" value="Yutnori.Model.MoveActionTest" />
-      <option name="METHOD_NAME" value="moveDefault" />
+      <option name="MAIN_CLASS_NAME" value="Yutnori.Model.BoardTest" />
+      <option name="METHOD_NAME" value="boardMoveTest2" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <list>
+      <item itemvalue="JUnit.BoardTest.boardMoveTest" />
+      <item itemvalue="JUnit.BoardTest.boardMoveTest2" />
       <item itemvalue="JUnit.BoardTest" />
-      <item itemvalue="JUnit.MoveActionTest" />
-      <item itemvalue="JUnit.MoveActionTest.moveDefault (1)" />
-      <item itemvalue="JUnit.BackDoTest" />
-      <item itemvalue="JUnit.BackDoTest.moveDefault" />
+      <item itemvalue="애플리케이션.MainApp_FX" />
+      <item itemvalue="애플리케이션.MainFrame_Swing" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.BackDoTest" />
-        <item itemvalue="JUnit.MoveActionTest" />
+        <item itemvalue="애플리케이션.MainApp_FX" />
+        <item itemvalue="애플리케이션.MainFrame_Swing" />
         <item itemvalue="JUnit.BoardTest" />
-        <item itemvalue="JUnit.MoveActionTest.moveDefault (1)" />
-        <item itemvalue="JUnit.BackDoTest.moveDefault" />
+        <item itemvalue="JUnit.BoardTest.boardMoveTest2" />
+        <item itemvalue="JUnit.BoardTest.boardMoveTest" />
       </list>
     </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-125ca727e0f0-intellij.indexing.shared.core-IU-243.24978.46" />
-        <option value="bundled-js-predefined-d6986cc7102b-76f8388c3a79-JavaScript-IU-243.24978.46" />
+        <option value="bundled-jdk-9823dce3aa75-fbdcb00ec9e3-intellij.indexing.shared.core-IU-251.25410.129" />
+        <option value="bundled-js-predefined-d6986cc7102b-6a121458b545-JavaScript-IU-251.25410.129" />
       </set>
     </attachedChunks>
   </component>
@@ -267,6 +268,9 @@
       <workItem from="1748847353322" duration="6931000" />
       <workItem from="1748858075682" duration="906000" />
       <workItem from="1748871250984" duration="5554000" />
+      <workItem from="1748951215027" duration="2366000" />
+      <workItem from="1748954776807" duration="307000" />
+      <workItem from="1749033693653" duration="2606000" />
     </task>
     <servers />
   </component>
