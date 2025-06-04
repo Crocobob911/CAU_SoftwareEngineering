@@ -47,18 +47,18 @@ public class InGameScreen_Swing extends JPanel implements GameModelObserver{
         layeredPane = new JLayeredPane();
         layeredPane.setBounds(0, 0, 1200, 750);
 
-        ImageIcon combinedIcon = new ImageIcon("src/Yutnori/View/picture/background.png");
+        ImageIcon combinedIcon = new ImageIcon(getClass().getResource("/Yutnori/View/picture/background.png"));
         JLabel combinedLabel = new JLabel(combinedIcon);
         combinedLabel.setBounds(0, 0, 1200, 750);
         layeredPane.add(combinedLabel, Integer.valueOf(0));
 
         // 보드 이미지 (4, 5, 6) 배치
         String boardImagePath = switch (boardType) {
-            case "오각형" -> "src/Yutnori/View/picture/pentaYutBoard.png";
-            case "육각형" -> "src/Yutnori/View/picture/hexaYutBoard.png";
-            default -> "src/Yutnori/View/picture/rectYutBoard.png";
+            case "오각형" -> "/Yutnori/View/picture/pentaYutBoard.png";
+            case "육각형" -> "/Yutnori/View/picture/hexaYutBoard.png";
+            default -> "/Yutnori/View/picture/rectYutBoard.png";
         };
-        ImageIcon boardIcon = new ImageIcon(boardImagePath);
+        ImageIcon boardIcon = new ImageIcon(getClass().getResource(boardImagePath));
         JLabel boardLabel = new JLabel(boardIcon);
         boardLabel.setBounds(20, 25, boardIcon.getIconWidth(), boardIcon.getIconHeight());
         layeredPane.add(boardLabel, Integer.valueOf(1));
@@ -82,7 +82,7 @@ public class InGameScreen_Swing extends JPanel implements GameModelObserver{
         layeredPane.add(throwButton, Integer.valueOf(2));
 
         // 윷 던진 결과 표시 Image 배치
-        yutResultLabel = new JLabel(new ImageIcon("src/Yutnori/View/picture/mo.png"));
+        yutResultLabel = new JLabel(new ImageIcon(getClass().getResource("/Yutnori/View/picture/mo.png")));
         yutResultLabel.setBounds(690, 105, 425, 210);
         layeredPane.add(yutResultLabel, Integer.valueOf(2));
 
@@ -90,7 +90,7 @@ public class InGameScreen_Swing extends JPanel implements GameModelObserver{
         int[][] playerInfoPositions = {{625, 400}, {935, 400}, {625, 550}, {935, 550}};
         playerInfoLabels = new JLabel[2][playerNum];
         for (int i = 0; i < playerNum; i++) {
-            ImageIcon playerIcon = new ImageIcon("src/Yutnori/View/picture/team" + (i + 1) + ".png");
+            ImageIcon playerIcon = new ImageIcon(getClass().getResource("/Yutnori/View/picture/team" + (i + 1) + ".png"));
             JLabel playerLabel = new JLabel(playerIcon);
             playerLabel.setBounds(playerInfoPositions[i][0], playerInfoPositions[i][1], playerIcon.getIconWidth(), playerIcon.getIconHeight());
             layeredPane.add(playerLabel, Integer.valueOf(1));
@@ -166,8 +166,8 @@ public class InGameScreen_Swing extends JPanel implements GameModelObserver{
 
     // 방금 어떤 윷이 던져졌는지 표시하는 Image UI를 수정.
     private void updateLastThrownYut(int yut) {
-        String yutImagePath = "src/Yutnori/View/picture/" + convertYutIntToStringEnglish(yut) + ".png";
-        yutResultLabel.setIcon(new ImageIcon(yutImagePath));
+        String yutImagePath = "/Yutnori/View/picture/" + convertYutIntToStringEnglish(yut) + ".png";
+        yutResultLabel.setIcon(new ImageIcon(getClass().getResource(yutImagePath)));
     }
 
     // ThrowYut 함수로 controller를 통해 Model을 호출.
@@ -265,8 +265,8 @@ public class InGameScreen_Swing extends JPanel implements GameModelObserver{
             if (point == null) continue;
 
             // make image
-            String imgPath = "src/Yutnori/View/picture/mal" + (team + 1) + ".png";
-            ImageIcon imgIcon = new ImageIcon(imgPath);
+            String imgPath = "/Yutnori/View/picture/mal" + (team + 1) + ".png";
+            ImageIcon imgIcon = new ImageIcon(getClass().getResource(imgPath));
             int w = imgIcon.getIconWidth() / 2, h = imgIcon.getIconHeight() / 2;
             Image scaledImg = imgIcon.getImage().getScaledInstance(w, h, Image.SCALE_SMOOTH);
             imgIcon = new ImageIcon(scaledImg);

@@ -22,7 +22,7 @@ public class EndScreen_FX extends Pane {
         setPrefSize(1200, 750);
 
         // 배경 이미지
-        Image background = new Image("file:src/Yutnori/View/picture/end_BackGround.png");
+        Image background = new Image(getClass().getResourceAsStream("/Yutnori/View/picture/end_BackGround.png"));
         ImageView backgroundIV = new ImageView(background);
         backgroundIV.setFitWidth(1200);
         backgroundIV.setFitHeight(750);

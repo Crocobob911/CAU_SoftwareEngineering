@@ -54,7 +54,7 @@ public class InGameScreen_FX extends Pane implements GameModelObserver {
         layeredPane.setPrefSize(1200, 750);
 
         // 1. Background Image
-        Image bgImage = new Image("file:src/Yutnori/View/picture/background.png");
+        Image bgImage = new Image(getClass().getResourceAsStream("/Yutnori/View/picture/background.png"));
         ImageView bgImageView = new ImageView(bgImage);
         bgImageView.setFitWidth(1200);
         bgImageView.setFitHeight(750);
@@ -65,11 +65,11 @@ public class InGameScreen_FX extends Pane implements GameModelObserver {
 
         // 2. Board Image
         String boardImagePath = switch (boardType) {
-            case "오각형" -> "src/Yutnori/View/picture/pentaYutBoard.png";
-            case "육각형" -> "src/Yutnori/View/picture/hexaYutBoard.png";
-            default -> "src/Yutnori/View/picture/rectYutBoard.png";
+            case "오각형" -> "/Yutnori/View/picture/pentaYutBoard.png";
+            case "육각형" -> "/Yutnori/View/picture/hexaYutBoard.png";
+            default -> "/Yutnori/View/picture/rectYutBoard.png";
         };
-        Image boardImage = new Image("file:" + boardImagePath);
+        Image boardImage = new Image(getClass().getResourceAsStream(boardImagePath));
         ImageView boardImageView = new ImageView(boardImage);
         boardImageView.setLayoutX(20);
         boardImageView.setLayoutY(25);
@@ -105,7 +105,7 @@ public class InGameScreen_FX extends Pane implements GameModelObserver {
         layeredPane.getChildren().add(throwButton);
 
         // 6. Yut Throw Result ImageView
-        yutResultImageView = new ImageView(new Image("file:src/Yutnori/View/picture/mo.png"));
+        yutResultImageView = new ImageView(new Image(getClass().getResourceAsStream("/Yutnori/View/picture/mo.png")));
         yutResultImageView.setLayoutX(690);
         yutResultImageView.setLayoutY(105);
         yutResultImageView.setFitWidth(425);
@@ -117,7 +117,7 @@ public class InGameScreen_FX extends Pane implements GameModelObserver {
         int[][] playerInfoPositions = { {625, 400}, {935, 400}, {625, 550}, {935, 550} };
         playerInfoLabels = new Label[2][playerNum];
         for (int i = 0; i < playerNum; i++) {
-            Image playerImg = new Image("file:src/Yutnori/View/picture/team" + (i + 1) + ".png");
+            Image playerImg = new Image(getClass().getResourceAsStream("/Yutnori/View/picture/team" + (i + 1) + ".png"));
             ImageView playerImageView = new ImageView(playerImg);
             double posX = playerInfoPositions[i][0];
             double posY = playerInfoPositions[i][1];
@@ -255,8 +255,8 @@ public class InGameScreen_FX extends Pane implements GameModelObserver {
             Point point = boardIndex.getPoint(position);
             if (point == null) continue;
 
-            String imgPath = "src/Yutnori/View/picture/mal" + (team + 1) + ".png";
-            Image img = new Image("file:" + imgPath);
+            String imgPath = "/Yutnori/View/picture/mal" + (team + 1) + ".png";
+            Image img = new Image(getClass().getResourceAsStream(imgPath));
             double w = img.getWidth() / 2;
             double h = img.getHeight() / 2;
 
@@ -322,8 +322,8 @@ public class InGameScreen_FX extends Pane implements GameModelObserver {
     }
 
     private void updateLastThrownYut(int yut) {
-        String yutImagePath = "src/Yutnori/View/picture/" + convertYutIntToStringEnglish(yut) + ".png";
-        Image img = new Image("file:" + yutImagePath);
+        String yutImagePath = "/Yutnori/View/picture/" + convertYutIntToStringEnglish(yut) + ".png";
+        Image img = new Image(getClass().getResourceAsStream(yutImagePath));
         yutResultImageView.setImage(img);
     }
 
